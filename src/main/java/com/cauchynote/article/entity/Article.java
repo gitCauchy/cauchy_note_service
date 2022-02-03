@@ -19,7 +19,7 @@ public class Article {
 	/**
 	 * 文章ID
 	 */
-	private Integer id;
+	private Long id;
 	/**
 	 * 文章标题
 	 */
@@ -31,7 +31,7 @@ public class Article {
 	/**
 	 * 文章作者ID
 	 */
-	private String authorId;
+	private Long authorId;
 	/**
 	 * 创建时间
 	 */
