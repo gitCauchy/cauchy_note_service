@@ -54,7 +54,7 @@ public class ArticleController {
      * @Description 修改文章
      */
     @PostMapping("/modifyArticle")
-    public ResponseEntity<HttpStatus> modifyArticle(Article article) {
+    public ResponseEntity<HttpStatus> modifyArticle(@RequestBody Article article) {
         articleService.modifyArticle(article);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -72,12 +72,13 @@ public class ArticleController {
 
     @GetMapping("/getArticleList")
     public ResponseEntity<Map> getArticleList(
+            @RequestParam(value = "authorId") Long authorId,
             @RequestParam(value = "pageSize") Integer pageSize,
             @RequestParam(value = "pageNum") Integer pageNum,
             @RequestParam(value = "keyword") String keyword) {
         Map<String, Object> retMap = new HashMap<>();
-        List<Article> articles = articleService.getArticleList(pageSize, pageNum, keyword);
-        Integer total = articleService.getArticleTotal(keyword);
+        List<Article> articles = articleService.getArticleList(authorId, pageSize, pageNum, keyword);
+        Integer total = articleService.getArticleTotal(authorId, keyword);
         retMap.put("articles", articles);
         retMap.put("total", total);
         if (articles != null) {

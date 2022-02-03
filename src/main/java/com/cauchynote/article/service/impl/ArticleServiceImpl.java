@@ -43,14 +43,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleList(Integer pageSize, Integer pageNum, String keyword) {
-        List<Article> articleList = articleMapper.getArticleList(pageSize, (pageNum - 1) * pageSize, keyword);
+    public List<Article> getArticleList(Long aurhorId, Integer pageSize, Integer pageNum, String keyword) {
+        List<Article> articleList = articleMapper.getArticleList(aurhorId, pageSize, (pageNum - 1) * pageSize, keyword);
         return articleList;
     }
 
     @Override
-    public Integer getArticleTotal(String keyword) {
-        return articleMapper.getArticleTotal(keyword);
+    public Integer getArticleTotal(Long authorId, String keyword) {
+        return articleMapper.getArticleTotal(authorId, keyword);
     }
 
 }
