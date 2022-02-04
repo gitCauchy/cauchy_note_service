@@ -22,30 +22,28 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleMapper articleMapper;
 
     @Override
-    public void addArticle(Article article) {
-        articleMapper.addArticle(article);
+    public boolean addArticle(Article article) {
+        return articleMapper.addArticle(article) == 1;
     }
 
     @Override
-    public void deleteArticle(Integer id) {
-        articleMapper.deleteArticle(id);
+    public boolean deleteArticle(Integer id) {
+        return articleMapper.deleteArticle(id) == 1;
     }
 
     @Override
-    public void modifyArticle(Article article) {
-        articleMapper.modifyArticle(article);
+    public boolean modifyArticle(Article article) {
+        return articleMapper.modifyArticle(article) == 1;
     }
 
     @Override
     public Article getArticle(Integer id) {
-        Article article = articleMapper.getArticle(id);
-        return article;
+        return articleMapper.getArticle(id);
     }
 
     @Override
     public List<Article> getArticleList(Long aurhorId, Integer pageSize, Integer pageNum, String keyword) {
-        List<Article> articleList = articleMapper.getArticleList(aurhorId, pageSize, (pageNum - 1) * pageSize, keyword);
-        return articleList;
+        return articleMapper.getArticleList(aurhorId, pageSize, (pageNum - 1) * pageSize, keyword);
     }
 
     @Override

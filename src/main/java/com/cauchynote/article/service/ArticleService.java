@@ -16,47 +16,49 @@ import com.cauchynote.article.entity.Article;
 @Service
 public interface ArticleService {
     /**
-     * 新增日志
-     *
-     * @param article
+     * 添加文章
+     * @param article 文章对象
+     * @return 是否成功
      */
-    void addArticle(Article article);
+    boolean addArticle(Article article);
 
     /**
-     * 删除日志
-     *
-     * @param id
+     * 删除文章
+     * @param id 文章 ID
+     * @return 是否成功
      */
-    void deleteArticle(Integer id);
+    boolean deleteArticle(Integer id);
 
     /**
      * 修改日志
-     *
      * @param article
+     * @return 是否成功
      */
-    void modifyArticle(Article article);
+    boolean modifyArticle(Article article);
 
     /**
      * 获取日志内容
      *
-     * @param id
-     * @return
+     * @param id 文章 ID
+     * @return 文章对象
      */
     Article getArticle(Integer id);
 
     /**
      * 获取日志列表
      *
-     * @param pageSize
-     * @param pageNum
-     * @param keyword
-     * @return
+     * @param pageSize 页大小
+     * @param pageNum 页号
+     * @param keyword 关键词
+     * @return 文章列表
      */
     List<Article> getArticleList(Long authorId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
-     * @return
-     * @description 获取总数
+     * 获取总数
+     * @param authorId 作者ID
+     * @param keyword 关键词
+     * @return 文章数量
      */
     Integer getArticleTotal(Long authorId, String keyword);
 }
