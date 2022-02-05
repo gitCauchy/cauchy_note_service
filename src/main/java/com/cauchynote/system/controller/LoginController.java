@@ -1,6 +1,8 @@
 package com.cauchynote.system.controller;
 
+import com.cauchynote.system.entity.LoginInfo;
 import com.cauchynote.system.entity.User;
+import com.cauchynote.system.service.LoginInfoService;
 import com.cauchynote.system.service.UserService;
 import com.cauchynote.system.service.impl.UserServiceImpl;
 import com.cauchynote.utils.JWTUtil;
@@ -29,12 +31,16 @@ public class LoginController {
     private UserService userService;
     @Autowired
     UserServiceImpl userServiceImpl;
+    @Autowired
+    LoginInfoService loginInfoService;
 
     @PostMapping("/login")
     public ResponseEntity<Map> login(@RequestBody User user) {
         Map<String, Object> responseMap = new HashMap<>();
         if (userService.login(user.getUsername(), user.getPassword())) {
-            UserDetails userInfo = userServiceImpl.loadUserByUsername(user.getUsername());
+            User userInfo = (User)userServiceImpl.loadUserByUsername(user.getUsername());
+            // 将登录信息记录下来
+            loginInfoService.addLoginInfo(userInfo.getId());
             responseMap.put("token", JWTUtil.createToken(user.getUsername()));
             responseMap.put("userInfo", userInfo);
             responseMap.put("SystemStatusCode", SystemConstantDefine.SUCCESS);

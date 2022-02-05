@@ -82,4 +82,10 @@ public interface ArticleMapper {
     @Select("select count(id) from note_article where author_id = #{authorId} and title like '%${keyword}%'")
     Integer getArticleTotal(Long authorId, String keyword);
 
+    @Select("select count(*) from note_article where author_id = #{authorId} and create_time > #{startDate}")
+    int getUserArticleCount(Long authorId, Date startDate);
+
+    @Select("select count(*) from note_article where create_time > #{startDate}")
+    int getTotalArticleCount(Date startDate);
+
 }

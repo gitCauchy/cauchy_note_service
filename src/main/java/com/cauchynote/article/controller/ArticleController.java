@@ -74,6 +74,7 @@ public class ArticleController {
 
     /**
      * 获取文章信息
+     *
      * @param id 文章ID
      * @return 文章对象
      */
@@ -85,10 +86,11 @@ public class ArticleController {
 
     /**
      * 获取文章列表
+     *
      * @param authorId 作者ID
      * @param pageSize 页大小
-     * @param pageNum 页数
-     * @param keyword 关键词
+     * @param pageNum  页数
+     * @param keyword  关键词
      * @return 文章列表
      */
     @GetMapping("/getArticleList")
@@ -107,5 +109,15 @@ public class ArticleController {
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/articleCountInfo")
+    public ResponseEntity<Map<String, Map>> getLoginCount(@RequestParam(value = "authorId") Long authorId) {
+        Map userLoginInfo = articleService.getUserArticleCount(authorId);
+        Map totalLoginInfo = articleService.getTotalArticleCount();
+        Map<String, Map> returnMap = new HashMap<>(2);
+        returnMap.put("user", userLoginInfo);
+        returnMap.put("total", totalLoginInfo);
+        return new ResponseEntity<>(returnMap, HttpStatus.OK);
     }
 }

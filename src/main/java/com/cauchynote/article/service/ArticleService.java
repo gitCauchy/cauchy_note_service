@@ -1,6 +1,7 @@
 package com.cauchynote.article.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -61,4 +62,19 @@ public interface ArticleService {
      * @return 文章数量
      */
     Integer getArticleTotal(Long authorId, String keyword);
+
+    /**
+     * 获取用户文章数量
+     *
+     * @param authorId 作者ID
+     * @return 文章数量
+     */
+    Map<String, Integer> getUserArticleCount(Long authorId);
+
+    /**
+     * 获取所有用户文章数量
+     *
+     * @return 文章数量
+     */
+    Map<String, Integer> getTotalArticleCount();
 }
