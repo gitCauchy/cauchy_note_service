@@ -92,5 +92,8 @@ public interface UserMapper {
     @Select("select count(id) from note_user where user_name like '%${keyword}%'")
     Integer getUserTotal(String keyword);
 
+    @Select("select user_name from note_user where id = #{userId}")
+    String getUsernameById(Long userId);
+
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cauchynote.system.service.LoginInfoService;
 import com.cauchynote.utils.SystemConstantDefine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ import com.cauchynote.article.service.ArticleService;
 public class ArticleController {
     @Autowired
     ArticleService articleService;
+    @Autowired
+    LoginInfoService loginInfoService;
 
     /**
      * 新增文章
@@ -113,11 +116,33 @@ public class ArticleController {
 
     @GetMapping("/articleCountInfo")
     public ResponseEntity<Map<String, Map>> getLoginCount(@RequestParam(value = "authorId") Long authorId) {
-        Map userLoginInfo = articleService.getUserArticleCount(authorId);
-        Map totalLoginInfo = articleService.getTotalArticleCount();
+        Map userWeekMonthYearArticleInfo = articleService.getUserWeekMonthYearArticleCount(authorId);
+        Map totalWeekMonthYearArticleInfo = articleService.getTotalWeekMonthYearArticleCount();
         Map<String, Map> returnMap = new HashMap<>(2);
-        returnMap.put("user", userLoginInfo);
-        returnMap.put("total", totalLoginInfo);
+        returnMap.put("user", userWeekMonthYearArticleInfo);
+        returnMap.put("total", totalWeekMonthYearArticleInfo);
         return new ResponseEntity<>(returnMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTableData")
+    public ResponseEntity<List<Map>> getTableData() {
+        List<Map> topUserWeekMonthTotalData = articleService.getTopUserWeekMonthTotalData();
+        return new ResponseEntity<>(topUserWeekMonthTotalData, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTrendData")
+    public ResponseEntity<Map<String, List>> getTopThreeUserLastSixMonthArticleCount() {
+        Map<String, List> topThreeUserLastSixMonthArticleCount = articleService.getTopThreeUserLastSixMonthArticleCount();
+        return new ResponseEntity<>(topThreeUserLastSixMonthArticleCount, HttpStatus.OK);
+    }
+
+    @GetMapping("/getCountData")
+    public ResponseEntity<Map<String, Map>> getCountData(@RequestParam(value = "authorId") Long authorId) {
+        Map userData = articleService.getUserWeekMonthYearArticleCount(authorId);
+        Map userLoginData = loginInfoService.getUserLoginCount(authorId);
+        Map<String, Map> result = new HashMap<>();
+        result.put("userArticleData", userData);
+        result.put("userLoginData", userLoginData);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -31,6 +31,9 @@ public interface RoleMapper {
     })
     List<Role> findRolesByUserId(Long userId);
 
+    @Select("select note_role.id, note_role.role_name, note_role.role_desc from note_role where role_name = #{roleName}")
+    Role findRoleByName(String roleName);
+
     /**
      * @param role
      * @return

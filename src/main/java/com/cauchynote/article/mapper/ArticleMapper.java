@@ -2,6 +2,7 @@ package com.cauchynote.article.mapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -32,6 +33,7 @@ public interface ArticleMapper {
 
     /**
      * 更新文章
+     *
      * @param article 文章对象
      * @return 变更数量
      */
@@ -40,6 +42,7 @@ public interface ArticleMapper {
 
     /**
      * 获取文章信息
+     *
      * @param id 文章ID
      * @return 文章对象
      */
@@ -55,10 +58,11 @@ public interface ArticleMapper {
 
     /**
      * 获取文章列表
+     *
      * @param authorId 作者ID
      * @param pageSize 页大小
      * @param startNum 开始位置
-     * @param keyword 查询关键词
+     * @param keyword  查询关键词
      * @return List
      */
     @Select("select id, title, author_id, content,create_time,modify_time,status from note_article where author_id = " +
@@ -75,17 +79,21 @@ public interface ArticleMapper {
 
     /**
      * 获取文章数量
+     *
      * @param authorId 作者ID
-     * @param keyword 关键词
+     * @param keyword  关键词
      * @return 文章数
      */
     @Select("select count(id) from note_article where author_id = #{authorId} and title like '%${keyword}%'")
     Integer getArticleTotal(Long authorId, String keyword);
 
-    @Select("select count(*) from note_article where author_id = #{authorId} and create_time > #{startDate}")
-    int getUserArticleCount(Long authorId, Date startDate);
+    @Select("select count(*) from note_article where author_id = #{authorId} " +
+            "and create_time >= #{startDate} and create_time <= #{endDate}")
+    int getUserArticleCount(Long authorId, Date startDate, Date endDate);
 
     @Select("select count(*) from note_article where create_time > #{startDate}")
     int getTotalArticleCount(Date startDate);
 
+    @Select("select author_id, count(title) as count from note_article group by author_id order by count desc limit 3")
+    List<Long> getTop3AuthorId();
 }

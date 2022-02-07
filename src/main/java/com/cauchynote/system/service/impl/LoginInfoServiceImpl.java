@@ -33,7 +33,7 @@ public class LoginInfoServiceImpl implements LoginInfoService {
     public Map<String, Integer> getUserLoginCount(Long userId) {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startMonth(today);
+        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = loginInfoMapper.getUserLoginCount(userId, startWeek);
         int countOfMonth = loginInfoMapper.getUserLoginCount(userId, startMonth);
@@ -49,7 +49,7 @@ public class LoginInfoServiceImpl implements LoginInfoService {
     public Map<String, Integer> getTotalLoginCount() {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startMonth(today);
+        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = loginInfoMapper.getTotalLoginCount(startWeek);
         int countOfMonth = loginInfoMapper.getTotalLoginCount(startMonth);

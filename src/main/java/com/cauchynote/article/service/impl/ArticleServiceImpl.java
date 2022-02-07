@@ -1,10 +1,9 @@
 package com.cauchynote.article.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.cauchynote.system.mapper.UserMapper;
 import com.cauchynote.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,27 +23,62 @@ import com.cauchynote.article.service.ArticleService;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleMapper articleMapper;
+    @Autowired
+    UserMapper userMapper;
 
+    /**
+     * 新增文章
+     *
+     * @param article 文章对象
+     * @return
+     */
     @Override
     public boolean addArticle(Article article) {
         return articleMapper.addArticle(article) == 1;
     }
 
+    /**
+     * 删除文章
+     *
+     * @param id 文章 ID
+     * @return
+     */
     @Override
     public boolean deleteArticle(Integer id) {
         return articleMapper.deleteArticle(id) == 1;
     }
 
+    /**
+     * 修改文章
+     *
+     * @param article 文章对象
+     * @return
+     */
     @Override
     public boolean modifyArticle(Article article) {
         return articleMapper.modifyArticle(article) == 1;
     }
 
+    /**
+     * 获取文章详情
+     *
+     * @param id 文章 ID
+     * @return
+     */
     @Override
     public Article getArticle(Integer id) {
         return articleMapper.getArticle(id);
     }
 
+    /**
+     * 获取文章列表
+     *
+     * @param aurhorId 作者 ID
+     * @param pageSize 页大小
+     * @param pageNum  页号
+     * @param keyword  关键词
+     * @return
+     */
     @Override
     public List<Article> getArticleList(Long aurhorId, Integer pageSize, Integer pageNum, String keyword) {
         return articleMapper.getArticleList(aurhorId, pageSize, (pageNum - 1) * pageSize, keyword);
@@ -55,15 +89,21 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.getArticleTotal(authorId, keyword);
     }
 
+    /**
+     * 获取作者周月年数据
+     *
+     * @param authorId 作者ID
+     * @return
+     */
     @Override
-    public Map<String, Integer> getUserArticleCount(Long authorId) {
+    public Map<String, Integer> getUserWeekMonthYearArticleCount(Long authorId) {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startMonth(today);
+        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
         Date startYear = DateUtil.startYear(today);
-        int countOfWeek = articleMapper.getUserArticleCount(authorId, startWeek);
-        int countOfMonth = articleMapper.getUserArticleCount(authorId, startMonth);
-        int countOfYear = articleMapper.getUserArticleCount(authorId, startYear);
+        int countOfWeek = articleMapper.getUserArticleCount(authorId, startWeek, today);
+        int countOfMonth = articleMapper.getUserArticleCount(authorId, startMonth, today);
+        int countOfYear = articleMapper.getUserArticleCount(authorId, startYear, today);
         Map<String, Integer> resultMap = new HashMap<>();
         resultMap.put("countOfWeek", countOfWeek);
         resultMap.put("countOfMonth", countOfMonth);
@@ -71,11 +111,16 @@ public class ArticleServiceImpl implements ArticleService {
         return resultMap;
     }
 
+    /**
+     * 获取所有用户周月年数据
+     *
+     * @return
+     */
     @Override
-    public Map<String, Integer> getTotalArticleCount() {
+    public Map<String, Integer> getTotalWeekMonthYearArticleCount() {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startMonth(today);
+        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = articleMapper.getTotalArticleCount(startWeek);
         int countOfMonth = articleMapper.getTotalArticleCount(startMonth);
@@ -87,4 +132,118 @@ public class ArticleServiceImpl implements ArticleService {
         return resultMap;
     }
 
+    /**
+     * 获取前六个月新增文章数量
+     *
+     * @return
+     */
+    @Override
+    public int[] getUserLastSixMonthArticleCount(Long authorId) {
+        // 获取前六个月月初的日期
+        Date today = new Date();
+        Date[] dates = new Date[6];
+        int[] nCounts = new int[6];
+        int[] counts = new int[6];
+
+        for (int i = 0; i < 6; i++) {
+            dates[i] = DateUtil.startBeforeNMonth(today, i + 1);
+            nCounts[i] = articleMapper.getUserArticleCount(authorId, dates[i], today);
+        }
+        for (int j = 5; j > 0; j--) {
+            counts[j] = nCounts[j] - nCounts[j - 1];
+        }
+        int countOfThisMonth = articleMapper.getUserArticleCount(authorId, DateUtil.startBeforeNMonth(today, 0), today);
+        counts[0] = nCounts[0] - countOfThisMonth;
+        return counts;
+    }
+
+    /**
+     * 获取 Top 3 前六个月的数据
+     *
+     * @return
+     */
+    @Override
+    public Map<String, List> getTopThreeUserLastSixMonthArticleCount() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Map<String, List> resultMap = new HashMap<>();
+        // 获取前三名用户 id
+        List<Long> top3AuthorId = articleMapper.getTop3AuthorId();
+        // 根据 authorId 获取用户名
+        String top1Username = userMapper.getUsernameById(top3AuthorId.get(0));
+        String top2Username = userMapper.getUsernameById(top3AuthorId.get(1));
+        String top3Username = userMapper.getUsernameById(top3AuthorId.get(2));
+        int[][] topCount = new int[3][6];
+        topCount[0] = getUserLastSixMonthArticleCount(top3AuthorId.get(0));
+        topCount[1] = getUserLastSixMonthArticleCount(top3AuthorId.get(1));
+        topCount[2] = getUserLastSixMonthArticleCount(top3AuthorId.get(2));
+        List<Map> dataList = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Map<String, Integer> tmp = new TreeMap<>();
+            tmp.put(top1Username, topCount[0][i]);
+            tmp.put(top2Username, topCount[1][i]);
+            tmp.put(top3Username, topCount[2][i]);
+            dataList.add(tmp);
+        }
+        Collections.reverse(dataList);
+        resultMap.put("data", dataList);
+        Date today = new Date();
+        List<String> dates = new ArrayList<>();
+        for (int j = 0; j < 6; j++) {
+            Date tmpDate = DateUtil.startBeforeNMonth(today, j + 1);
+            dates.add(sdf.format(tmpDate));
+        }
+        Collections.reverse(dates);
+        resultMap.put("dates", dates);
+        return resultMap;
+    }
+
+    /**
+     * 获取用户文章数
+     *
+     * @param authorId  作者ID
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @return
+     */
+    @Override
+    public Integer getUserArticleCount(Long authorId, Date startDate, Date endDate) {
+        return articleMapper.getUserArticleCount(authorId, startDate, endDate);
+    }
+
+    /**
+     * 获取 top 用户 周月年 数据
+     *
+     * @return
+     */
+    @Override
+    public List<Map> getTopUserWeekMonthTotalData() {
+        List<Map> result = new ArrayList<>();
+        Date today = new Date();
+        // 获取前三名用户 id
+        List<Long> top3AuthorId = articleMapper.getTop3AuthorId();
+        // 根据 authorId 获取用户名
+        String[] topUsername = new String[3];
+        for (int i = 0; i < 3; i++) {
+            topUsername[i] = userMapper.getUsernameById(top3AuthorId.get(i));
+        }
+        int[] weekData = new int[3];
+        int[] monthData = new int[3];
+        int[] yearData = new int[3];
+
+        for (int i = 0; i < 3; i++) {
+            weekData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startWeek(today), today);
+            monthData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startBeforeNMonth(today, 0), today);
+            yearData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startYear(today), today);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            Map<String, Object> tmp = new HashMap<>();
+            tmp.put("name", topUsername[i]);
+            tmp.put("weekAdd", weekData[i]);
+            tmp.put("monthAdd", monthData[i]);
+            tmp.put("yearAdd", yearData[i]);
+            result.add(tmp);
+        }
+        return result;
+    }
 }

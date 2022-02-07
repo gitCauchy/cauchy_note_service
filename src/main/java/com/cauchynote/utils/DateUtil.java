@@ -17,6 +17,7 @@ public class DateUtil {
 
     /**
      * 本周第一天
+     *
      * @param date
      * @return
      */
@@ -35,18 +36,8 @@ public class DateUtil {
     }
 
     /**
-     * 本月第一天
-     * @param date
-     * @return
-     */
-    public static Date startMonth(Date date) {
-        calendar.setTime(date);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return calendar.getTime();
-    }
-
-    /**
      * 本年第一天
+     *
      * @param date
      * @return
      */
@@ -55,5 +46,24 @@ public class DateUtil {
         calendar.set(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         return calendar.getTime();
+    }
+
+    /**
+     * 获取前 N 个月的第一天
+     *
+     * @param date 待计算日期
+     * @param N    数量 例如上个月为 1 本月为 0
+     * @return 第一天日期
+     */
+    public static Date startBeforeNMonth(Date date, int N) {
+        calendar.setTime(date);
+        calendar.set(Calendar.MONTH, -N + 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+
+    public static void main(String[] args) {
+        Date date = startBeforeNMonth(new Date(),1);
+        System.out.println(date);
     }
 }

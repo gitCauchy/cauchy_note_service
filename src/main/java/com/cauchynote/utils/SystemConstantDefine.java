@@ -9,19 +9,19 @@ package com.cauchynote.utils;
  */
 public class SystemConstantDefine {
     /**
-     权限标签 - 添加用户
+     * 权限标签 - 添加用户
      */
     public static final String PERMISSION_TAG_USER_ADD = "USER_ADD";
     /**
      * 权限标签 - 删除用户
-      */
+     */
     public static final String PERMISSION_TAG_USER_DEL = "USER_DEL";
     /**
-    权限标签 - 修改用户信息
+     * 权限标签 - 修改用户信息
      */
     public static final String PERMISSION_TAG_USER_MOD = "USER_MOD";
     /**
-     权限标签 - 查询用户信息
+     * 权限标签 - 查询用户信息
      */
     public static final String PERMISSION_TAG_USER_QRY = "USER_QRY";
 
@@ -50,5 +50,18 @@ public class SystemConstantDefine {
      * 密码不符合安全需求
      */
     public static final Integer PASSWORD_IS_TOO_SIMPLE = -300002;
+
+    /**
+     * 角色ID - 超级管理员
+     */
+    public static final String ROOT_NAME = "ROOT";
+    /**
+     * 角色ID - 管理员
+     */
+    public static final String ADMIN_NAME = "ADMIN";
+    /**
+     * 角色ID - 普通用户
+     */
+    public static final String USER_NAME = "USER";
 
 }

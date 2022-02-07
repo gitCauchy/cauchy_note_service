@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean login(String username, String originPassword) {
-        UserDetails user = this.loadUserByUsername(username);
+        User user = (User) this.loadUserByUsername(username);
         // 如果用户不存在或者当前用户为不可用状态
-        if (user == null) {
+        if (user == null || user.getIsEnable() == 1) {
             return false;
         }
         // 对传入的明文密码做 hash
@@ -93,17 +93,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Integer register(User user) {
         User getUser = userMapper.findUserByUsername(user.getUsername());
         // 1. 检查当前用户名是否存在
-        if (getUser != null || getUser.getIsEnable() == null || getUser.getIsEnable() == 0) {
+        if (getUser != null) {
             return SystemConstantDefine.USERNAME_EXIST_ALREADY;
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String password = encoder.encode(user.getPassword());
-        user.setPassword(password);
         user.setIsEnable(0);
         user.setIsNonExpired(0);
         user.setIsPasswordNonExpired(0);
         user.setIsNonLocked(0);
         if (this.addUser(user)) {
+            // 为用户分配最基础的角色
+            User saveUser = userMapper.findUserByUsername(user.getUsername());
+            Role role = roleMapper.findRoleByName(SystemConstantDefine.USER_NAME);
+            roleMapper.addRoleOfUser(saveUser.getId(), role.getId());
             return SystemConstantDefine.SUCCESS;
         }
         return SystemConstantDefine.FAIL;
