@@ -98,12 +98,16 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Map<String, Integer> getUserWeekMonthYearArticleCount(Long authorId) {
         Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, 1);
+        Date tomorrow = calendar.getTime();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
+        Date startMonth = DateUtil.startBeforeNMonth(today, -1);
         Date startYear = DateUtil.startYear(today);
-        int countOfWeek = articleMapper.getUserArticleCount(authorId, startWeek, today);
-        int countOfMonth = articleMapper.getUserArticleCount(authorId, startMonth, today);
-        int countOfYear = articleMapper.getUserArticleCount(authorId, startYear, today);
+        int countOfWeek = articleMapper.getUserArticleCount(authorId, startWeek, tomorrow);
+        int countOfMonth = articleMapper.getUserArticleCount(authorId, startMonth, tomorrow);
+        int countOfYear = articleMapper.getUserArticleCount(authorId, startYear, tomorrow);
         Map<String, Integer> resultMap = new HashMap<>();
         resultMap.put("countOfWeek", countOfWeek);
         resultMap.put("countOfMonth", countOfMonth);
@@ -120,7 +124,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Map<String, Integer> getTotalWeekMonthYearArticleCount() {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startBeforeNMonth(today, 0);
+        Date startMonth = DateUtil.startBeforeNMonth(today, -1);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = articleMapper.getTotalArticleCount(startWeek);
         int countOfMonth = articleMapper.getTotalArticleCount(startMonth);
@@ -164,6 +168,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public Map<String, List> getTopThreeUserLastSixMonthArticleCount() {
+        Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Map<String, List> resultMap = new HashMap<>();
         // 获取前三名用户 id
@@ -176,6 +181,14 @@ public class ArticleServiceImpl implements ArticleService {
         topCount[0] = getUserLastSixMonthArticleCount(top3AuthorId.get(0));
         topCount[1] = getUserLastSixMonthArticleCount(top3AuthorId.get(1));
         topCount[2] = getUserLastSixMonthArticleCount(top3AuthorId.get(2));
+        for (int i = 0; i < 6; i++) {
+            topCount[0][i] = articleMapper.getUserArticleCount(top3AuthorId.get(0),
+                    DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+            topCount[1][i] = articleMapper.getUserArticleCount(top3AuthorId.get(1),
+                    DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+            topCount[2][i] = articleMapper.getUserArticleCount(top3AuthorId.get(2),
+                    DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+        }
         List<Map> dataList = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Map<String, Integer> tmp = new TreeMap<>();
@@ -186,10 +199,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
         Collections.reverse(dataList);
         resultMap.put("data", dataList);
-        Date today = new Date();
         List<String> dates = new ArrayList<>();
         for (int j = 0; j < 6; j++) {
-            Date tmpDate = DateUtil.startBeforeNMonth(today, j + 1);
+            Date tmpDate = DateUtil.startBeforeNMonth(today, j);
             dates.add(sdf.format(tmpDate));
         }
         Collections.reverse(dates);
@@ -222,21 +234,22 @@ public class ArticleServiceImpl implements ArticleService {
         // 获取前三名用户 id
         List<Long> top3AuthorId = articleMapper.getTop3AuthorId();
         // 根据 authorId 获取用户名
-        String[] topUsername = new String[3];
-        for (int i = 0; i < 3; i++) {
+        int size = top3AuthorId.size() >= 3 ? 3 : top3AuthorId.size();
+        String[] topUsername = new String[size];
+        for (int i = 0; i < size; i++) {
             topUsername[i] = userMapper.getUsernameById(top3AuthorId.get(i));
         }
-        int[] weekData = new int[3];
-        int[] monthData = new int[3];
-        int[] yearData = new int[3];
+        int[] weekData = new int[size];
+        int[] monthData = new int[size];
+        int[] yearData = new int[size];
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < size; i++) {
             weekData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startWeek(today), today);
-            monthData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startBeforeNMonth(today, 0), today);
+            monthData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startBeforeNMonth(today, -1), today);
             yearData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startYear(today), today);
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < size; i++) {
             Map<String, Object> tmp = new HashMap<>();
             tmp.put("name", topUsername[i]);
             tmp.put("weekAdd", weekData[i]);

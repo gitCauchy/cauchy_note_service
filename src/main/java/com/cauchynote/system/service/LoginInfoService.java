@@ -1,6 +1,5 @@
 package com.cauchynote.system.service;
 
-import com.cauchynote.system.entity.LoginInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

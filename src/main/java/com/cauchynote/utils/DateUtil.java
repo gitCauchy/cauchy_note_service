@@ -1,6 +1,5 @@
 package com.cauchynote.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -63,7 +62,7 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        Date date = startBeforeNMonth(new Date(),1);
+        Date date = startBeforeNMonth(new Date(),0);
         System.out.println(date);
     }
 }
