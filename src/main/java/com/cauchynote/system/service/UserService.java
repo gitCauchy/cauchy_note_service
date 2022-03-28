@@ -69,4 +69,19 @@ public interface UserService {
      * @description 获取总数
      */
     Integer getUserTotal(String keyword);
+
+    /**
+     * 通过用户名查找用户
+     * @param username 用户名
+     * @return User
+     */
+    User findUserByUsername(String username);
+
+    /**
+     * 修改密码
+     * @param password 密码
+     * @param username 用户名
+     * @return 修改数据条数
+     */
+    public Integer modifyPassword(String password, String username);
 }

@@ -50,6 +50,14 @@ public class SystemConstantDefine {
      * 密码不符合安全需求
      */
     public static final Integer PASSWORD_IS_TOO_SIMPLE = -300002;
+    /**
+     * 修改失败，密码错误
+     */
+    public static final Integer PASSWORD_INVALID = -300003;
+    /**
+     * 验证码错误
+     */
+    public static final Integer CHECKCODE_INVALID = -300004;
 
     /**
      * 角色ID - 超级管理员
@@ -64,4 +72,27 @@ public class SystemConstantDefine {
      */
     public static final String USER_NAME = "USER";
 
+    // -------------------- 邮箱信息 ---------------------
+    /**
+     * Host
+     */
+    public static final String SMTPHOST = "smtp.163.com";
+    /**
+     * Adress
+     */
+    public static final String FROM = "cauchynote@163.com";
+    /**
+     * Password
+     */
+    public static final String PASSWORD = "SYFFVCZJDKBQILNQ";
+
+    // -------------------- Redis ------------------------
+    /**
+     * redis - host
+     */
+    public static final String REDIS_HOST = "192.18.31.197";
+    /**
+     * redis - port
+     */
+    public static final int REDIS_PORT = 6379;
 }

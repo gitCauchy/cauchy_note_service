@@ -139,6 +139,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAuthorities(authorities);
         user.setMenus(deduplicateMenus);
         return user;
+    }
 
+    @Override
+    public User findUserByUsername(String username) {
+        return userMapper.findUserByUsername(username);
+    }
+
+    @Override
+    public Integer modifyPassword(String password, String username) {
+        return userMapper.modifyPassword(password, username);
     }
 }

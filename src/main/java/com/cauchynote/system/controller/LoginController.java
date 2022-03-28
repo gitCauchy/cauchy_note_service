@@ -35,10 +35,10 @@ public class LoginController {
     LoginInfoService loginInfoService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map> login(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> responseMap = new HashMap<>();
         if (userService.login(user.getUsername(), user.getPassword())) {
-            User userInfo = (User)userServiceImpl.loadUserByUsername(user.getUsername());
+            User userInfo = (User) userServiceImpl.loadUserByUsername(user.getUsername());
             // 将登录信息记录下来
             loginInfoService.addLoginInfo(userInfo.getId());
             responseMap.put("token", JWTUtil.createToken(user.getUsername()));
@@ -52,7 +52,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<Integer> register(@RequestBody User user) {
-        return new ResponseEntity(userService.register(user), HttpStatus.OK);
+        return new ResponseEntity<>(userService.register(user), HttpStatus.OK);
     }
 
     @GetMapping("/checkToken")
