@@ -36,33 +36,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userServiceImpl).passwordEncoder(passwordEncoder());
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                //.antMatchers("/user/addUser").hasAuthority("USER_ADD")
-//                //.antMatchers("/article/updateUser").hasAuthority("USER_MOD")
-//                //.antMatchers("/article/deleteUser").hasAuthority("USER_DEL")
-//                //.antMatchers("/article/getUser").hasAuthority("USER_QRY")
-//                //.antMatchers("/**")
-//                //.authenticated()
-//                //.fullyAuthenticated()
-//                .antMatchers("/user/*", "/home", "/logon")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/index")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .and()
-//                .csrf()
-//                .disable();
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
