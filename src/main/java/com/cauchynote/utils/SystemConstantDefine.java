@@ -85,14 +85,4 @@ public class SystemConstantDefine {
      * Password
      */
     public static final String PASSWORD = "SYFFVCZJDKBQILNQ";
-
-    // -------------------- Redis ------------------------
-    /**
-     * redis - host
-     */
-    public static final String REDIS_HOST = "192.18.31.197";
-    /**
-     * redis - port
-     */
-    public static final int REDIS_PORT = 6379;
 }

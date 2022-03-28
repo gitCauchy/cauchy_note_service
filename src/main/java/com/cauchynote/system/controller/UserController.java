@@ -32,6 +32,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RedisUtil redisUtil;
+
     @PostMapping("/addUser")
     public ResponseEntity<Integer> addUser(@RequestBody User user) {
         boolean result = userService.addUser(user);
@@ -95,9 +98,9 @@ public class UserController {
         // 先获取用户输入的旧密码
         String oldPassword = passwordInfo.get("oldPassword");
         String newPassword = passwordInfo.get("newPassword");
-        String username = passwordInfo.get("username");
+        String userId = passwordInfo.get("userId");
         // 数据库
-        User user = userService.getUserById(Long.valueOf(passwordInfo.get("id")));
+        User user = userService.getUserById(Long.valueOf(userId));
         // 校验旧密码是否正确
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Map<String, Integer> responseMap = new HashMap<>();
@@ -107,7 +110,7 @@ public class UserController {
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
         String encodePassword = encoder.encode(newPassword);
-        userService.modifyPassword(encodePassword, username);
+        userService.modifyPassword(encodePassword, user.getUsername());
         responseMap.put("SystemStatusCode", SystemConstantDefine.SUCCESS);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
@@ -117,7 +120,7 @@ public class UserController {
         // 通过用户名查找用户的邮箱
         User user = userService.findUserByUsername(username);
         int checkCode = RandomUtil.getRandomInt();
-        RedisUtil.setKey(username, checkCode);
+        redisUtil.set(username, checkCode);
         Map<String, Integer> responseMap = new HashMap<>();
         try {
             EmailUtil.sendMsg(user.getEmail(), "RESET PASSWORD SERVICE", "密码重置", "您的验证码是:" + checkCode);
@@ -134,7 +137,7 @@ public class UserController {
         String username = (String) requestMap.get("username");
         String newpassword = (String) requestMap.get("newPassword");
         int checkCode = (int) requestMap.get("checkCode");
-        int checkCodeFromRedis = RedisUtil.getKey(username);
+        int checkCodeFromRedis = (int) redisUtil.get(username);
         Map<String, Integer> responseMap = new HashMap<>();
         if (checkCode != checkCodeFromRedis) {
             responseMap.put("SystemStatusCode", SystemConstantDefine.CHECKCODE_INVALID);
