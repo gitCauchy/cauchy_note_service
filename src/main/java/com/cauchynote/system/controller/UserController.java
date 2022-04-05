@@ -98,9 +98,9 @@ public class UserController {
         // 先获取用户输入的旧密码
         String oldPassword = passwordInfo.get("oldPassword");
         String newPassword = passwordInfo.get("newPassword");
-        String userId = passwordInfo.get("userId");
+        String username = passwordInfo.get("username");
         // 数据库
-        User user = userService.getUserById(Long.valueOf(userId));
+        User user = userService.findUserByUsername(username);
         // 校验旧密码是否正确
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Map<String, Integer> responseMap = new HashMap<>();
