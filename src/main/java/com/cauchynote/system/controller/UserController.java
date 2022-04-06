@@ -136,7 +136,7 @@ public class UserController {
     public ResponseEntity<Map<String, Integer>> resetPassword(@RequestBody Map<String, Object> requestMap) {
         String username = (String) requestMap.get("username");
         String newpassword = (String) requestMap.get("newPassword");
-        int checkCode = (int) requestMap.get("checkCode");
+        int checkCode = Integer.parseInt((String) requestMap.get("checkCode"));
         int checkCodeFromRedis = (int) redisUtil.get(username);
         Map<String, Integer> responseMap = new HashMap<>();
         if (checkCode != checkCodeFromRedis) {
