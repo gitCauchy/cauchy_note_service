@@ -58,6 +58,10 @@ public class SystemConstantDefine {
      * 验证码错误
      */
     public static final Integer CHECKCODE_INVALID = -300004;
+    /**
+     * 用户不存在
+     */
+    public static final Integer USER_NOT_EXIST = -300005;
 
     /**
      * 角色ID - 超级管理员
