@@ -14,27 +14,36 @@ import java.util.List;
 @Service
 public interface FriendService {
     /**
+     * 获取好友列表
      *
-     * @param userId
-     * @return
+     * @param userId 用户ID
+     * @return 好友列表
      */
     List<User> getFriendsList(Long userId);
 
     /**
+     * 添加好友
      *
-     * @param userId
-     * @param friendId
-     * @return
+     * @param userId   用户ID
+     * @param friendId 好友ID
+     * @return 添加状态
      */
     Integer addFriend(Long userId, Long friendId);
 
     /**
+     * 删除好友
      *
-     * @param userId
-     * @param friendId
-     * @return
+     * @param userId   用户ID
+     * @param friendId 好友ID
+     * @return 删除状态
      */
     Integer deleteFriend(Long userId, Long friendId);
 
+    /**
+     * 搜索好友
+     *
+     * @param friendName 好友用户名
+     * @return 用户对象
+     */
     User searchFriend(String friendName);
 }

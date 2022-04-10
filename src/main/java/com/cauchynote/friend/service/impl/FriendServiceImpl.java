@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 好友服务层实现类
+ *
  * @author Cauchy
  * @ClassName FriendServiceImpl.java
  * @createTime 2022年04月10日 10:50:00
