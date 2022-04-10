@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 权限管理服务层
+ *
  * @Author Cauchy
  * @ClassName PermissionService
- * @Description 权限管理服务层
- * @Date 21/12/08
- * @Version 0.1
  */
 
 @Service
@@ -28,8 +27,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public List<Permission> getAllPermisions() {
-        return permissionMapper.getAllPermisions();
+    public List<Permission> getAllPermissions() {
+        return permissionMapper.getAllPermissions();
     }
 
     @Override

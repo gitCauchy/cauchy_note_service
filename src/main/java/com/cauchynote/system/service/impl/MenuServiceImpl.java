@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 菜单管理服务层
+ *
  * @Author Cauchy
  * @ClassName MenuService
- * @Description 菜单管理服务层
- * @Date 21/12/08
- * @Version 0.1
  */
 
 @Service

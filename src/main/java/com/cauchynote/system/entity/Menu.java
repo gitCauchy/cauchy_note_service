@@ -5,11 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * 菜单实体类
+ *
  * @Author Cauchy
  * @ClassName Menu
- * @Description // 菜单实体类
- * @Date 22/01/25
- * @Version 0.1
  */
 @Data
 public class Menu {

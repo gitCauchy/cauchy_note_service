@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 权限控制层
+ *
  * @Author Cauchy
  * @ClassName PermissionController
- * @Description 权限控制层
- * @Date 21/12/08
- * @Version 0.1
  */
 @CrossOrigin
 @RestController
@@ -39,7 +38,7 @@ public class PermissionController {
 
     @GetMapping("/getAllPermissions")
     public ResponseEntity<List<Permission>> getAllPermissions() {
-        List<Permission> permissions = permissionService.getAllPermisions();
+        List<Permission> permissions = permissionService.getAllPermissions();
         if (permissions != null) {
             return new ResponseEntity<>(permissions, HttpStatus.OK);
         } else {
@@ -48,9 +47,10 @@ public class PermissionController {
     }
 
     @PostMapping("/addPermissionOfRole")
-    public ResponseEntity<Integer> addPermissionOfRole(@RequestBody Map<String, Object> requstBody) {
-        Long roleId = Long.valueOf(String.valueOf(requstBody.get("roleId")));
-        List<Integer> intPermissionIds = (List<Integer>) (requstBody.get("permissionIds"));
+    @SuppressWarnings("unchecked")
+    public ResponseEntity<Integer> addPermissionOfRole(@RequestBody Map<String, Object> requestMap) {
+        Long roleId = Long.valueOf(String.valueOf(requestMap.get("roleId")));
+        List<Integer> intPermissionIds = (List<Integer>) (requestMap.get("permissionIds"));
         List<Long> permissionIds = new ArrayList<>();
         for (Integer permissionId : intPermissionIds) {
             permissionIds.add(Long.valueOf(permissionId));

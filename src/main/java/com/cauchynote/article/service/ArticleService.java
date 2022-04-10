@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import com.cauchynote.article.entity.Article;
 
 /**
+ * 文章服务层
+ *
  * @author Cauchy
  * @ClassName ArticleService.java
- * @Date 2019年12月12日
- * @Description 日志服务层
- * @Version
  */
 @Service
 public interface ArticleService {
@@ -36,7 +35,7 @@ public interface ArticleService {
     /**
      * 修改日志
      *
-     * @param article
+     * @param article 文章对象
      * @return 是否成功
      */
     boolean modifyArticle(Article article);
@@ -86,16 +85,17 @@ public interface ArticleService {
     /**
      * 获取前六个月新增文章数量
      *
-     * @return
+     * @param authorId 作者 ID
+     * @return 新增数量
      */
     int[] getUserLastSixMonthArticleCount(Long authorId);
 
     /**
      * 获取 Top 3 前六个月的数据
      *
-     * @return
+     * @return top 3 用户前6个月数据
      */
-    Map<String, List> getTopThreeUserLastSixMonthArticleCount();
+    Map<String, Object> getTopThreeUserLastSixMonthArticleCount();
 
     /**
      * 获取用户文章数
@@ -103,14 +103,14 @@ public interface ArticleService {
      * @param authorId  作者ID
      * @param startDate 开始日期
      * @param endDate   结束日期
-     * @return
+     * @return 用户文章数
      */
     Integer getUserArticleCount(Long authorId, Date startDate, Date endDate);
 
     /**
      * 获取 top 用户 周月年 数据
      *
-     * @return
+     * @return top 用户 周月年 数据
      */
-    List<Map> getTopUserWeekMonthTotalData();
+    List<Map<String, Object>> getTopUserWeekMonthTotalData();
 }

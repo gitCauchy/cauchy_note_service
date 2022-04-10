@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 用户控制层
+ *
  * @Author Cauchy
  * @ClassName UserController
- * @Description 用户控制层
- * @Date 21/12/07
- * @Version 0.2
  */
 @CrossOrigin
 @RestController
@@ -77,7 +76,7 @@ public class UserController {
 
     @GetMapping("/queryAllUsers")
     public ResponseEntity<Map<String, Object>> queryAllUsers(@RequestParam(value = "pageSize") Integer pageSize, @RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "keyword") String keyword) {
-        Map<String, Object> retMap = new HashMap<>();
+        Map<String, Object> retMap = new HashMap<>(2);
         List<User> users = userService.getAllUsers(pageSize, pageNum, keyword);
         Integer total = userService.getUserTotal(keyword);
         retMap.put("users", users);
@@ -103,7 +102,7 @@ public class UserController {
         User user = userService.findUserByUsername(username);
         // 校验旧密码是否正确
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Map<String, Integer> responseMap = new HashMap<>();
+        Map<String, Integer> responseMap = new HashMap<>(1);
         if (!encoder.matches(oldPassword, user.getPassword())) {
             // 密码不正确，修改失败
             responseMap.put("SystemStatusCode", SystemConstantDefine.PASSWORD_INVALID);
@@ -121,7 +120,7 @@ public class UserController {
         User user = userService.findUserByUsername(username);
         int checkCode = RandomUtil.getRandomInt();
         redisUtil.set(username, checkCode);
-        Map<String, Integer> responseMap = new HashMap<>();
+        Map<String, Integer> responseMap = new HashMap<>(1);
         try {
             EmailUtil.sendMsg(user.getEmail(), "RESET PASSWORD SERVICE", "密码重置", "您的验证码是:" + checkCode);
         } catch (EmailException e) {
@@ -135,16 +134,16 @@ public class UserController {
     @PostMapping("/resetPassword")
     public ResponseEntity<Map<String, Integer>> resetPassword(@RequestBody Map<String, Object> requestMap) {
         String username = (String) requestMap.get("username");
-        String newpassword = (String) requestMap.get("newPassword");
+        String newPassword = (String) requestMap.get("newPassword");
         int checkCode = Integer.parseInt((String) requestMap.get("checkCode"));
         int checkCodeFromRedis = (int) redisUtil.get(username);
-        Map<String, Integer> responseMap = new HashMap<>();
+        Map<String, Integer> responseMap = new HashMap<>(1);
         if (checkCode != checkCodeFromRedis) {
             responseMap.put("SystemStatusCode", SystemConstantDefine.CHECKCODE_INVALID);
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodePassword = encoder.encode(newpassword);
+        String encodePassword = encoder.encode(newPassword);
         userService.modifyPassword(encodePassword, username);
         responseMap.put("SystemStatusCode", SystemConstantDefine.SUCCESS);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);

@@ -3,11 +3,10 @@ package com.cauchynote.system.entity;
 import lombok.Data;
 
 /**
+ * 角色实体类
+ *
  * @Author Cauchy
  * @ClassName Role
- * @Description 角色实体类
- * @Date 21/12/06
- * @Version 0.1
  */
 @Data
 public class Role {

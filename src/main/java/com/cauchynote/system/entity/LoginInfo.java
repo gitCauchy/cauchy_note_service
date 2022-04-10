@@ -5,11 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * 登录信息实体类
+ *
  * @Author Cauchy
  * @ClassName LoginInfo
- * @Description 登录信息实体类
- * @Date 22/02/04
- * @Version 0.1
  */
 @Data
 public class LoginInfo {

@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 菜单控制层
+ *
  * @Author Cauchy
  * @ClassName MenuController
- * @Description 菜单控制层
- * @Date 21/12/08
- * @Version 0.1
  */
 @CrossOrigin
 @RestController
@@ -29,9 +28,9 @@ public class MenuController {
 
     @GetMapping("/getMenuByRoleId")
     public ResponseEntity<List<Menu>> findRolesByUserId(@RequestParam(value = "id") Long roleId) {
-        List<Menu> Menus = menuService.getMenuByRoleId(roleId);
-        if (Menus != null) {
-            return new ResponseEntity<>(Menus, HttpStatus.OK);
+        List<Menu> menuList = menuService.getMenuByRoleId(roleId);
+        if (menuList != null) {
+            return new ResponseEntity<>(menuList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
@@ -39,23 +38,24 @@ public class MenuController {
 
     @GetMapping("/getAllMenus")
     public ResponseEntity<List<Menu>> getAllMenus() {
-        List<Menu> Menus = menuService.getAllMenus();
-        if (Menus != null) {
-            return new ResponseEntity<>(Menus, HttpStatus.OK);
+        List<Menu> menus = menuService.getAllMenus();
+        if (menus != null) {
+            return new ResponseEntity<>(menus, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
     }
 
     @PostMapping("/addMenuOfRole")
-    public ResponseEntity<Integer> addMenuOfRole(@RequestBody Map<String, Object> requstBody) {
-        Long roleId = Long.valueOf(String.valueOf(requstBody.get("roleId")));
-        List<Integer> intMenuIds = (List<Integer>) (requstBody.get("MenuIds"));
-        List<Long> MenuIds = new ArrayList<>();
-        for (Integer MenuId : intMenuIds) {
-            MenuIds.add(Long.valueOf(MenuId));
+    @SuppressWarnings("unchecked")
+    public ResponseEntity<Integer> addMenuOfRole(@RequestBody Map<String, Object> requestMap) {
+        Long roleId = Long.valueOf(String.valueOf(requestMap.get("roleId")));
+        List<Integer> intMenuIds = (List<Integer>) (requestMap.get("menuIds"));
+        List<Long> menuIds = new ArrayList<>();
+        for (Integer menuId : intMenuIds) {
+            menuIds.add(Long.valueOf(menuId));
         }
-        boolean result = menuService.addMenuOfRole(roleId, MenuIds);
+        boolean result = menuService.addMenuOfRole(roleId, menuIds);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         } else {

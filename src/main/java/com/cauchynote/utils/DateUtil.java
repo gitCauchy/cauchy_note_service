@@ -4,11 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * 时间工具类
+ *
  * @Author Cauchy
  * @ClassName DateUtil
- * @Description 时间工具类
- * @Date 22/02/05
- * @Version 0.1
  */
 public class DateUtil {
 
@@ -17,8 +16,8 @@ public class DateUtil {
     /**
      * 本周第一天
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return 本周第一天日期
      */
     public static Date startWeek(Date date) {
         calendar.setTime(date);
@@ -37,8 +36,8 @@ public class DateUtil {
     /**
      * 本年第一天
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return 本年第一天日期
      */
     public static Date startYear(Date date) {
         calendar.setTime(date);
@@ -59,10 +58,5 @@ public class DateUtil {
         calendar.set(Calendar.MONTH, -N + 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         return calendar.getTime();
-    }
-
-    public static void main(String[] args) {
-        Date date = startBeforeNMonth(new Date(),0);
-        System.out.println(date);
     }
 }

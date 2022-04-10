@@ -6,32 +6,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 菜单信息服务层
+ *
  * @Author Cauchy
- * @ClassName MenuServie
- * @Description //TODO
- * @Date 22/01/25
- * @Version 0.1
+ * @ClassName MenuService
  */
 @Service
 public interface MenuService {
     /**
-     * @param roleId
-     * @return
-     * @description 根据角色获取菜单列表
+     * 根据角色获取菜单列表
+     * @param roleId 角色ID
+     * @return 菜单列表
      */
     List<Menu> getMenuByRoleId(Long roleId);
 
     /**
-     * @return
-     * @description 获取所有菜单信息
+     * 获取所有菜单信息
+     * @return 所有菜单信息
      */
     List<Menu> getAllMenus();
 
     /**
-     * @param roleId
-     * @param menuIds
-     * @return
-     * @description 为角色添加菜单
+     * 为角色添加菜单
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID列表
+     * @return 是否成功
+     * @description
      */
     boolean addMenuOfRole(Long roleId, List<Long> menuIds);
 }

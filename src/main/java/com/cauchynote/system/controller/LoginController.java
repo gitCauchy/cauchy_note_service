@@ -1,6 +1,5 @@
 package com.cauchynote.system.controller;
 
-import com.cauchynote.system.entity.LoginInfo;
 import com.cauchynote.system.entity.User;
 import com.cauchynote.system.service.LoginInfoService;
 import com.cauchynote.system.service.UserService;
@@ -10,7 +9,6 @@ import com.cauchynote.utils.SystemConstantDefine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 登录控制层
+ *
  * @Author Cauchy
  * @ClassName LoginController
- * @Description 登录校验
- * @Date 21/12/30
- * @Version 0.1
  */
 @CrossOrigin
 @RestController
@@ -36,7 +33,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
-        Map<String, Object> responseMap = new HashMap<>();
+        Map<String, Object> responseMap = new HashMap<>(3);
         if (userService.login(user.getUsername(), user.getPassword())) {
             User userInfo = (User) userServiceImpl.loadUserByUsername(user.getUsername());
             // 将登录信息记录下来

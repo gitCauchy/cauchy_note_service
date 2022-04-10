@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 角色管理实现类
+ *
  * @Author Cauchy
  * @ClassName RoleServiceImpl
- * @Description 角色管理实现类
- * @Date 21/12/08
- * @Version 0.1
  */
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -45,7 +44,6 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.getAllRoles(pageSize, (pageNum - 1) * pageSize, keyword);
     }
 
-    // TODO 这里暂时先这样写 ， 但是有明显的缺陷， 应当采用事务管理处理这里，后续改进
     @Override
     public boolean addRoleOfUser(Long userId, List<Long> roleIds) {
         for (Long roleId : roleIds) {

@@ -6,34 +6,36 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 权限管理实现类
+ *
  * @Author Cauchy
  * @ClassName PermissionServiceImpl
- * @Description 权限管理实现类
- * @Date 21/12/08
- * @Version 0.1
  */
 
 @Service
 public interface PermissionService {
 
     /**
-     * @param roleId
-     * @return
-     * @description 根据角色获取权限列表
+     * 根据角色获取权限列表
+     *
+     * @param roleId 角色ID
+     * @return 权限列表
      */
     List<Permission> getPermissionByRoleId(Long roleId);
 
     /**
-     * @return
-     * @description 获取所有权限信息
+     * 获取所有权限信息
+     *
+     * @return 权限信息
      */
-    List<Permission> getAllPermisions();
+    List<Permission> getAllPermissions();
 
     /**
-     * @param roleId
-     * @param permissionIds
-     * @return
-     * @description 为角色添加权限
+     * 为角色添加权限
+     *
+     * @param roleId        角色ID
+     * @param permissionIds 权限 ID 列表
+     * @return 是否成功
      */
     boolean addPermissionOfRole(Long roleId, List<Long> permissionIds);
 }

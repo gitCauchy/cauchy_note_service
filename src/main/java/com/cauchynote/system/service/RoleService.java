@@ -6,63 +6,69 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 角色管理服务层
+ *
  * @Author Cauchy
- * @ClassName RoleServie
- * @Description 角色管理服务层
- * @Date 21/12/08
- * @Version 0.1
+ * @ClassName RoleService
  */
 
 @Service
 public interface RoleService {
     /**
-     * @param userId
-     * @return
-     * @description 根据用户 ID 获取角色列表
+     * 根据用户 ID 获取角色列表
+     *
+     * @param userId 角色ID
+     * @return 角色列表
      */
     List<Role> findRolesByUserId(Long userId);
 
     /**
-     * @param role
-     * @return
-     * @description 添加新角色
+     * 添加新角色
+     *
+     * @param role 角色对象
+     * @return 是否成功
      */
     boolean addNewRole(Role role);
 
     /**
-     * @param role
-     * @return
-     * @description 更新角色信息
+     * 更新角色信息
+     *
+     * @param role 角色对象
+     * @return 是否成功
      */
     boolean updateRole(Role role);
 
     /**
-     * @param id
-     * @return
-     * @description 删除角色
+     * 删除角色
+     *
+     * @param id 角色ID
+     * @return 是否成功
      */
     boolean deleteRole(Long id);
 
     /**
-     * @description 获取所有角色
+     * 获取所有角色
+     *
      * @param pageSize 页容量
-     * @param pageNum 页号
-     * @param keyword 关键词
-     * @return
+     * @param pageNum  页号
+     * @param keyword  关键词
+     * @return 所有角色
      */
     List<Role> getAllRoles(Integer pageSize, Integer pageNum, String keyword);
 
     /**
-     * @param userId
-     * @param roleIds
-     * @return
-     * @descrtiption 为用户添加角色
+     * 为用户添加角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID列表
+     * @return 是否成功添加
      */
     boolean addRoleOfUser(Long userId, List<Long> roleIds);
 
     /**
-     * @return
-     * @description 获取总数
+     * 获取角色总数
+     * @param keyword 关键词
+     * @return 角色总数
      */
     Integer getRoleTotal(String keyword);
 }

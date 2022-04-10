@@ -3,11 +3,9 @@ package com.cauchynote.system.entity;
 import lombok.Data;
 
 /**
+ * 权限实体类
  * @Author Cauchy
  * @ClassName Permission
- * @Description 权限实体类
- * @Date 21/12/06
- * @Version 0.1
  */
 @Data
 public class Permission {

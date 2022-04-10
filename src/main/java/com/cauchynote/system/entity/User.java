@@ -9,11 +9,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 用户实体类，实现 UserDetails 接口
+ *
  * @Author Cauchy
  * @ClassName User
- * @Description 用户实体类，实现 UserDetails 接口
- * @Date 21/12/06
- * @Version 0.1
  */
 @Data
 public class User implements UserDetails {
@@ -88,7 +87,7 @@ public class User implements UserDetails {
     }
 
     /**
-     * @param rawStatus
+     * @param rawStatus 状态
      * @return true|false
      * @description 状态检查
      */

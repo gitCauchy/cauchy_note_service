@@ -13,11 +13,10 @@ import com.cauchynote.system.service.impl.UserServiceImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * Spring-Security配置类
+ *
  * @author Cauchy
  * @ClassName SecurityConfiguration.java
- * @Date 2021年8月9日
- * @Description Spring-Security配置类
- * @Version V1.0
  */
 @Configuration
 @EnableWebSecurity
@@ -39,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().permitAll().and().logout().permitAll().and().csrf().disable();
+            .anyRequest().permitAll().and().logout().permitAll().and().csrf().disable();
     }
 
 

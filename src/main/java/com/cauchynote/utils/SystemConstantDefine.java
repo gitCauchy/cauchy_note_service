@@ -1,11 +1,10 @@
 package com.cauchynote.utils;
 
 /**
+ * 常量定义类
+ *
  * @Author Cauchy
  * @ClassName SystemConstantDefine
- * @Description 常量定义类
- * @Date 21/12/07
- * @Version 0.1
  */
 public class SystemConstantDefine {
     /**
@@ -45,7 +44,7 @@ public class SystemConstantDefine {
     /**
      * 邮箱已被注册
      */
-    public static final Integer EMAIL_REGISTED_ALREADY = -300001;
+    public static final Integer EMAIL_REGISTERED_ALREADY = -300001;
     /**
      * 密码不符合安全需求
      */
@@ -82,7 +81,7 @@ public class SystemConstantDefine {
      */
     public static final String SMTPHOST = "smtp.163.com";
     /**
-     * Adress
+     * Address
      */
     public static final String FROM = "cauchynote@163.com";
     /**

@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 角色管理控制层
+ *
  * @Author Cauchy
  * @ClassName RoleController
- * @Description 角色管理控制层
+ * @Description
  * @Date 21/12/08
  * @Version 0.1
  */
@@ -69,9 +71,9 @@ public class RoleController {
 
     @GetMapping("/getAllRoles")
     public ResponseEntity<Map> getAllRoles(
-            @RequestParam(value = "pageSize") Integer pageSize,
-            @RequestParam(value = "pageNum") Integer pageNum,
-            @RequestParam(value = "keyword") String keyword
+        @RequestParam(value = "pageSize") Integer pageSize,
+        @RequestParam(value = "pageNum") Integer pageNum,
+        @RequestParam(value = "keyword") String keyword
     ) {
         Map<String, Object> retMap = new HashMap<>();
         List<Role> roles = roleService.getAllRoles(pageSize, pageNum, keyword);

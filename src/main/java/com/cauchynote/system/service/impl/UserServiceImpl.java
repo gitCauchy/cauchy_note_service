@@ -25,11 +25,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 用户服务层实现类
+ *
  * @Author Cauchy
  * @ClassName UserServiceImpl
- * @Description 服务层实现类
- * @Date 21/12/06
- * @Version 0.1
  */
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -147,7 +146,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Integer modifyPassword(String password, String username) {
-        return userMapper.modifyPassword(password, username);
+    public void modifyPassword(String password, String username) {
+        userMapper.modifyPassword(password, username);
     }
 }

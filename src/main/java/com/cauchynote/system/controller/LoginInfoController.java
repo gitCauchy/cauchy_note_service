@@ -13,11 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 登录信息控制层
+ *
  * @Author Cauchy
  * @ClassName LoginInfoController
- * @Description 获取登录信息
- * @Date 22/02/05
- * @Version 0.1
  */
 @RestController
 @RequestMapping("/loginInfo")
@@ -26,10 +25,10 @@ public class LoginInfoController {
     LoginInfoService loginInfoService;
 
     @GetMapping("/loginCountInfo")
-    public ResponseEntity<Map<String, Map>> getLoginCount(@RequestParam(value = "userId") Long userId) {
-        Map userLoginInfo = loginInfoService.getUserLoginCount(userId);
-        Map totalLoginInfo = loginInfoService.getTotalLoginCount();
-        Map<String, Map> returnMap = new HashMap<>(2);
+    public ResponseEntity<Map<String, Map<String, Integer>>> getLoginCount(@RequestParam(value = "userId") Long userId) {
+        Map<String, Integer> userLoginInfo = loginInfoService.getUserLoginCount(userId);
+        Map<String, Integer> totalLoginInfo = loginInfoService.getTotalLoginCount();
+        Map<String, Map<String, Integer>> returnMap = new HashMap<>(2);
         returnMap.put("user", userLoginInfo);
         returnMap.put("total", totalLoginInfo);
         return new ResponseEntity<>(returnMap, HttpStatus.OK);
