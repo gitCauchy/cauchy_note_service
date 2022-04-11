@@ -25,7 +25,16 @@ public interface UserMapper {
      * @description 根据用户 id 查询用户信息
      */
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " + "is_enable from note_user where id = #{id}")
-    @Results(id = "getAllInfoById", value = {@Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT), @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE), @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),})
+    @Results(id = "getAllInfoById", value = {
+        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
+        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),})
     User getUserById(Long id);
 
     /**
@@ -55,7 +64,16 @@ public interface UserMapper {
      * @return 用户对象
      */
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " + "is_enable from note_user where user_name = #{username}")
-    @Results(id = "findUserByUsername", value = {@Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT), @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR), @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE), @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT), @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),})
+    @Results(id = "findUserByUsername", value = {
+        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
+        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),})
     User findUserByUsername(String username);
 
     /**

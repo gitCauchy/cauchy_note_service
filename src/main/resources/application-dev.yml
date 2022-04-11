@@ -27,3 +27,7 @@ logging:
            org.springframework.web:debug
            org.springframework.security:debug
   }
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

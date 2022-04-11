@@ -6,9 +6,7 @@ import com.cauchynote.system.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 好友服务层实现类
@@ -37,9 +35,21 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public Integer addFriend(Long userId, Long friendId) {
+        // 先查询好友表内是否有当前用户的记录
         String friendIds = friendMapper.getFriendIds(userId);
-        friendIds += "," + friendId;
-        return friendMapper.updateFriend(userId, friendIds);
+        if (friendIds == null) {
+            friendIds = friendId.toString();
+            friendMapper.addNewRecord(userId, friendIds);
+        }
+        String[] friendIdArray = friendIds.split(",");
+        Set<String> idStrSet = new HashSet<>(Arrays.asList(friendIdArray));
+        idStrSet.add(friendId.toString());
+        StringBuilder sb = new StringBuilder();
+        for (String idItem : idStrSet) {
+            sb.append(idItem);
+            sb.append(",");
+        }
+        return friendMapper.updateFriend(userId, sb.toString());
     }
 
     @Override
