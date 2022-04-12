@@ -6,8 +6,7 @@ import com.cauchynote.utils.SystemConstantDefine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +16,9 @@ import java.util.List;
  * @createTime 2022年04月10日 10:49:00
  */
 
+@CrossOrigin
 @RestController
+@RequestMapping("/friend")
 public class FriendController {
     @Autowired
     FriendService friendService;
@@ -28,6 +29,7 @@ public class FriendController {
      * @param userId 用户ID
      * @return 好友列表
      */
+    @GetMapping("/getFriendList")
     public ResponseEntity<List<User>> getFriendList(@RequestParam Long userId) {
         List<User> friendList = friendService.getFriendsList(userId);
         return new ResponseEntity<>(friendList, HttpStatus.OK);
@@ -40,6 +42,7 @@ public class FriendController {
      * @param friendId 好友 ID
      * @return 1 - 成功 0 - 失败
      */
+    @GetMapping("/addFriend")
     public ResponseEntity<Integer> addFriend(@RequestParam Long userId, @RequestParam Long friendId) {
         Integer status = friendService.addFriend(userId, friendId);
         if (status == 1) {
@@ -55,6 +58,7 @@ public class FriendController {
      * @param friendId 好友 ID
      * @return 1 - 成功 0 - 失败
      */
+    @GetMapping("/deleteFriend")
     public ResponseEntity<Integer> deleteFriend(@RequestParam Long userId, @RequestParam Long friendId) {
         Integer status = friendService.deleteFriend(userId, friendId);
         if (status == 1) {
@@ -69,6 +73,7 @@ public class FriendController {
      * @param friendName 好友用户名
      * @return 用户对象
      */
+    @GetMapping("searchFriend")
     public ResponseEntity<Object> searchFriend(@RequestParam String friendName) {
         User user = friendService.searchFriend(friendName);
         if (user == null) {

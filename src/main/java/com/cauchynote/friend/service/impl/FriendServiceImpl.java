@@ -25,9 +25,15 @@ public class FriendServiceImpl implements FriendService {
     public List<User> getFriendsList(Long userId) {
         String friendIdStr = friendMapper.getFriendIds(userId);
         // 11,22,33,44,55
+        if (friendIdStr == null || ",".equals(friendIdStr) || "".equals(friendIdStr)) {
+            return new ArrayList<>();
+        }
         String[] userIdArray = friendIdStr.split(",");
         List<Long> friendIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
+            if("".equals(arrayItem)){
+                continue;
+            }
             friendIds.add(Long.parseLong(arrayItem));
         }
         return friendMapper.getFriendList(friendIds);

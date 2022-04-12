@@ -63,7 +63,8 @@ public interface UserMapper {
      * @param username 用户名
      * @return 用户对象
      */
-    @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " + "is_enable from note_user where user_name = #{username}")
+    @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " +
+        "is_enable from note_user where user_name = #{username}")
     @Results(id = "findUserByUsername", value = {
         @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
         @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
