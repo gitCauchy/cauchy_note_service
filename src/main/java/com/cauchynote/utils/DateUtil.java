@@ -59,4 +59,15 @@ public class DateUtil {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         return calendar.getTime();
     }
+
+    /**
+     * 获取 N 天前（后）的日期
+     *
+     * @param N 向前为 - 向后为 +
+     * @return 日期
+     */
+    public static Date getNDayDate(int N) {
+        calendar.add(Calendar.DATE, N);
+        return calendar.getTime();
+    }
 }

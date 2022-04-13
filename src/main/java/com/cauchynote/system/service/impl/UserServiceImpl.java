@@ -33,13 +33,13 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @Autowired
-    RoleMapper roleMapper;
+    private RoleMapper roleMapper;
     @Autowired
-    PermissionMapper permissionMapper;
+    private PermissionMapper permissionMapper;
     @Autowired
-    MenuMapper menuMapper;
+    private MenuMapper menuMapper;
 
     @Override
     public User getUserById(Long id) {
