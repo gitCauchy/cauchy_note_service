@@ -115,9 +115,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         // 根据 username 查找到该用户
         User user = userMapper.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
         // 用于存放 permission 的集合，因为可能存在重复的情况， 这里使用 Set 集合
         Set<Permission> permissions = new HashSet<>();
         Set<Menu> menus = new HashSet<>();
