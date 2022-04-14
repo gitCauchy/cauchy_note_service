@@ -43,4 +43,9 @@ public class ShareServiceImpl implements ShareService {
         }
         return sharedArticleList;
     }
+
+    @Override
+    public int deleteArticleShare(Long id) {
+        return shareMapper.deleteArticleShare(id);
+    }
 }

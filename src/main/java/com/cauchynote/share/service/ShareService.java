@@ -38,4 +38,12 @@ public interface ShareService {
      * @return List<Article>
      */
     List<SharedArticle> getSharedArticleList(Long userId);
+
+    /**
+     * 删除分享信息
+     *
+     * @param id 分享信息 ID
+     * @return 1 - 删除成功 0 - 删除失败
+     */
+    int deleteArticleShare(Long id);
 }

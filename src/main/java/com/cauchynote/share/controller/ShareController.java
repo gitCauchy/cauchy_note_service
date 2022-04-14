@@ -3,7 +3,6 @@ package com.cauchynote.share.controller;
 import com.cauchynote.share.entity.SharedArticle;
 import com.cauchynote.share.service.ShareService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +42,17 @@ public class ShareController {
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
-    @RequestMapping("/getSharedArticles")
-    public ResponseEntity<List<SharedArticle>> getSharedArticles(@Param(value = "receiverId") Long userId) {
+    @GetMapping("/undoArticleShare")
+    public ResponseEntity<Integer> undoArticleShare(@RequestParam(value = "id") Long id) {
+        int result = shareService.deleteArticleShare(id);
+        if (result == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+    }
+
+    @GetMapping("/getSharedArticleList")
+    public ResponseEntity<List<SharedArticle>> getSharedArticles(@RequestParam(value = "receiverId") Long userId) {
         return new ResponseEntity<>(shareService.getSharedArticleList(userId), HttpStatus.OK);
     }
 }

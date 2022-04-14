@@ -1,10 +1,7 @@
 package com.cauchynote.share.mapper;
 
 import com.cauchynote.share.entity.SharedArticle;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
@@ -43,10 +40,12 @@ public interface ShareMapper {
      * @param receiverId 接收者 ID
      * @return List
      */
-    @Select("select note_article_share.id, user_name, share_user_id, receive_user_id, article_id, share_date, " +
-        "valid_day, is_revisable, title, content, note_article.create_time, modify_time ,status from " +
-        "note_article_share left join note_article on note_article_share.article_id left join note_user on " +
-        "note_article_share.share_user_id = note_user.id = note_article.id where receive_user_id = #{receiverId}")
+    @Select("SELECT note_article_share.id, note_user.user_name, note_article_share.share_user_id, " +
+        "note_article_share.receive_user_id, note_article_share.article_id, note_article_share.share_date, " +
+        "note_article_share.valid_day, note_article_share.is_revisable, note_article.title, note_article.content," +
+        "note_article.create_time, note_article.modify_time, note_article.status FROM note_article_share LEFT JOIN " +
+        "note_article ON note_article_share.article_id = note_article.id LEFT JOIN note_user ON " +
+        "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId}")
     @Results(id = "getSharedArticleList", value = {
         @Result(column = "id", property = "shareId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
         @Result(column = "share_user_id", property = "shareUserId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
@@ -63,4 +62,13 @@ public interface ShareMapper {
         @Result(column = "user_name", property = "shareUsername", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
     List<SharedArticle> getSharedArticleList(Long receiverId);
+
+    /**
+     * 删除分享
+     *
+     * @param id share_id
+     * @return 删除记录的条目数
+     */
+    @Delete("delete from note_article_share where id = #{id}")
+    int deleteArticleShare(Long id);
 }
