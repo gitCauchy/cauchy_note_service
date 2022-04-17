@@ -28,9 +28,9 @@ public class ShareController {
 
     @PostMapping("/addArticleShare")
     public ResponseEntity<Integer> addArticleShare(@RequestBody Map<String, Object> requestMap) {
-        Long shareUserId = (Long) requestMap.get("shareUserId");
-        Long receiveUserId = (Long) requestMap.get("receiveUserId");
-        Long articleId = (Long) requestMap.get("articleId");
+        Long shareUserId = Long.parseLong((String) requestMap.get("shareUserId"));
+        Long receiveUserId = Long.parseLong((String) requestMap.get("receiveUserId"));
+        Long articleId = Long.parseLong((String) requestMap.get("articleId"));
         Date shareDate = (Date) requestMap.get("shareDate");
         Integer validDay = (Integer) requestMap.get("validDay");
         Integer isRevisable = (Integer) requestMap.get("isRevisable");
@@ -52,7 +52,11 @@ public class ShareController {
     }
 
     @GetMapping("/getSharedArticleList")
-    public ResponseEntity<List<SharedArticle>> getSharedArticles(@RequestParam(value = "receiverId") Long userId) {
-        return new ResponseEntity<>(shareService.getSharedArticleList(userId), HttpStatus.OK);
+    public ResponseEntity<List<SharedArticle>> getSharedArticles(
+        @RequestParam(value = "receiverId") Long userId,
+        @RequestParam(value = "pageSize") Integer pageSize,
+        @RequestParam(value = "pageNum") Integer pageNum,
+        @RequestParam(value = "keyword") String keyword) {
+        return new ResponseEntity<>(shareService.getSharedArticleList(userId, pageSize, pageNum, keyword), HttpStatus.OK);
     }
 }

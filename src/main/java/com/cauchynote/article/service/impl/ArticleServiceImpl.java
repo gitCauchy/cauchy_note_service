@@ -21,9 +21,9 @@ import com.cauchynote.article.service.ArticleService;
 @Service
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
-    ArticleMapper articleMapper;
+    private ArticleMapper articleMapper;
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Override
     public boolean addArticle(Article article) {

@@ -34,10 +34,13 @@ public interface ShareService {
     /**
      * 获取用户被分享的日志
      *
-     * @param userId 用户 ID
+     * @param userId   用户 ID
+     * @param pageSize 页大小
+     * @param pageNum  页号
+     * @param keyword  搜索关键词
      * @return List<Article>
      */
-    List<SharedArticle> getSharedArticleList(Long userId);
+    List<SharedArticle> getSharedArticleList(Long userId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
      * 删除分享信息

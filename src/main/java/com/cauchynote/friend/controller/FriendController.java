@@ -30,8 +30,10 @@ public class FriendController {
      * @return 好友列表
      */
     @GetMapping("/getFriendList")
-    public ResponseEntity<List<User>> getFriendList(@RequestParam Long userId) {
-        List<User> friendList = friendService.getFriendsList(userId);
+    public ResponseEntity<List<User>> getFriendList(@RequestParam Long userId,
+                                                    @RequestParam Integer pageSize,
+                                                    @RequestParam Integer pageNum) {
+        List<User> friendList = friendService.getFriendsList(userId, pageSize, pageNum);
         return new ResponseEntity<>(friendList, HttpStatus.OK);
     }
 

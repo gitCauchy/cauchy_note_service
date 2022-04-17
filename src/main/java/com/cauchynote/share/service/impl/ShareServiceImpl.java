@@ -31,8 +31,9 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public List<SharedArticle> getSharedArticleList(Long userId) {
-        List<SharedArticle> sharedArticleList = shareMapper.getSharedArticleList(userId);
+    public List<SharedArticle> getSharedArticleList(Long userId, Integer pageSize, Integer pageNum, String keyword) {
+        List<SharedArticle> sharedArticleList = shareMapper.getSharedArticleList(userId, pageSize, (pageNum - 1) * pageSize,
+            keyword);
         // 去掉已经过期的分享
         for (SharedArticle sharedArticle : sharedArticleList) {
             Date shareDate = sharedArticle.getShareDate();

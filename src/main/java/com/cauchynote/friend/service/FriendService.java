@@ -16,10 +16,12 @@ public interface FriendService {
     /**
      * 获取好友列表
      *
-     * @param userId 用户ID
+     * @param userId   用户ID
+     * @param pageSize 页大小
+     * @param pageNum  页号
      * @return 好友列表
      */
-    List<User> getFriendsList(Long userId);
+    List<User> getFriendsList(Long userId, Integer pageSize, Integer pageNum);
 
     /**
      * 添加好友

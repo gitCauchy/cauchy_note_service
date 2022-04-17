@@ -38,6 +38,9 @@ public interface ShareMapper {
      * 获取其他用户分享给该用户的文章
      *
      * @param receiverId 接收者 ID
+     * @param pageSize   页大小
+     * @param startNum   开始位置
+     * @param keyword    搜索关键词
      * @return List
      */
     @Select("SELECT note_article_share.id, note_user.user_name, note_article_share.share_user_id, " +
@@ -45,7 +48,8 @@ public interface ShareMapper {
         "note_article_share.valid_day, note_article_share.is_revisable, note_article.title, note_article.content," +
         "note_article.create_time, note_article.modify_time, note_article.status FROM note_article_share LEFT JOIN " +
         "note_article ON note_article_share.article_id = note_article.id LEFT JOIN note_user ON " +
-        "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId}")
+        "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId} and note_article" +
+        ".status = 0 and note_article.title like '%${keyword}%' limit #{startNum}, #{pageSize}")
     @Results(id = "getSharedArticleList", value = {
         @Result(column = "id", property = "shareId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
         @Result(column = "share_user_id", property = "shareUserId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
@@ -61,7 +65,7 @@ public interface ShareMapper {
         @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "user_name", property = "shareUsername", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
-    List<SharedArticle> getSharedArticleList(Long receiverId);
+    List<SharedArticle> getSharedArticleList(Long receiverId, Integer pageSize, Integer startNum, String keyword);
 
     /**
      * 删除分享

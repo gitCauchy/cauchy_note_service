@@ -22,7 +22,7 @@ public class FriendServiceImpl implements FriendService {
     FriendMapper friendMapper;
 
     @Override
-    public List<User> getFriendsList(Long userId) {
+    public List<User> getFriendsList(Long userId, Integer pageSize, Integer pageNum) {
         String friendIdStr = friendMapper.getFriendIds(userId);
         // 11,22,33,44,55
         if (friendIdStr == null || ",".equals(friendIdStr) || "".equals(friendIdStr)) {
@@ -31,12 +31,12 @@ public class FriendServiceImpl implements FriendService {
         String[] userIdArray = friendIdStr.split(",");
         List<Long> friendIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
-            if("".equals(arrayItem)){
+            if ("".equals(arrayItem)) {
                 continue;
             }
             friendIds.add(Long.parseLong(arrayItem));
         }
-        return friendMapper.getFriendList(friendIds);
+        return friendMapper.getFriendList(friendIds, (pageNum - 1) * pageSize, pageSize);
     }
 
     @Override

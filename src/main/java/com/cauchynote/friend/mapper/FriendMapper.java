@@ -27,6 +27,8 @@ public interface FriendMapper {
      * 获取好友列表
      *
      * @param friendIds 好友ID列表
+     * @param startNum 页起始位置
+     * @param pageSize 页大小
      * @return 好友列表
      */
     @Select("<script>" +
@@ -34,7 +36,7 @@ public interface FriendMapper {
         "is_enable from note_user where id in " +
         "<foreach item='item' index='index' collection='list' open='(' separator=',' close=')'> " +
         "#{item} " +
-        "</foreach>" +
+        "</foreach> limit #{startNum}, #{pageSize} " +
         "</script>")
     @Results(id = "getFriendList", value = {
         @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
@@ -47,7 +49,7 @@ public interface FriendMapper {
         @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
     })
-    List<User> getFriendList(@Param("list") List<Long> friendIds);
+    List<User> getFriendList(@Param("list") List<Long> friendIds, Integer startNum, Integer pageSize);
 
     /**
      * 更新好友信息
