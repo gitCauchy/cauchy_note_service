@@ -51,9 +51,13 @@ public class PermissionController {
     public ResponseEntity<Integer> addPermissionOfRole(@RequestBody Map<String, Object> requestMap) {
         Long roleId = Long.valueOf(String.valueOf(requestMap.get("roleId")));
         List<Integer> intPermissionIds = (List<Integer>) (requestMap.get("permissionIds"));
+        List<Permission> rolePermissions = permissionService.getPermissionByRoleId(roleId);
         List<Long> permissionIds = new ArrayList<>();
         for (Integer permissionId : intPermissionIds) {
             permissionIds.add(Long.valueOf(permissionId));
+        }
+        for(Permission rolePermission:rolePermissions){
+            permissionIds.remove(rolePermission.getId());
         }
         boolean result = permissionService.addPermissionOfRole(roleId, permissionIds);
         if (result) {

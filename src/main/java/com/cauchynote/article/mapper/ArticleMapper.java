@@ -23,7 +23,8 @@ public interface ArticleMapper {
      * @param article 文章对象
      * @return 是否添加成功  1 - 是 : 0 - 否
      */
-    @Insert("insert into note_article(title, content, author_id, create_time, modify_time, status) values(#{title}, " + "#{content}, #{authorId}, now(), now(), #{status})")
+    @Insert("insert into note_article(title, content, author_id, create_time, modify_time, status) values(#{title}, " +
+        "#{content}, #{authorId}, now(), now(), #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     int addArticle(Article article);
 

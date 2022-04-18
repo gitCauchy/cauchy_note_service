@@ -18,9 +18,6 @@ import java.util.Map;
  *
  * @Author Cauchy
  * @ClassName RoleController
- * @Description
- * @Date 21/12/08
- * @Version 0.1
  */
 @CrossOrigin
 @RestController
@@ -70,7 +67,7 @@ public class RoleController {
     }
 
     @GetMapping("/getAllRoles")
-    public ResponseEntity<Map> getAllRoles(
+    public ResponseEntity<Map<String, Object>> getAllRoles(
         @RequestParam(value = "pageSize") Integer pageSize,
         @RequestParam(value = "pageNum") Integer pageNum,
         @RequestParam(value = "keyword") String keyword
@@ -90,10 +87,14 @@ public class RoleController {
     @PostMapping("/addRoleOfUser")
     public ResponseEntity<Integer> addRoleOfUser(@RequestBody Map<String, Object> requstBody) {
         Long userId = Long.valueOf(String.valueOf(requstBody.get("userId")));
+        List<Role> userRoles = roleService.findRolesByUserId(userId);
         List<Integer> intRoleIds = (List<Integer>) (requstBody.get("roleIds"));
         List<Long> roleIds = new ArrayList<>();
         for (Integer roleId : intRoleIds) {
             roleIds.add(Long.valueOf(roleId));
+        }
+        for (Role userRole : userRoles) {
+            roleIds.remove(userRole.getId());
         }
         boolean result = roleService.addRoleOfUser(userId, roleIds);
         if (result) {
