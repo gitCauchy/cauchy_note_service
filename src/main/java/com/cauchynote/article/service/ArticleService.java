@@ -1,11 +1,8 @@
 package com.cauchynote.article.service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
-
 import com.cauchynote.article.entity.Article;
 
 /**
@@ -113,4 +110,7 @@ public interface ArticleService {
      * @return top 用户 周月年 数据
      */
     List<Map<String, Object>> getTopUserWeekMonthTotalData();
+
+
+
 }
