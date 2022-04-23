@@ -110,7 +110,4 @@ public interface ArticleService {
      * @return top 用户 周月年 数据
      */
     List<Map<String, Object>> getTopUserWeekMonthTotalData();
-
-
-
 }

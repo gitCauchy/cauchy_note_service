@@ -116,9 +116,4 @@ public interface ArticleMapper {
      */
     @Select("select author_id, count(title) as count from note_article group by author_id order by count desc limit 3")
     List<Long> getTop3AuthorId();
-
-
-
-
-
 }

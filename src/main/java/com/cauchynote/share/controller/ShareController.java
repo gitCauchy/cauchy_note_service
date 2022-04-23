@@ -18,7 +18,6 @@ import java.util.Map;
  * @author Cauchy
  * @ClassName ShareController.java
  * @createTime 2022年04月13日 09:58:00
- *
  */
 @CrossOrigin
 @RestController
