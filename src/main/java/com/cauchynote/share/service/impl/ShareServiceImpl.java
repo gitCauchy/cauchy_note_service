@@ -7,10 +7,7 @@ import com.cauchynote.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 分享服务层实现
@@ -38,7 +35,7 @@ public class ShareServiceImpl implements ShareService {
         for (SharedArticle sharedArticle : sharedArticleList) {
             Date shareDate = sharedArticle.getShareDate();
             int validDay = sharedArticle.getValidDay();
-            if (DateUtil.getNDayDate(-1 * validDay).compareTo(new Date()) > 0) {
+            if (DateUtil.getNDayDate(-1 * validDay).after(shareDate)) {
                 sharedArticleList.remove(sharedArticle);
             }
         }

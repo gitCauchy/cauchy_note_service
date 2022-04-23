@@ -67,6 +67,7 @@ public class DateUtil {
      * @return 日期
      */
     public static Date getNDayDate(int N) {
+        calendar.setTime(new Date());
         calendar.add(Calendar.DATE, N);
         return calendar.getTime();
     }
