@@ -81,10 +81,11 @@ public interface ArticleMapper {
      * 获取文章数量
      *
      * @param authorId 作者ID
-     * @param keyword  关键词
+     * @param keyword  搜索关键词
      * @return 文章数
      */
-    @Select("select count(id) from note_article where author_id = #{authorId} and title like '%${keyword}%'")
+    @Select("select count(id) from note_article where author_id = #{authorId} and title like '%${keyword}%' and " +
+        "status = 0")
     Integer getArticleTotal(Long authorId, String keyword);
 
     /**

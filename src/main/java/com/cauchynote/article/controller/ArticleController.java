@@ -37,6 +37,7 @@ public class ArticleController {
      */
     @PostMapping("/addArticle")
     public ResponseEntity<Integer> addArticle(@RequestBody Article article) {
+        article.setStatus(0);
         boolean result = articleService.addArticle(article);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);

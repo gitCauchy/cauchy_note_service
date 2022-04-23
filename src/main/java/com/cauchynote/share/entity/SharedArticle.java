@@ -40,7 +40,7 @@ public class SharedArticle {
      */
     private Integer validDay;
     /**
-     * 是否可被编辑
+     * 是否可被编辑  0 - 是  1 - 否
      */
     private Integer isRevisable;
     /**
