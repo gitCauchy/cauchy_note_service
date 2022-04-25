@@ -48,4 +48,13 @@ public interface FriendService {
      * @return 用户对象
      */
     User searchFriend(String friendName);
+
+    /**
+     * 添加好友请求
+     *
+     * @param userId   用户ID
+     * @param friendId 好友ID
+     * @return 添加状态
+     */
+    Integer addFriendRequest(Long userId, Long friendId);
 }

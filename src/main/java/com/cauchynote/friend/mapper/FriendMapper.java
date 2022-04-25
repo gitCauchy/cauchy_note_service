@@ -27,8 +27,8 @@ public interface FriendMapper {
      * 获取好友列表
      *
      * @param friendIds 好友ID列表
-     * @param startNum 页起始位置
-     * @param pageSize 页大小
+     * @param startNum  页起始位置
+     * @param pageSize  页大小
      * @return 好友列表
      */
     @Select("<script>" +
@@ -90,4 +90,32 @@ public interface FriendMapper {
      */
     @Insert("insert into note_friend(user_id, friend_ids) value(#{userId}, #{friendIds})")
     void addNewRecord(Long userId, String friendIds);
+
+    /**
+     * 新增好友请求记录
+     *
+     * @param userId           用户Id
+     * @param friendRequestIds 好友ID
+     */
+    @Insert("insert into note_friend(user_id, friend_request_ids) value(#{user_id},#{friendRequestIds}")
+    void addNewFriendRequestRecord(Long userId, String friendRequestIds);
+
+    /**
+     * 获取好友请求ID列表
+     *
+     * @param userId 用户ID
+     * @return 好友请求ID列表
+     */
+    @Select("select friend_request_aids from note_friend where user_id = #{userId}")
+    String getFriendRequestIds(Long userId);
+
+    /**
+     * 更新好友请求信息
+     *
+     * @param userId           用户ID
+     * @param friendRequestIds 好友请求ID列表
+     * @return 1- 成功 0 - 失败
+     */
+    @Update("update note_friend set friend_request_ids = #{friendRequestIds} where user_id = #{userId}")
+    Integer updateFriendRequest(Long userId, String friendRequestIds);
 }

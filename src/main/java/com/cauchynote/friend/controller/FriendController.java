@@ -75,12 +75,28 @@ public class FriendController {
      * @param friendName 好友用户名
      * @return 用户对象
      */
-    @GetMapping("searchFriend")
+    @GetMapping("/searchFriend")
     public ResponseEntity<Object> searchFriend(@RequestParam String friendName) {
         User user = friendService.searchFriend(friendName);
         if (user == null) {
             return new ResponseEntity<>(SystemConstantDefine.USER_NOT_EXIST, HttpStatus.OK);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    /**
+     * 添加好友请求
+     *
+     * @param userId   用户ID
+     * @param friendId 好友ID
+     * @return 状态码
+     */
+    @GetMapping("/addFriendRequest")
+    public ResponseEntity<Integer> addFriendRequest(@RequestParam Long userId, @RequestParam Long friendId) {
+        Integer status = friendService.addFriendRequest(userId, friendId);
+        if (status == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 }

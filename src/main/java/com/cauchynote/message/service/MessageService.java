@@ -1,0 +1,45 @@
+package com.cauchynote.message.service;
+
+import com.cauchynote.message.entity.Message;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * @author Cauchy
+ * @ClassName MessageService.java
+ * @createTime 2022年04月25日 10:41:00
+ */
+@Service
+public interface MessageService {
+    /**
+     * 添加新消息
+     *
+     * @param message 消息对象
+     * @return 状态
+     */
+    Integer addNewMessage(Message message);
+
+    /**
+     * 获取消息列表
+     *
+     * @param receiverId 消息接收者 ID
+     * @return List<Message>
+     */
+    List<Message> getMessageList(Long receiverId);
+
+    /**
+     * 删除消息
+     *
+     * @return 状态
+     */
+    Integer deleteMessage(Long id);
+
+    /**
+     * 修改消息状态
+     *
+     * @param status 消息状态
+     * @return 修改数据条目
+     */
+    Integer changeMessageStatus(Integer status);
+}

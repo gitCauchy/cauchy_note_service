@@ -77,4 +77,22 @@ public class FriendServiceImpl implements FriendService {
     public User searchFriend(String friendName) {
         return friendMapper.searchFriend(friendName);
     }
+
+    @Override
+    public Integer addFriendRequest(Long userId, Long friendId) {
+        String friendRequestIds = friendMapper.getFriendRequestIds(userId);
+        if (friendRequestIds == null) {
+            friendRequestIds = friendId.toString();
+            friendMapper.addNewRecord(userId, friendRequestIds);
+        }
+        String[] friendRequestIdArray = friendRequestIds.split(",");
+        Set<String> requestIdStrSet = new HashSet<>(Arrays.asList(friendRequestIdArray));
+        requestIdStrSet.add(friendId.toString());
+        StringBuilder sb = new StringBuilder();
+        for (String idItem : requestIdStrSet) {
+            sb.append(idItem);
+            sb.append(",");
+        }
+        return friendMapper.updateFriend(userId, sb.toString());
+    }
 }
