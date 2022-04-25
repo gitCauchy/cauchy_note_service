@@ -42,7 +42,7 @@ public class RecycleController {
         Map<String, Object> retMap = new HashMap<>(2);
         List<Article> deleteArticleList = recycleService.getDeleteArticleList(authorId, pageSize, pageNum, keyword);
         Integer deleteArticleTotal = recycleService.getDeleteArticleTotal(authorId, keyword);
-        retMap.put("recycleAtricle", deleteArticleList);
+        retMap.put("recycleArticle", deleteArticleList);
         retMap.put("recycleTotal", deleteArticleTotal);
         if (deleteArticleList != null) {
             return new ResponseEntity<>(retMap, HttpStatus.OK);
@@ -87,7 +87,7 @@ public class RecycleController {
      * @param authorId 作者ID
      * @return 装态码
      */
-    @PostMapping("/restoreAllArticle")
+    @GetMapping("/restoreAllArticle")
     public ResponseEntity<Integer> restoreAllArticle(@RequestParam Long authorId) {
         boolean result = recycleService.restoreAllArticle(authorId);
         System.out.println(result);
@@ -103,7 +103,7 @@ public class RecycleController {
      * @param id 文章ID
      * @return 状态码
      */
-    @PostMapping("/restoreArticle")
+    @GetMapping("/restoreArticle")
     public ResponseEntity<Integer> restoreArticle(@RequestParam Long id) {
         boolean result = recycleService.restoreArticleById(id);
         if (result) {
