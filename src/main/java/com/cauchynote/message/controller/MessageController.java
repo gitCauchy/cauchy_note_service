@@ -49,4 +49,9 @@ public class MessageController {
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
+    @GetMapping("/getMessageCount")
+    public ResponseEntity<Integer> getMessageCount(@RequestParam Long userId) {
+        return new ResponseEntity<>(messageService.getMessageCount(userId), HttpStatus.OK);
+    }
+
 }

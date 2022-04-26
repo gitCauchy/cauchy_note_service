@@ -37,4 +37,9 @@ public class MessageServiceImpl implements MessageService {
     public Integer readMessage(Long id) {
         return messageMapper.changeStatus(id, 1);
     }
+
+    @Override
+    public Integer getMessageCount(Long userId) {
+        return messageMapper.getMessageCount(userId);
+    }
 }

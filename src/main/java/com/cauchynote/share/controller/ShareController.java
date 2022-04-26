@@ -27,13 +27,13 @@ public class ShareController {
     private ShareService shareService;
 
     @PostMapping("/addArticleShare")
-    public ResponseEntity<Integer> addArticleShare(@RequestBody Map<String, Object> requestMap) {
-        Long shareUserId = Long.parseLong((String) requestMap.get("shareUserId"));
-        Long receiveUserId = Long.parseLong((String) requestMap.get("receiveUserId"));
-        Long articleId = Long.parseLong((String) requestMap.get("articleId"));
-        Date shareDate = (Date) requestMap.get("shareDate");
-        Integer validDay = (Integer) requestMap.get("validDay");
-        Integer isRevisable = (Integer) requestMap.get("isRevisable");
+    public ResponseEntity<Integer> addArticleShare(@RequestBody Map<String, Integer> requestMap) {
+        Long shareUserId =  requestMap.get("shareUserId").longValue();
+        Long receiveUserId =  requestMap.get("receiveUserId").longValue();
+        Long articleId = requestMap.get("articleId").longValue();
+        Date shareDate = new Date();
+        Integer validDay =  requestMap.get("validDay");
+        Integer isRevisable =  requestMap.get("isRevisable");
         int insertNum = shareService.addArticleShare(shareUserId, receiveUserId, articleId, shareDate, validDay,
             isRevisable);
         if (insertNum == 1) {

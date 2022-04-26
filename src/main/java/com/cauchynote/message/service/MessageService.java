@@ -42,4 +42,12 @@ public interface MessageService {
      * @return 修改数据条目
      */
     Integer readMessage(Long id);
+
+    /**
+     * 获取未读信息数量
+     *
+     * @param userId 用户ID
+     * @return 信息数量
+     */
+    Integer getMessageCount(Long userId);
 }

@@ -47,6 +47,16 @@ public interface MessageMapper {
         @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT)})
     List<Message> getMessageList(Long receiverId);
 
+    /**
+     * 修改消息状态
+     *
+     * @param id     消息ID
+     * @param status 状态
+     * @return 变更结果数量
+     */
     @Update("update note_message set status = #{status} where id = #{id}")
     Integer changeStatus(Long id, Integer status);
+
+    @Select("select count(*) from note_message where receiver_id = #{id} and status = 0")
+    Integer getMessageCount(Long id);
 }
