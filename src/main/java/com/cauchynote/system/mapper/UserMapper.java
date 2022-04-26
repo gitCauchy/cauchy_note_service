@@ -53,7 +53,8 @@ public interface UserMapper {
      * @param user 用户对象
      * @return 1 - 成功 0 - 失败
      */
-    @Insert("insert into note_user(user_name, email, password, is_non_expired, is_non_locked, is_password_non_expired, " + "is_enable) values(#{username}, #{email}, #{password}, 0, 0, 0, 0)")
+    @Insert("insert into note_user(user_name, email, password, is_non_expired, is_non_locked, is_password_non_expired, "
+        + "is_enable) values(#{username}, #{email}, #{password}, 0, 0, 0, 0)")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     Integer addUser(User user);
 

@@ -88,4 +88,14 @@ public class SystemConstantDefine {
      * Password
      */
     public static final String PASSWORD = "SYFFVCZJDKBQILNQ";
+
+    // ----------------------- 好友 ----------------------
+    /**
+     * 成功添加好友
+     */
+    public static final Integer ADD_FRIEND_SUCCESS = 400000;
+    /**
+     * 好友未响应
+     */
+    public static final Integer ADD_FRIEND_NO_RESPONSE = -400001;
 }

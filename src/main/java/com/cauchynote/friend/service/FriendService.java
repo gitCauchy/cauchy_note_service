@@ -57,4 +57,20 @@ public interface FriendService {
      * @return 添加状态
      */
     Integer addFriendRequest(Long userId, Long friendId);
+
+    /**
+     * 获取好友请求列表
+     *
+     * @param userId 用户ID
+     * @return List<User>
+     */
+    List<User> getFriendRequestList(Long userId);
+
+    /**
+     * 获取好友请求状态
+     * @param userId 用户 ID
+     * @param friendId 好友 ID
+     * @return 变更数量
+     */
+    Integer deleteFriendRequest(Long userId, Long friendId);
 }

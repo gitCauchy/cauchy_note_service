@@ -3,6 +3,7 @@ package com.cauchynote.friend.service.impl;
 import com.cauchynote.friend.mapper.FriendMapper;
 import com.cauchynote.friend.service.FriendService;
 import com.cauchynote.system.entity.User;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +42,19 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public Integer addFriend(Long userId, Long friendId) {
-        // 先查询好友表内是否有当前用户的记录
+        /*
+        先查询好友表内是否有当前用户的记录,这里有两种情况：
+        1. 表中有该用户的记录，但是 friend_ids 为空，这种情况出现再该用户主动添加其他用户为好友
+        2. 表中没有该用户的记录
+         */
+        Integer recordCount = friendMapper.getRecordCountOfUser(userId);
         String friendIds = friendMapper.getFriendIds(userId);
-        if (friendIds == null) {
+        if (recordCount == 0 && friendIds == null) {
             friendIds = friendId.toString();
-            friendMapper.addNewRecord(userId, friendIds);
+            return friendMapper.addNewRecord(userId, friendIds);
+        } else if (recordCount == 1 && friendIds == null) {
+            friendIds = friendId.toString();
+            return friendMapper.updateFriend(userId, friendIds);
         }
         String[] friendIdArray = friendIds.split(",");
         Set<String> idStrSet = new HashSet<>(Arrays.asList(friendIdArray));
@@ -83,7 +92,7 @@ public class FriendServiceImpl implements FriendService {
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
         if (friendRequestIds == null) {
             friendRequestIds = friendId.toString();
-            friendMapper.addNewRecord(userId, friendRequestIds);
+            friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
         }
         String[] friendRequestIdArray = friendRequestIds.split(",");
         Set<String> requestIdStrSet = new HashSet<>(Arrays.asList(friendRequestIdArray));
@@ -93,6 +102,39 @@ public class FriendServiceImpl implements FriendService {
             sb.append(idItem);
             sb.append(",");
         }
-        return friendMapper.updateFriend(userId, sb.toString());
+        return friendMapper.updateFriendRequest(userId, sb.toString());
+    }
+
+    @Override
+    public List<User> getFriendRequestList(Long userId) {
+        String friendRequestIdStr = friendMapper.getFriendRequestIds(userId);
+        // 11,22,33,44,55
+        if (friendRequestIdStr == null || ",".equals(friendRequestIdStr) || "".equals(friendRequestIdStr)) {
+            return new ArrayList<>();
+        }
+        String[] userIdArray = friendRequestIdStr.split(",");
+        List<Long> friendRequestIds = new ArrayList<>();
+        for (String arrayItem : userIdArray) {
+            if ("".equals(arrayItem)) {
+                continue;
+            }
+            friendRequestIds.add(Long.parseLong(arrayItem));
+        }
+        return friendMapper.getFriendRequestList(friendRequestIds);
+    }
+
+    @Override
+    public Integer deleteFriendRequest(Long userId, Long friendId) {
+        String friendRequestIds = friendMapper.getFriendRequestIds(userId);
+        String[] friendRequestIdArray = friendRequestIds.split(",");
+        List<String> friendRequestIdList = new ArrayList<>();
+        Collections.addAll(friendRequestIdList, friendRequestIdArray);
+        friendRequestIdList.remove(friendId.toString());
+        StringBuilder sb = new StringBuilder();
+        for (String listItem : friendRequestIdList) {
+            sb.append(listItem);
+            sb.append(",");
+        }
+        return friendMapper.updateFriendRequest(userId, sb.toString());
     }
 }

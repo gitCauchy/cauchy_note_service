@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Integer changeMessageStatus(Integer status) {
-        return null;
+    public Integer readMessage(Long id) {
+        return messageMapper.changeStatus(id, 1);
     }
 }

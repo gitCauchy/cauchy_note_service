@@ -2,6 +2,7 @@ package com.cauchynote.message.controller;
 
 import com.cauchynote.message.entity.Message;
 import com.cauchynote.message.service.MessageService;
+import com.cauchynote.utils.SystemConstantDefine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,26 @@ public class MessageController {
 
     @PostMapping("/addNewMessage")
     public ResponseEntity<Integer> addNewMessage(@RequestBody Message message) {
-        messageService.addNewMessage(message);
-        return null;
+        Integer result = messageService.addNewMessage(message);
+        if (result == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
     @GetMapping("/getMessageList")
     public ResponseEntity<List<Message>> getMessageList(@RequestParam Long receiverId) {
         List<Message> list = messageService.getMessageList(receiverId);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/readMessage")
+    public ResponseEntity<Integer> readMessage(@RequestParam Long id) {
+        Integer count = messageService.readMessage(id);
+        if (count == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
 }

@@ -24,7 +24,7 @@ public class Message {
      */
     private Long receiverId;
     /**
-     * 消息类型
+     * 消息类型 1- 好友请求，2 - 分享笔记
      */
     private Integer messageType;
     /**
@@ -36,7 +36,7 @@ public class Message {
      */
     private Date sendDate;
     /**
-     * 消息状态
+     * 消息状态 0 - 新消息 1 - 已读
      */
     private Integer status;
 }

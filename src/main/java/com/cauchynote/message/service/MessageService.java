@@ -38,8 +38,8 @@ public interface MessageService {
     /**
      * 修改消息状态
      *
-     * @param status 消息状态
+     * @param id 消息 ID
      * @return 修改数据条目
      */
-    Integer changeMessageStatus(Integer status);
+    Integer readMessage(Long id);
 }

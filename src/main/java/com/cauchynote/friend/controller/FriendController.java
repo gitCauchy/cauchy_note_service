@@ -99,4 +99,19 @@ public class FriendController {
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
+
+    @GetMapping("/getFriendRequestList")
+    public ResponseEntity<List<User>> getFriendRequestList(@RequestParam Long userId) {
+        List<User> friendRequestList = friendService.getFriendRequestList(userId);
+        return new ResponseEntity<>(friendRequestList, HttpStatus.OK);
+    }
+
+    @GetMapping("/deleteFriendRequest")
+    public ResponseEntity<Integer> deleteFriendRequest(@RequestParam Long userId, @RequestParam Long friendId) {
+        Integer status = friendService.deleteFriendRequest(userId, friendId);
+        if (status == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+    }
 }
