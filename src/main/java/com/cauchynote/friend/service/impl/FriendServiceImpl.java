@@ -89,6 +89,11 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public Integer addFriendRequest(Long userId, Long friendId) {
+        // 1. 先检查该用户是否为好友
+        String friendIds = friendMapper.getFriendIds(userId);
+        if(friendIds.contains(friendId.toString())){
+            return -1;
+        }
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
         if (friendRequestIds == null) {
             friendRequestIds = friendId.toString();

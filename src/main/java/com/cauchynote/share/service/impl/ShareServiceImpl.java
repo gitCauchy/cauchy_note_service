@@ -32,14 +32,15 @@ public class ShareServiceImpl implements ShareService {
         List<SharedArticle> sharedArticleList = shareMapper.getSharedArticleList(userId, pageSize, (pageNum - 1) * pageSize,
             keyword);
         // 去掉已经过期的分享
+        List<SharedArticle> resultList = new ArrayList<>();
         for (SharedArticle sharedArticle : sharedArticleList) {
             Date shareDate = sharedArticle.getShareDate();
             int validDay = sharedArticle.getValidDay();
-            if (DateUtil.getNDayDate(-1 * validDay).after(shareDate)) {
-                sharedArticleList.remove(sharedArticle);
+            if (!DateUtil.getNDayDate(-1 * validDay).after(shareDate)) {
+                resultList.add(sharedArticle);
             }
         }
-        return sharedArticleList;
+        return resultList;
     }
 
     @Override

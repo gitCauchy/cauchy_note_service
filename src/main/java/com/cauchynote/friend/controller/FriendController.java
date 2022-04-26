@@ -96,6 +96,8 @@ public class FriendController {
         Integer status = friendService.addFriendRequest(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }else if(status == -1){
+            return new ResponseEntity<>(SystemConstantDefine.USER_IS_FRIEND_ALREADY,HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }

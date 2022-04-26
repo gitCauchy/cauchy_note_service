@@ -98,4 +98,8 @@ public class SystemConstantDefine {
      * 好友未响应
      */
     public static final Integer ADD_FRIEND_NO_RESPONSE = -400001;
+    /**
+     * 已经为好友，不可添加
+     */
+    public static final Integer USER_IS_FRIEND_ALREADY = -400002;
 }
