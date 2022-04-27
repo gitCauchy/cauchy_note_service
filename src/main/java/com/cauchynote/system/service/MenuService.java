@@ -18,7 +18,7 @@ public interface MenuService {
      * @param roleId 角色ID
      * @return 菜单列表
      */
-    List<Menu> getMenuByRoleId(Long roleId);
+    List<Menu> getMenuByRoleId(Integer roleId);
 
     /**
      * 获取所有菜单信息
@@ -33,5 +33,5 @@ public interface MenuService {
      * @return 是否成功
      * @description
      */
-    boolean addMenuOfRole(Long roleId, List<Long> menuIds);
+    boolean addMenuOfRole(Integer roleId, List<Integer> menuIds);
 }

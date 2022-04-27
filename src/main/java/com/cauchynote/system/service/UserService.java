@@ -19,7 +19,7 @@ public interface UserService {
      * @param id 用户ID
      * @return User
      */
-    User getUserById(Long id);
+    User getUserById(Integer id);
 
     /**
      * 删除用户，逻辑删除
@@ -27,7 +27,7 @@ public interface UserService {
      * @param id 用户ID
      * @return 1 - 删除成功 0 - 删除失败
      */
-    boolean deleteUser(Long id);
+    boolean deleteUser(Integer id);
 
     /**
      * 新增用户

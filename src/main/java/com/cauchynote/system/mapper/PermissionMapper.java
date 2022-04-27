@@ -30,11 +30,11 @@ public interface PermissionMapper {
         " from note_permission left join note_role_permission on note_permission.id = " +
         "note_role_permission.permission_id where role_id = #{roleId}")
     @Results(id = "getPermissionByRoleId", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "permission_name", property = "permissionName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "permission_tag", property = "permissionTag", javaType = String.class, jdbcType = JdbcType.VARCHAR),
     })
-    List<Permission> getPermissionByRoleId(Long roleId);
+    List<Permission> getPermissionByRoleId(Integer roleId);
 
     /**
      * 获取所有权限信息
@@ -43,7 +43,7 @@ public interface PermissionMapper {
      */
     @Select("select id, permission_name, permission_tag from note_permission")
     @Results(id = "getAllPermissions", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "permission_name", property = "permissionName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "permission_tag", property = "permissionTag", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
@@ -56,5 +56,5 @@ public interface PermissionMapper {
      * @param permissionId 角色 ID
      */
     @Insert("insert into note_role_permission(role_id,permission_id) value(#{roleId},#{permissionId})")
-    void addPermissionOfRole(Long roleId, Long permissionId);
+    void addPermissionOfRole(Integer roleId, Integer permissionId);
 }

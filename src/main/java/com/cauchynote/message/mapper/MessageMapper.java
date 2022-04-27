@@ -38,14 +38,14 @@ public interface MessageMapper {
     @Select("select id, sender_id, receiver_id, message_info, message_type, send_date, status from note_message" +
         " where receiver_id = #{receiverId} and status = 0")
     @Results(id = "getMessageList", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-        @Result(column = "sender_id", property = "senderId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-        @Result(column = "receiver_id", property = "receiverId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "sender_id", property = "senderId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "receiver_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "message_info", property = "messageInfo", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "message_type", property = "messageType", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "send_date", property = "sendDate", javaType = Date.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT)})
-    List<Message> getMessageList(Long receiverId);
+    List<Message> getMessageList(Integer receiverId);
 
     /**
      * 修改消息状态
@@ -55,8 +55,8 @@ public interface MessageMapper {
      * @return 变更结果数量
      */
     @Update("update note_message set status = #{status} where id = #{id}")
-    Integer changeStatus(Long id, Integer status);
+    Integer changeStatus(Integer id, Integer status);
 
     @Select("select count(*) from note_message where receiver_id = #{id} and status = 0")
-    Integer getMessageCount(Long id);
+    Integer getMessageCount(Integer id);
 }

@@ -27,7 +27,7 @@ public class MenuController {
     MenuService menuService;
 
     @GetMapping("/getMenuByRoleId")
-    public ResponseEntity<List<Menu>> findRolesByUserId(@RequestParam(value = "id") Long roleId) {
+    public ResponseEntity<List<Menu>> findRolesByUserId(@RequestParam(value = "id") Integer roleId) {
         List<Menu> menuList = menuService.getMenuByRoleId(roleId);
         if (menuList != null) {
             return new ResponseEntity<>(menuList, HttpStatus.OK);
@@ -49,11 +49,11 @@ public class MenuController {
     @PostMapping("/addMenuOfRole")
     @SuppressWarnings("unchecked")
     public ResponseEntity<Integer> addMenuOfRole(@RequestBody Map<String, Object> requestMap) {
-        Long roleId = Long.valueOf(String.valueOf(requestMap.get("roleId")));
+        Integer roleId = Integer.valueOf(String.valueOf(requestMap.get("roleId")));
         List<Integer> intMenuIds = (List<Integer>) (requestMap.get("menuIds"));
-        List<Long> menuIds = new ArrayList<>();
+        List<Integer> menuIds = new ArrayList<>();
         for (Integer menuId : intMenuIds) {
-            menuIds.add(Long.valueOf(menuId));
+            menuIds.add(Integer.valueOf(menuId));
         }
         boolean result = menuService.addMenuOfRole(roleId, menuIds);
         if (result) {

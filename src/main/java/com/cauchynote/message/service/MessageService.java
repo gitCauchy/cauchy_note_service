@@ -26,14 +26,14 @@ public interface MessageService {
      * @param receiverId 消息接收者 ID
      * @return List<Message>
      */
-    List<Message> getMessageList(Long receiverId);
+    List<Message> getMessageList(Integer receiverId);
 
     /**
      * 删除消息
      *
      * @return 状态
      */
-    Integer deleteMessage(Long id);
+    Integer deleteMessage(Integer id);
 
     /**
      * 修改消息状态
@@ -41,7 +41,7 @@ public interface MessageService {
      * @param id 消息 ID
      * @return 修改数据条目
      */
-    Integer readMessage(Long id);
+    Integer readMessage(Integer id);
 
     /**
      * 获取未读信息数量
@@ -49,5 +49,5 @@ public interface MessageService {
      * @param userId 用户ID
      * @return 信息数量
      */
-    Integer getMessageCount(Long userId);
+    Integer getMessageCount(Integer userId);
 }

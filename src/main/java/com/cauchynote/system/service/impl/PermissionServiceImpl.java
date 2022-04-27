@@ -22,7 +22,7 @@ public class PermissionServiceImpl implements PermissionService {
     PermissionMapper permissionMapper;
 
     @Override
-    public List<Permission> getPermissionByRoleId(Long roleId) {
+    public List<Permission> getPermissionByRoleId(Integer roleId) {
         return permissionMapper.getPermissionByRoleId(roleId);
     }
 
@@ -32,8 +32,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public boolean addPermissionOfRole(Long roleId, List<Long> permissionIds) {
-        for (Long permissionId : permissionIds) {
+    public boolean addPermissionOfRole(Integer roleId, List<Integer> permissionIds) {
+        for (Integer permissionId : permissionIds) {
             permissionMapper.addPermissionOfRole(roleId, permissionId);
         }
         return true;

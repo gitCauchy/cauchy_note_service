@@ -15,7 +15,7 @@ public class LoginInfo {
     /**
      * 主键 ID
      */
-    Long id;
+    Integer id;
     /**
      * 用户 ID
      */

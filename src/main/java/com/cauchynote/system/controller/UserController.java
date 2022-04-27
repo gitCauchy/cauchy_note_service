@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/deleteUser")
-    public ResponseEntity<Integer> deleteUser(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<Integer> deleteUser(@RequestParam Integer id) {
         boolean result = userService.deleteUser(id);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/queryUser")
-    public ResponseEntity<User> queryUser(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<User> queryUser(@RequestParam(value = "id") Integer id) {
         User user = userService.getUserById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);

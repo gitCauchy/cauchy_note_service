@@ -21,7 +21,7 @@ public interface PermissionService {
      * @param roleId 角色ID
      * @return 权限列表
      */
-    List<Permission> getPermissionByRoleId(Long roleId);
+    List<Permission> getPermissionByRoleId(Integer roleId);
 
     /**
      * 获取所有权限信息
@@ -37,5 +37,5 @@ public interface PermissionService {
      * @param permissionIds 权限 ID 列表
      * @return 是否成功
      */
-    boolean addPermissionOfRole(Long roleId, List<Long> permissionIds);
+    boolean addPermissionOfRole(Integer roleId, List<Integer> permissionIds);
 }

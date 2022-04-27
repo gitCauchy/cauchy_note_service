@@ -15,7 +15,7 @@ public class Menu {
     /**
      * 主键 ID
      */
-    Long id;
+    Integer id;
     /**
      * 前端路由
      */

@@ -21,7 +21,7 @@ public interface FriendService {
      * @param pageNum  页号
      * @return 好友列表
      */
-    List<User> getFriendsList(Long userId, Integer pageSize, Integer pageNum);
+    List<User> getFriendsList(Integer userId, Integer pageSize, Integer pageNum);
 
     /**
      * 添加好友
@@ -30,7 +30,7 @@ public interface FriendService {
      * @param friendId 好友ID
      * @return 添加状态
      */
-    Integer addFriend(Long userId, Long friendId);
+    Integer addFriend(Integer userId, Integer friendId);
 
     /**
      * 删除好友
@@ -39,7 +39,7 @@ public interface FriendService {
      * @param friendId 好友ID
      * @return 删除状态
      */
-    Integer deleteFriend(Long userId, Long friendId);
+    Integer deleteFriend(Integer userId, Integer friendId);
 
     /**
      * 搜索好友
@@ -56,7 +56,7 @@ public interface FriendService {
      * @param friendId 好友ID
      * @return 添加状态
      */
-    Integer addFriendRequest(Long userId, Long friendId);
+    Integer addFriendRequest(Integer userId, Integer friendId);
 
     /**
      * 获取好友请求列表
@@ -64,7 +64,7 @@ public interface FriendService {
      * @param userId 用户ID
      * @return List<User>
      */
-    List<User> getFriendRequestList(Long userId);
+    List<User> getFriendRequestList(Integer userId);
 
     /**
      * 获取好友请求状态
@@ -72,5 +72,5 @@ public interface FriendService {
      * @param friendId 好友 ID
      * @return 变更数量
      */
-    Integer deleteFriendRequest(Long userId, Long friendId);
+    Integer deleteFriendRequest(Integer userId, Integer friendId);
 }

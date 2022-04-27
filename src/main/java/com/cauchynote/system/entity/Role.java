@@ -13,7 +13,7 @@ public class Role {
     /**
      * 角色 ID
      */
-    private Long id;
+    private Integer id;
     /**
      * 角色名称
      */

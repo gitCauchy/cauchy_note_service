@@ -27,7 +27,7 @@ public class RoleController {
     RoleService roleService;
 
     @GetMapping("/findRoleByUserId")
-    public ResponseEntity<List<Role>> findRolesByUserId(@RequestParam(value = "id") Long userId) {
+    public ResponseEntity<List<Role>> findRolesByUserId(@RequestParam(value = "id") Integer userId) {
         List<Role> roles = roleService.findRolesByUserId(userId);
         if (roles != null) {
             return new ResponseEntity<>(roles, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class RoleController {
     }
 
     @GetMapping("/deleteRole")
-    public ResponseEntity<Integer> deleteRole(@RequestParam(value = "id") Long roleId) {
+    public ResponseEntity<Integer> deleteRole(@RequestParam(value = "id") Integer roleId) {
         boolean result = roleService.deleteRole(roleId);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -86,13 +86,10 @@ public class RoleController {
 
     @PostMapping("/addRoleOfUser")
     public ResponseEntity<Integer> addRoleOfUser(@RequestBody Map<String, Object> requstBody) {
-        Long userId = Long.valueOf(String.valueOf(requstBody.get("userId")));
+        Integer userId = (Integer) requstBody.get("userId");
         List<Role> userRoles = roleService.findRolesByUserId(userId);
-        List<Integer> intRoleIds = (List<Integer>) (requstBody.get("roleIds"));
-        List<Long> roleIds = new ArrayList<>();
-        for (Integer roleId : intRoleIds) {
-            roleIds.add(Long.valueOf(roleId));
-        }
+        List<Integer> intRoleIds = (List<Integer>) requstBody.get("roleIds");
+        List<Integer> roleIds = new ArrayList<>(intRoleIds);
         for (Role userRole : userRoles) {
             roleIds.remove(userRole.getId());
         }

@@ -20,32 +20,32 @@ public class RecycleServiceImpl implements RecycleService {
     private RecycleMapper recycleMapper;
 
     @Override
-    public List<Article> getDeleteArticleList(Long authorId, Integer pageSize, Integer pageNum, String keyword) {
+    public List<Article> getDeleteArticleList(Integer authorId, Integer pageSize, Integer pageNum, String keyword) {
         return recycleMapper.getDeleteArticleList(authorId, pageSize, (pageNum - 1) * pageSize, keyword);
     }
 
     @Override
-    public Integer getDeleteArticleTotal(Long authorId, String keyword) {
+    public Integer getDeleteArticleTotal(Integer authorId, String keyword) {
         return recycleMapper.getDeleteArticleTotal(authorId, keyword);
     }
 
     @Override
-    public boolean deleteArticleByIdPhysical(Long id) {
+    public boolean deleteArticleByIdPhysical(Integer id) {
         return recycleMapper.deleteArticleByIdPhysical(id) == 1;
     }
 
     @Override
-    public boolean restoreArticleById(Long id) {
+    public boolean restoreArticleById(Integer id) {
         return recycleMapper.restoreArticleById(id) == 1;
     }
 
     @Override
-    public boolean deleteAllArticlePhysical(Long authorId) {
+    public boolean deleteAllArticlePhysical(Integer authorId) {
         return recycleMapper.deleteAllArticlePhysical(authorId) > 0;
     }
 
     @Override
-    public boolean restoreAllArticle(Long authorId) {
+    public boolean restoreAllArticle(Integer authorId) {
         return recycleMapper.restoreAllArticle(authorId) > 0;
     }
 }

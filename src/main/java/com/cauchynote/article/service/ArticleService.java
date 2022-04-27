@@ -53,7 +53,7 @@ public interface ArticleService {
      * @param keyword  关键词
      * @return 文章列表
      */
-    List<Article> getArticleList(Long authorId, Integer pageSize, Integer pageNum, String keyword);
+    List<Article> getArticleList(Integer authorId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
      * 获取总数
@@ -62,7 +62,7 @@ public interface ArticleService {
      * @param keyword  关键词
      * @return 文章数量
      */
-    Integer getArticleTotal(Long authorId, String keyword);
+    Integer getArticleTotal(Integer authorId, String keyword);
 
     /**
      * 获取用户文章数量
@@ -70,7 +70,7 @@ public interface ArticleService {
      * @param authorId 作者ID
      * @return 文章数量
      */
-    Map<String, Integer> getUserWeekMonthYearArticleCount(Long authorId);
+    Map<String, Integer> getUserWeekMonthYearArticleCount(Integer authorId);
 
     /**
      * 获取所有用户文章数量
@@ -85,7 +85,7 @@ public interface ArticleService {
      * @param authorId 作者 ID
      * @return 新增数量
      */
-    int[] getUserLastSixMonthArticleCount(Long authorId);
+    int[] getUserLastSixMonthArticleCount(Integer authorId);
 
     /**
      * 获取 Top 3 前六个月的数据
@@ -102,7 +102,7 @@ public interface ArticleService {
      * @param endDate   结束日期
      * @return 用户文章数
      */
-    Integer getUserArticleCount(Long authorId, Date startDate, Date endDate);
+    Integer getUserArticleCount(Integer authorId, Date startDate, Date endDate);
 
     /**
      * 获取 top 用户 周月年 数据

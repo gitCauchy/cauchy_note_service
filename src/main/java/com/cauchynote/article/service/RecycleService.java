@@ -22,7 +22,7 @@ public interface RecycleService {
      * @param keyword  搜索关键词
      * @return List
      */
-    List<Article> getDeleteArticleList(Long authorId, Integer pageSize, Integer pageNum, String keyword);
+    List<Article> getDeleteArticleList(Integer authorId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
      * 获取已经删除的文章总数
@@ -31,7 +31,7 @@ public interface RecycleService {
      * @param keyword  搜索关键词
      * @return total
      */
-    Integer getDeleteArticleTotal(Long authorId, String keyword);
+    Integer getDeleteArticleTotal(Integer authorId, String keyword);
 
     /**
      * 根据文章id彻底从数据库中删除文章
@@ -39,7 +39,7 @@ public interface RecycleService {
      * @param id 文章ID
      * @return true|false
      */
-    boolean deleteArticleByIdPhysical(Long id);
+    boolean deleteArticleByIdPhysical(Integer id);
 
     /**
      * 根据文章id恢复文章
@@ -47,7 +47,7 @@ public interface RecycleService {
      * @param id 文章ID
      * @return true|false
      */
-    boolean restoreArticleById(Long id);
+    boolean restoreArticleById(Integer id);
 
     /**
      * 清空回收站离所有的文章
@@ -55,7 +55,7 @@ public interface RecycleService {
      * @param authorId 作者ID
      * @return true|false
      */
-    boolean deleteAllArticlePhysical(Long authorId);
+    boolean deleteAllArticlePhysical(Integer authorId);
 
     /**
      * 恢复回收站离所有的文章
@@ -63,5 +63,5 @@ public interface RecycleService {
      * @param authorId 作者ID
      * @return true|false
      */
-    boolean restoreAllArticle(Long authorId);
+    boolean restoreAllArticle(Integer authorId);
 }

@@ -21,7 +21,7 @@ public interface LoginInfoMapper {
      * @return 1 - 成功插入 0 - 失败
      */
     @Insert("insert into note_login_info(user_id, login_time) values(#{userId},now())")
-    int addLoginInfo(Long userId);
+    int addLoginInfo(Integer userId);
 
     /**
      * 登录次数
@@ -31,7 +31,7 @@ public interface LoginInfoMapper {
      * @return 次数
      */
     @Select("select count(*) from note_login_info where user_id = #{userId} and login_time > #{startDate}")
-    int getUserLoginCount(Long userId, Date startDate);
+    int getUserLoginCount(Integer userId, Date startDate);
 
     /**
      * 获取登录总次数

@@ -22,7 +22,7 @@ public class MenuServiceImpl implements MenuService {
     MenuMapper menuMapper;
 
     @Override
-    public List<Menu> getMenuByRoleId(Long roleId) {
+    public List<Menu> getMenuByRoleId(Integer roleId) {
         return menuMapper.getMenuByRoleId(roleId);
     }
 
@@ -32,8 +32,8 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public boolean addMenuOfRole(Long roleId, List<Long> menuIds) {
-        for (Long menuId : menuIds) {
+    public boolean addMenuOfRole(Integer roleId, List<Integer> menuIds) {
+        for (Integer menuId : menuIds) {
             menuMapper.addMenuOfRole(roleId, menuId);
         }
         return true;

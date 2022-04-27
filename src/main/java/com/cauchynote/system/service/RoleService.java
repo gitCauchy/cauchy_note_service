@@ -20,7 +20,7 @@ public interface RoleService {
      * @param userId 角色ID
      * @return 角色列表
      */
-    List<Role> findRolesByUserId(Long userId);
+    List<Role> findRolesByUserId(Integer userId);
 
     /**
      * 添加新角色
@@ -44,7 +44,7 @@ public interface RoleService {
      * @param id 角色ID
      * @return 是否成功
      */
-    boolean deleteRole(Long id);
+    boolean deleteRole(Integer id);
 
     /**
      * 获取所有角色
@@ -63,7 +63,7 @@ public interface RoleService {
      * @param roleIds 角色ID列表
      * @return 是否成功添加
      */
-    boolean addRoleOfUser(Long userId, List<Long> roleIds);
+    boolean addRoleOfUser(Integer userId, List<Integer> roleIds);
 
     /**
      * 获取角色总数

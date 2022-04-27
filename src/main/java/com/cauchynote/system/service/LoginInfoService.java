@@ -17,7 +17,7 @@ public interface LoginInfoService {
      *
      * @param userId 用户ID
      */
-    void addLoginInfo(Long userId);
+    void addLoginInfo(Integer userId);
 
     /**
      * 获取用户登录次数
@@ -25,7 +25,7 @@ public interface LoginInfoService {
      * @param userId 用户ID
      * @return 登录次数
      */
-    Map<String, Integer> getUserLoginCount(Long userId);
+    Map<String, Integer> getUserLoginCount(Integer userId);
 
     /**
      * 获取所有用户登录次数

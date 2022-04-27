@@ -18,11 +18,11 @@ public class SharedArticle {
     /**
      * 分享 ID
      */
-    private Long shareId;
+    private Integer shareId;
     /**
      * 分享者 ID
      */
-    private Long shareUserId;
+    private Integer shareUserId;
     /**
      * 分享者用户名
      */
@@ -30,7 +30,7 @@ public class SharedArticle {
     /**
      * 接收者 ID
      */
-    private Long receiverId;
+    private Integer receiverId;
     /**
      * 分享日期
      */
@@ -46,7 +46,7 @@ public class SharedArticle {
     /**
      * 文章ID
      */
-    private Long id;
+    private Integer id;
     /**
      * 文章标题
      */
@@ -58,7 +58,7 @@ public class SharedArticle {
     /**
      * 文章作者ID
      */
-    private Long authorId;
+    private Integer authorId;
     /**
      * 创建时间
      */

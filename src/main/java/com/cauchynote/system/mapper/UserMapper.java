@@ -26,7 +26,7 @@ public interface UserMapper {
      */
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " + "is_enable from note_user where id = #{id}")
     @Results(id = "getAllInfoById", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -35,7 +35,7 @@ public interface UserMapper {
         @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),})
-    User getUserById(Long id);
+    User getUserById(Integer id);
 
     /**
      * 删除用户，这里使用逻辑删除，将 is_enable 设置为 1 - 不可用
@@ -45,7 +45,7 @@ public interface UserMapper {
      * @description
      */
     @Update("update note_user set is_enable = 1 where id = #{id}")
-    Integer deleteUser(Long id);
+    Integer deleteUser(Integer id);
 
     /**
      * 新增用户
@@ -67,7 +67,7 @@ public interface UserMapper {
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " +
         "is_enable from note_user where user_name = #{username}")
     @Results(id = "findUserByUsername", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -98,7 +98,7 @@ public interface UserMapper {
     @Select("select id, user_name, email, create_time, is_non_expired, is_non_locked, is_password_non_expired, "
         + "is_enable from note_user where user_name like '%${keyword}%' limit #{startNum}, #{pageSize}")
     @Results(id = "getAllUsers", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -125,7 +125,7 @@ public interface UserMapper {
      * @return 用户名
      */
     @Select("select user_name from note_user where id = #{userId}")
-    String getUsernameById(Long userId);
+    String getUsernameById(Integer userId);
 
     /**
      * 修改密码

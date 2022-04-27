@@ -23,12 +23,12 @@ public class LoginInfoServiceImpl implements LoginInfoService {
     LoginInfoMapper loginInfoMapper;
 
     @Override
-    public void addLoginInfo(Long userId) {
+    public void addLoginInfo(Integer userId) {
         loginInfoMapper.addLoginInfo(userId);
     }
 
     @Override
-    public Map<String, Integer> getUserLoginCount(Long userId) {
+    public Map<String, Integer> getUserLoginCount(Integer userId) {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
         Date startMonth = DateUtil.startBeforeNMonth(today, 0);

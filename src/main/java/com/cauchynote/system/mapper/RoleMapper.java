@@ -25,11 +25,11 @@ public interface RoleMapper {
     @Select("select note_role.id, note_role.role_name, note_role.role_desc from note_role left join note_user_role" +
         " on note_role.id = note_user_role.role_id where user_id = #{userId}")
     @Results(id = "getRoleByUserId", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "role_name", property = "roleName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "role_desc", property = "roleDescription", javaType = String.class, jdbcType = JdbcType.VARCHAR),
     })
-    List<Role> findRolesByUserId(Long userId);
+    List<Role> findRolesByUserId(Integer userId);
 
     /**
      * 根据角色名称查询角色信息
@@ -66,7 +66,7 @@ public interface RoleMapper {
      * @return 1 - 成功 0 - 失败
      */
     @Delete("delete from note_role where id = #{id}")
-    Integer deleteRole(Long id);
+    Integer deleteRole(Integer id);
 
     /**
      * 获取所有角色信息
@@ -78,7 +78,7 @@ public interface RoleMapper {
     @Select("select id, role_name, role_desc from note_role " +
         "where role_name like '%${keyword}%' limit #{startNum}, #{pageSize}")
     @Results(id = "getAllRoles", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "role_name", property = "roleName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "role_desc", property = "roleDescription", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
@@ -91,7 +91,7 @@ public interface RoleMapper {
      * @param roleId 角色 ID
      */
     @Insert("insert into note_user_role(user_id, role_id) value(#{userId},#{roleId})")
-    void addRoleOfUser(Long userId, Long roleId);
+    void addRoleOfUser(Integer userId, Integer roleId);
 
     /**
      * 获取角色数量

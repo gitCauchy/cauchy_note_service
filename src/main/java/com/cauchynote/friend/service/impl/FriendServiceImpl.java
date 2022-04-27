@@ -23,25 +23,25 @@ public class FriendServiceImpl implements FriendService {
     FriendMapper friendMapper;
 
     @Override
-    public List<User> getFriendsList(Long userId, Integer pageSize, Integer pageNum) {
+    public List<User> getFriendsList(Integer userId, Integer pageSize, Integer pageNum) {
         String friendIdStr = friendMapper.getFriendIds(userId);
         // 11,22,33,44,55
         if (friendIdStr == null || ",".equals(friendIdStr) || "".equals(friendIdStr)) {
             return new ArrayList<>();
         }
         String[] userIdArray = friendIdStr.split(",");
-        List<Long> friendIds = new ArrayList<>();
+        List<Integer> friendIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
             if ("".equals(arrayItem)) {
                 continue;
             }
-            friendIds.add(Long.parseLong(arrayItem));
+            friendIds.add(Integer.valueOf(arrayItem));
         }
         return friendMapper.getFriendList(friendIds, (pageNum - 1) * pageSize, pageSize);
     }
 
     @Override
-    public Integer addFriend(Long userId, Long friendId) {
+    public Integer addFriend(Integer userId, Integer friendId) {
         /*
         先查询好友表内是否有当前用户的记录,这里有两种情况：
         1. 表中有该用户的记录，但是 friend_ids 为空，这种情况出现再该用户主动添加其他用户为好友
@@ -68,7 +68,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Integer deleteFriend(Long userId, Long friendId) {
+    public Integer deleteFriend(Integer userId, Integer friendId) {
         String friendIds = friendMapper.getFriendIds(userId);
         String[] friendIdArray = friendIds.split(",");
         List<String> friendIdList = new ArrayList<>();
@@ -88,7 +88,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Integer addFriendRequest(Long userId, Long friendId) {
+    public Integer addFriendRequest(Integer userId, Integer friendId) {
         // 1. 先检查该用户是否为好友
         String friendIds = friendMapper.getFriendIds(userId);
         if(friendIds.contains(friendId.toString())){
@@ -111,25 +111,25 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<User> getFriendRequestList(Long userId) {
+    public List<User> getFriendRequestList(Integer userId) {
         String friendRequestIdStr = friendMapper.getFriendRequestIds(userId);
         // 11,22,33,44,55
         if (friendRequestIdStr == null || ",".equals(friendRequestIdStr) || "".equals(friendRequestIdStr)) {
             return new ArrayList<>();
         }
         String[] userIdArray = friendRequestIdStr.split(",");
-        List<Long> friendRequestIds = new ArrayList<>();
+        List<Integer> friendRequestIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
             if ("".equals(arrayItem)) {
                 continue;
             }
-            friendRequestIds.add(Long.parseLong(arrayItem));
+            friendRequestIds.add(Integer.valueOf(arrayItem));
         }
         return friendMapper.getFriendRequestList(friendRequestIds);
     }
 
     @Override
-    public Integer deleteFriendRequest(Long userId, Long friendId) {
+    public Integer deleteFriendRequest(Integer userId, Integer friendId) {
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
         String[] friendRequestIdArray = friendRequestIds.split(",");
         List<String> friendRequestIdList = new ArrayList<>();

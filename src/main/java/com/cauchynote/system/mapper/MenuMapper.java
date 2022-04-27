@@ -28,13 +28,13 @@ public interface MenuMapper {
         " from note_menu left join note_role_menu on note_menu.id = " +
         "note_role_menu.menu_id where role_id = #{roleId}")
     @Results(id = "get=MenuByRoleId", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "path", property = "path", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "name", property = "name", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "label", property = "label", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "icon", property = "icon", javaType = String.class, jdbcType = JdbcType.CHAR),
     })
-    List<Menu> getMenuByRoleId(Long roleId);
+    List<Menu> getMenuByRoleId(Integer roleId);
 
     /**
      * 获取所有权限信息
@@ -43,7 +43,7 @@ public interface MenuMapper {
      */
     @Select("select id, path, name, label, icon from note_menu")
     @Results(id = "getAllMenus", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "path", property = "path", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "name", property = "name", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "label", property = "label", javaType = String.class, jdbcType = JdbcType.CHAR),
@@ -58,5 +58,5 @@ public interface MenuMapper {
      * @param menuId 菜单 ID
      */
     @Insert("insert into note_role_menu(role_id,menu_id) value(#{roleId},#{menuId})")
-    void addMenuOfRole(Long roleId, Long menuId);
+    void addMenuOfRole(Integer roleId, Integer menuId);
 }

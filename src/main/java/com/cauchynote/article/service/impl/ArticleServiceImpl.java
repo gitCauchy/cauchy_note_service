@@ -46,17 +46,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleList(Long authorId, Integer pageSize, Integer pageNum, String keyword) {
+    public List<Article> getArticleList(Integer authorId, Integer pageSize, Integer pageNum, String keyword) {
         return articleMapper.getArticleList(authorId, pageSize, (pageNum - 1) * pageSize, keyword);
     }
 
     @Override
-    public Integer getArticleTotal(Long authorId, String keyword) {
+    public Integer getArticleTotal(Integer authorId, String keyword) {
         return articleMapper.getArticleTotal(authorId, keyword);
     }
 
     @Override
-    public Map<String, Integer> getUserWeekMonthYearArticleCount(Long authorId) {
+    public Map<String, Integer> getUserWeekMonthYearArticleCount(Integer authorId) {
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
@@ -92,7 +92,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int[] getUserLastSixMonthArticleCount(Long authorId) {
+    public int[] getUserLastSixMonthArticleCount(Integer authorId) {
         // 获取前六个月月初的日期
         Date today = new Date();
         Date[] dates = new Date[6];
@@ -117,7 +117,7 @@ public class ArticleServiceImpl implements ArticleService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Map<String, Object> resultMap = new HashMap<>();
         // 获取前三名用户 id
-        List<Long> top3AuthorId = articleMapper.getTop3AuthorId();
+        List<Integer> top3AuthorId = articleMapper.getTop3AuthorId();
         // 根据 authorId 获取用户名
         String top1Username = userMapper.getUsernameById(top3AuthorId.get(0));
         String top2Username = userMapper.getUsernameById(top3AuthorId.get(1));
@@ -155,7 +155,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Integer getUserArticleCount(Long authorId, Date startDate, Date endDate) {
+    public Integer getUserArticleCount(Integer authorId, Date startDate, Date endDate) {
         return articleMapper.getUserArticleCount(authorId, startDate, endDate);
     }
 
@@ -164,7 +164,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Map<String, Object>> result = new ArrayList<>();
         Date today = new Date();
         // 获取前三名用户 id
-        List<Long> top3AuthorId = articleMapper.getTop3AuthorId();
+        List<Integer> top3AuthorId = articleMapper.getTop3AuthorId();
         // 根据 authorId 获取用户名
         int size = Math.min(top3AuthorId.size(), 3);
         String[] topUsername = new String[size];

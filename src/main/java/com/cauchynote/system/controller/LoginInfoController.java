@@ -25,7 +25,7 @@ public class LoginInfoController {
     LoginInfoService loginInfoService;
 
     @GetMapping("/loginCountInfo")
-    public ResponseEntity<Map<String, Map<String, Integer>>> getLoginCount(@RequestParam(value = "userId") Long userId) {
+    public ResponseEntity<Map<String, Map<String, Integer>>> getLoginCount(@RequestParam(value = "userId") Integer userId) {
         Map<String, Integer> userLoginInfo = loginInfoService.getUserLoginCount(userId);
         Map<String, Integer> totalLoginInfo = loginInfoService.getTotalLoginCount();
         Map<String, Map<String, Integer>> returnMap = new HashMap<>(2);

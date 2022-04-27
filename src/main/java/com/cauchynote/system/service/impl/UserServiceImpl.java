@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private MenuMapper menuMapper;
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(Integer id) {
         return userMapper.getUserById(id);
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public boolean deleteUser(Integer id) {
         return userMapper.deleteUser(id) == 1;
     }
 

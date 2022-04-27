@@ -51,10 +51,10 @@ public interface ShareMapper {
         "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId} and note_article" +
         ".status = 0 and note_article.title like '%${keyword}%' limit #{startNum}, #{pageSize}")
     @Results(id = "getSharedArticleList", value = {
-        @Result(column = "id", property = "shareId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-        @Result(column = "share_user_id", property = "shareUserId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-        @Result(column = "receive_user_id", property = "receiverId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
-        @Result(column = "article_id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "shareId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "share_user_id", property = "shareUserId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "receive_user_id", property = "receiverId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "article_id", property = "id", javaType = Long.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "share_date", property = "shareDate", javaType = Date.class, jdbcType = JdbcType.DATE),
         @Result(column = "valid_day", property = "validDay", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "is_revisable", property = "isRevisable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),

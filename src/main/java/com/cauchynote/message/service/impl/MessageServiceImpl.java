@@ -24,22 +24,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getMessageList(Long receiverId) {
+    public List<Message> getMessageList(Integer receiverId) {
         return messageMapper.getMessageList(receiverId);
     }
 
     @Override
-    public Integer deleteMessage(Long id) {
+    public Integer deleteMessage(Integer id) {
         return null;
     }
 
     @Override
-    public Integer readMessage(Long id) {
+    public Integer readMessage(Integer id) {
         return messageMapper.changeStatus(id, 1);
     }
 
     @Override
-    public Integer getMessageCount(Long userId) {
+    public Integer getMessageCount(Integer userId) {
         return messageMapper.getMessageCount(userId);
     }
 }

@@ -97,7 +97,7 @@ public class ArticleController {
      * @return 文章列表
      */
     @GetMapping("/getArticleList")
-    public ResponseEntity<Map<String, Object>> getArticleList(@RequestParam(value = "authorId") Long authorId, @RequestParam(value = "pageSize") Integer pageSize, @RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "keyword") String keyword) {
+    public ResponseEntity<Map<String, Object>> getArticleList(@RequestParam(value = "authorId") Integer authorId, @RequestParam(value = "pageSize") Integer pageSize, @RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "keyword") String keyword) {
         Map<String, Object> retMap = new HashMap<>(2);
         List<Article> articles = articleService.getArticleList(authorId, pageSize, pageNum, keyword);
         Integer total = articleService.getArticleTotal(authorId, keyword);
@@ -117,7 +117,7 @@ public class ArticleController {
      * @return 文章统计数据
      */
     @GetMapping("/articleCountInfo")
-    public ResponseEntity<Map<String, Map<String, Integer>>> getLoginCount(@RequestParam(value = "authorId") Long authorId) {
+    public ResponseEntity<Map<String, Map<String, Integer>>> getLoginCount(@RequestParam(value = "authorId") Integer authorId) {
         Map<String, Integer> userWeekMonthYearArticleInfo = articleService.getUserWeekMonthYearArticleCount(authorId);
         Map<String, Integer> totalWeekMonthYearArticleInfo = articleService.getTotalWeekMonthYearArticleCount();
         Map<String, Map<String, Integer>> returnMap = new HashMap<>(2);
@@ -155,7 +155,7 @@ public class ArticleController {
      * @return 登录及文章数量数据
      */
     @GetMapping("/getCountData")
-    public ResponseEntity<Map<String, Map<String, Integer>>> getCountData(@RequestParam(value = "authorId") Long authorId) {
+    public ResponseEntity<Map<String, Map<String, Integer>>> getCountData(@RequestParam(value = "authorId") Integer authorId) {
         Map<String, Integer> userData = articleService.getUserWeekMonthYearArticleCount(authorId);
         Map<String, Integer> userLoginData = loginInfoService.getUserLoginCount(authorId);
         Map<String, Map<String, Integer>> result = new HashMap<>(2);

@@ -14,15 +14,15 @@ public class Message {
     /**
      * ID
      */
-    private Long id;
+    private Integer id;
     /**
      * 发送者 ID
      */
-    private Long senderId;
+    private Integer senderId;
     /**
      * 接收者 ID
      */
-    private Long receiverId;
+    private Integer receiverId;
     /**
      * 消息类型 1- 好友请求，2 - 分享笔记
      */

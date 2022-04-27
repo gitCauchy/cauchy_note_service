@@ -35,13 +35,13 @@ public class MessageController {
     }
 
     @GetMapping("/getMessageList")
-    public ResponseEntity<List<Message>> getMessageList(@RequestParam Long receiverId) {
+    public ResponseEntity<List<Message>> getMessageList(@RequestParam Integer receiverId) {
         List<Message> list = messageService.getMessageList(receiverId);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/readMessage")
-    public ResponseEntity<Integer> readMessage(@RequestParam Long id) {
+    public ResponseEntity<Integer> readMessage(@RequestParam Integer id) {
         Integer count = messageService.readMessage(id);
         if (count == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -50,7 +50,7 @@ public class MessageController {
     }
 
     @GetMapping("/getMessageCount")
-    public ResponseEntity<Integer> getMessageCount(@RequestParam Long userId) {
+    public ResponseEntity<Integer> getMessageCount(@RequestParam Integer userId) {
         return new ResponseEntity<>(messageService.getMessageCount(userId), HttpStatus.OK);
     }
 

@@ -27,7 +27,7 @@ public class PermissionController {
     PermissionService permissionService;
 
     @GetMapping("/getPermissionByRoleId")
-    public ResponseEntity<List<Permission>> findRolesByUserId(@RequestParam(value = "id") Long roleId) {
+    public ResponseEntity<List<Permission>> findRolesByUserId(@RequestParam(value = "id") Integer roleId) {
         List<Permission> permissions = permissionService.getPermissionByRoleId(roleId);
         if (permissions != null) {
             return new ResponseEntity<>(permissions, HttpStatus.OK);
@@ -49,12 +49,12 @@ public class PermissionController {
     @PostMapping("/addPermissionOfRole")
     @SuppressWarnings("unchecked")
     public ResponseEntity<Integer> addPermissionOfRole(@RequestBody Map<String, Object> requestMap) {
-        Long roleId = Long.valueOf(String.valueOf(requestMap.get("roleId")));
+        Integer roleId = Integer.valueOf(String.valueOf(requestMap.get("roleId")));
         List<Integer> intPermissionIds = (List<Integer>) (requestMap.get("permissionIds"));
         List<Permission> rolePermissions = permissionService.getPermissionByRoleId(roleId);
-        List<Long> permissionIds = new ArrayList<>();
+        List<Integer> permissionIds = new ArrayList<>();
         for (Integer permissionId : intPermissionIds) {
-            permissionIds.add(Long.valueOf(permissionId));
+            permissionIds.add(Integer.valueOf(permissionId));
         }
         for(Permission rolePermission:rolePermissions){
             permissionIds.remove(rolePermission.getId());

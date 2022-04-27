@@ -30,7 +30,7 @@ public class FriendController {
      * @return 好友列表
      */
     @GetMapping("/getFriendList")
-    public ResponseEntity<List<User>> getFriendList(@RequestParam Long userId,
+    public ResponseEntity<List<User>> getFriendList(@RequestParam Integer userId,
                                                     @RequestParam Integer pageSize,
                                                     @RequestParam Integer pageNum) {
         List<User> friendList = friendService.getFriendsList(userId, pageSize, pageNum);
@@ -45,7 +45,7 @@ public class FriendController {
      * @return 1 - 成功 0 - 失败
      */
     @GetMapping("/addFriend")
-    public ResponseEntity<Integer> addFriend(@RequestParam Long userId, @RequestParam Long friendId) {
+    public ResponseEntity<Integer> addFriend(@RequestParam Integer userId, @RequestParam Integer friendId) {
         Integer status = friendService.addFriend(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class FriendController {
      * @return 1 - 成功 0 - 失败
      */
     @GetMapping("/deleteFriend")
-    public ResponseEntity<Integer> deleteFriend(@RequestParam Long userId, @RequestParam Long friendId) {
+    public ResponseEntity<Integer> deleteFriend(@RequestParam Integer userId, @RequestParam Integer friendId) {
         Integer status = friendService.deleteFriend(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -92,7 +92,7 @@ public class FriendController {
      * @return 状态码
      */
     @GetMapping("/addFriendRequest")
-    public ResponseEntity<Integer> addFriendRequest(@RequestParam Long userId, @RequestParam Long friendId) {
+    public ResponseEntity<Integer> addFriendRequest(@RequestParam Integer userId, @RequestParam Integer friendId) {
         Integer status = friendService.addFriendRequest(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -103,13 +103,13 @@ public class FriendController {
     }
 
     @GetMapping("/getFriendRequestList")
-    public ResponseEntity<List<User>> getFriendRequestList(@RequestParam Long userId) {
+    public ResponseEntity<List<User>> getFriendRequestList(@RequestParam Integer userId) {
         List<User> friendRequestList = friendService.getFriendRequestList(userId);
         return new ResponseEntity<>(friendRequestList, HttpStatus.OK);
     }
 
     @GetMapping("/deleteFriendRequest")
-    public ResponseEntity<Integer> deleteFriendRequest(@RequestParam Long userId, @RequestParam Long friendId) {
+    public ResponseEntity<Integer> deleteFriendRequest(@RequestParam Integer userId, @RequestParam Integer friendId) {
         Integer status = friendService.deleteFriendRequest(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);

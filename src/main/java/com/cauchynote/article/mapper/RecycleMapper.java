@@ -28,14 +28,14 @@ public interface RecycleMapper {
     @Select("select id, title, author_id, content,create_time,modify_time,status from note_article where author_id = " +
         "#{authorId} and status = 1 and title like '%${keyword}%' limit #{startNum}, #{pageSize}")
     @Results(id = "getAllDelete", value = {
-        @Result(column = "id", property = "id", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "title", property = "title", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "author_id", property = "authorId", javaType = Long.class, jdbcType = JdbcType.BIGINT),
+        @Result(column = "author_id", property = "authorId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "content", property = "content", javaType = String.class, jdbcType = JdbcType.LONGVARCHAR),
         @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
         @Result(column = "modify_time", property = "modifyTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
         @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT)})
-    List<Article> getDeleteArticleList(Long authorId, Integer pageSize, Integer startNum, String keyword);
+    List<Article> getDeleteArticleList(Integer authorId, Integer pageSize, Integer startNum, String keyword);
 
     /**
      * 获取已经逻辑删除的文章的总数
@@ -46,7 +46,7 @@ public interface RecycleMapper {
      */
     @Select("select count(id) from note_article where author_id = #{authorId} and title like '%${keyword}%' and " +
         "status = 1")
-    Integer getDeleteArticleTotal(Long authorId, String keyword);
+    Integer getDeleteArticleTotal(Integer authorId, String keyword);
 
     /**
      * 根据文章id彻底删除（物理删除文章）
@@ -55,7 +55,7 @@ public interface RecycleMapper {
      * @return 数据变更数量
      */
     @Delete("delete  from  note_article where id=#{id}")
-    int deleteArticleByIdPhysical(Long id);
+    int deleteArticleByIdPhysical(Integer id);
 
     /**
      * 恢复文章
@@ -64,7 +64,7 @@ public interface RecycleMapper {
      * @return 变更数量
      */
     @Update("update note_article set status = 0 where id = #{id}")
-    int restoreArticleById(Long id);
+    int restoreArticleById(Integer id);
 
     /**
      * 一键清空回收站里面所有文章
@@ -73,7 +73,7 @@ public interface RecycleMapper {
      * @return 更新数量
      */
     @Delete("delete  from  note_article where author_id=#{authorId} and status=1")
-    int deleteAllArticlePhysical(Long authorId);
+    int deleteAllArticlePhysical(Integer authorId);
 
     /**
      * 一键恢复回收站里所有文章
@@ -82,6 +82,6 @@ public interface RecycleMapper {
      * @return 变更数量
      */
     @Update("update note_article set status = 0 where author_id=#{authorId} and status=1")
-    int restoreAllArticle(Long authorId);
+    int restoreAllArticle(Integer authorId);
 
 }

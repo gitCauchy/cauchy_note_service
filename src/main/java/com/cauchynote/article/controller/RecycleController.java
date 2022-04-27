@@ -35,7 +35,7 @@ public class RecycleController {
      * @return 回收站列表
      */
     @GetMapping("/getRecycleArticleList")
-    public ResponseEntity<Map<String, Object>> geRecycleArticleList(@RequestParam(value = "authorId") Long authorId,
+    public ResponseEntity<Map<String, Object>> geRecycleArticleList(@RequestParam(value = "authorId") Integer authorId,
                                                                     @RequestParam(value = "pageSize") Integer pageSize,
                                                                     @RequestParam(value = "pageNum") Integer pageNum,
                                                                     @RequestParam(value = "keyword") String keyword) {
@@ -58,7 +58,7 @@ public class RecycleController {
      * @return 装态码
      */
     @GetMapping("/deleteAllArticlePhysical")
-    public ResponseEntity<Integer> deleteAllArticlePhysical(@RequestParam Long authorId) {
+    public ResponseEntity<Integer> deleteAllArticlePhysical(@RequestParam Integer authorId) {
         boolean result = recycleService.deleteAllArticlePhysical(authorId);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -73,7 +73,7 @@ public class RecycleController {
      * @return 装态码
      */
     @GetMapping("/deleteArticlePhysical")
-    public ResponseEntity<Integer> deleteArticlePhysical(@RequestParam Long id) {
+    public ResponseEntity<Integer> deleteArticlePhysical(@RequestParam Integer id) {
         boolean result = recycleService.deleteArticleByIdPhysical(id);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -88,7 +88,7 @@ public class RecycleController {
      * @return 装态码
      */
     @GetMapping("/restoreAllArticle")
-    public ResponseEntity<Integer> restoreAllArticle(@RequestParam Long authorId) {
+    public ResponseEntity<Integer> restoreAllArticle(@RequestParam Integer authorId) {
         boolean result = recycleService.restoreAllArticle(authorId);
         System.out.println(result);
         if (result) {
@@ -104,7 +104,7 @@ public class RecycleController {
      * @return 状态码
      */
     @GetMapping("/restoreArticle")
-    public ResponseEntity<Integer> restoreArticle(@RequestParam Long id) {
+    public ResponseEntity<Integer> restoreArticle(@RequestParam Integer id) {
         boolean result = recycleService.restoreArticleById(id);
         if (result) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);

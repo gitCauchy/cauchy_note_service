@@ -12,7 +12,7 @@ public class Permission {
     /**
      * 权限ID
      */
-    private Long id;
+    private Integer id;
     /**
      * 权限名称
      */

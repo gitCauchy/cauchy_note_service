@@ -20,7 +20,7 @@ public class RoleServiceImpl implements RoleService {
     RoleMapper roleMapper;
 
     @Override
-    public List<Role> findRolesByUserId(Long userId) {
+    public List<Role> findRolesByUserId(Integer userId) {
         return roleMapper.findRolesByUserId(userId);
     }
 
@@ -35,7 +35,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean deleteRole(Long id) {
+    public boolean deleteRole(Integer id) {
         return roleMapper.deleteRole(id) == 1;
     }
 
@@ -45,8 +45,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean addRoleOfUser(Long userId, List<Long> roleIds) {
-        for (Long roleId : roleIds) {
+    public boolean addRoleOfUser(Integer userId, List<Integer> roleIds) {
+        for (Integer roleId : roleIds) {
             roleMapper.addRoleOfUser(userId, roleId);
         }
         return true;
