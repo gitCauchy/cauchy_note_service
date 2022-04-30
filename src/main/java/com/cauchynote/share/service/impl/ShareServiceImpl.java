@@ -4,7 +4,7 @@ import com.cauchynote.share.entity.SharedArticle;
 import com.cauchynote.share.mapper.ShareMapper;
 import com.cauchynote.share.service.ShareService;
 import com.cauchynote.utils.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,8 +17,8 @@ import java.util.*;
  * @createTime 2022年04月13日 10:03:00
  */
 @Service
+@AllArgsConstructor
 public class ShareServiceImpl implements ShareService {
-    @Autowired
     private ShareMapper shareMapper;
 
     @Override
@@ -36,7 +36,7 @@ public class ShareServiceImpl implements ShareService {
         for (SharedArticle sharedArticle : sharedArticleList) {
             Date shareDate = sharedArticle.getShareDate();
             int validDay = sharedArticle.getValidDay();
-            if (!DateUtil.getNDayDate(-1 * validDay).after(shareDate)) {
+            if (!DateUtil.getNumDayDate(-1 * validDay).after(shareDate)) {
                 resultList.add(sharedArticle);
             }
         }

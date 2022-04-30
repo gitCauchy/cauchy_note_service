@@ -29,13 +29,6 @@ public interface MessageService {
     List<Message> getMessageList(Integer receiverId);
 
     /**
-     * 删除消息
-     * @param id 消息 id
-     * @return 状态
-     */
-    Integer deleteMessage(Integer id);
-
-    /**
      * 修改消息状态
      *
      * @param id 消息 ID

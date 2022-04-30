@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.cauchynote.system.mapper.UserMapper;
 import com.cauchynote.utils.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.cauchynote.article.entity.Article;
@@ -19,11 +19,11 @@ import com.cauchynote.article.service.ArticleService;
  * @ClassName ArticleServiceImpl.java
  */
 @Service
+@AllArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
-    @Autowired
     private ArticleMapper articleMapper;
-    @Autowired
     private UserMapper userMapper;
+    private static final Integer STATISTIC_PERIOD = 6;
 
     @Override
     public Integer addArticle(Article article) {
@@ -63,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
         calendar.add(Calendar.DATE, 1);
         Date tomorrow = calendar.getTime();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startBeforeNMonth(today, -1);
+        Date startMonth = DateUtil.startBeforeNumMonth(today, -1);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = articleMapper.getUserArticleCount(authorId, startWeek, tomorrow);
         int countOfMonth = articleMapper.getUserArticleCount(authorId, startMonth, tomorrow);
@@ -79,7 +79,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Map<String, Integer> getTotalWeekMonthYearArticleCount() {
         Date today = new Date();
         Date startWeek = DateUtil.startWeek(today);
-        Date startMonth = DateUtil.startBeforeNMonth(today, -1);
+        Date startMonth = DateUtil.startBeforeNumMonth(today, -1);
         Date startYear = DateUtil.startYear(today);
         int countOfWeek = articleMapper.getTotalArticleCount(startWeek);
         int countOfMonth = articleMapper.getTotalArticleCount(startMonth);
@@ -95,18 +95,18 @@ public class ArticleServiceImpl implements ArticleService {
     public int[] getUserLastSixMonthArticleCount(Integer authorId) {
         // 获取前六个月月初的日期
         Date today = new Date();
-        Date[] dates = new Date[6];
-        int[] nCounts = new int[6];
-        int[] counts = new int[6];
+        Date[] dates = new Date[STATISTIC_PERIOD];
+        int[] nCounts = new int[STATISTIC_PERIOD];
+        int[] counts = new int[STATISTIC_PERIOD];
 
-        for (int i = 0; i < 6; i++) {
-            dates[i] = DateUtil.startBeforeNMonth(today, i + 1);
+        for (int i = 0; i < STATISTIC_PERIOD; i++) {
+            dates[i] = DateUtil.startBeforeNumMonth(today, i + 1);
             nCounts[i] = articleMapper.getUserArticleCount(authorId, dates[i], today);
         }
-        for (int j = 5; j > 0; j--) {
+        for (int j = STATISTIC_PERIOD - 1; j > 0; j--) {
             counts[j] = nCounts[j] - nCounts[j - 1];
         }
-        int countOfThisMonth = articleMapper.getUserArticleCount(authorId, DateUtil.startBeforeNMonth(today, 0), today);
+        int countOfThisMonth = articleMapper.getUserArticleCount(authorId, DateUtil.startBeforeNumMonth(today, 0), today);
         counts[0] = nCounts[0] - countOfThisMonth;
         return counts;
     }
@@ -126,16 +126,16 @@ public class ArticleServiceImpl implements ArticleService {
         topCount[0] = getUserLastSixMonthArticleCount(top3AuthorId.get(0));
         topCount[1] = getUserLastSixMonthArticleCount(top3AuthorId.get(1));
         topCount[2] = getUserLastSixMonthArticleCount(top3AuthorId.get(2));
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < STATISTIC_PERIOD; i++) {
             topCount[0][i] = articleMapper.getUserArticleCount(top3AuthorId.get(0),
-                DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
             topCount[1][i] = articleMapper.getUserArticleCount(top3AuthorId.get(1),
-                DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
             topCount[2][i] = articleMapper.getUserArticleCount(top3AuthorId.get(2),
-                DateUtil.startBeforeNMonth(today, i), DateUtil.startBeforeNMonth(today, i - 1));
+                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
         }
         List<Map<String, Integer>> dataList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < STATISTIC_PERIOD; i++) {
             Map<String, Integer> tmp = new TreeMap<>();
             tmp.put(top1Username, topCount[0][i]);
             tmp.put(top2Username, topCount[1][i]);
@@ -145,8 +145,8 @@ public class ArticleServiceImpl implements ArticleService {
         Collections.reverse(dataList);
         resultMap.put("data", dataList);
         List<String> dates = new ArrayList<>();
-        for (int j = 0; j < 6; j++) {
-            Date tmpDate = DateUtil.startBeforeNMonth(today, j);
+        for (int j = 0; j < STATISTIC_PERIOD; j++) {
+            Date tmpDate = DateUtil.startBeforeNumMonth(today, j);
             dates.add(sdf.format(tmpDate));
         }
         Collections.reverse(dates);
@@ -177,12 +177,12 @@ public class ArticleServiceImpl implements ArticleService {
 
         for (int i = 0; i < size; i++) {
             weekData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startWeek(today), today);
-            monthData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startBeforeNMonth(today, -1), today);
+            monthData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startBeforeNumMonth(today, -1), today);
             yearData[i] = getUserArticleCount(top3AuthorId.get(i), DateUtil.startYear(today), today);
         }
 
         for (int i = 0; i < size; i++) {
-            Map<String, Object> tmp = new HashMap<>();
+            Map<String, Object> tmp = new HashMap<>(4);
             tmp.put("name", topUsername[i]);
             tmp.put("weekAdd", weekData[i]);
             tmp.put("monthAdd", monthData[i]);

@@ -4,7 +4,6 @@ import com.cauchynote.message.entity.Message;
 import com.cauchynote.message.service.MessageService;
 import com.cauchynote.utils.SystemConstantDefine;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -28,6 +28,7 @@ public class ArticleController {
 
     ArticleService articleService;
     LoginInfoService loginInfoService;
+
     /**
      * 新增文章
      *
@@ -104,9 +105,8 @@ public class ArticleController {
         retMap.put("total", total);
         if (articles != null) {
             return new ResponseEntity<>(retMap, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

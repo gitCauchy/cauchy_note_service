@@ -25,10 +25,6 @@ public interface MessageMapper {
         "#{senderId}, #{receiverId}, #{messageInfo}, #{messageType}, now(), #{status})")
     Integer addNewMessage(Message message);
 
-    void deleteMessage();
-
-    void changeStatus();
-
     /**
      * 获取消息列表
      *
