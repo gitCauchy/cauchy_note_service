@@ -6,9 +6,10 @@ import com.cauchynote.system.service.UserService;
 import com.cauchynote.system.service.impl.UserServiceImpl;
 import com.cauchynote.utils.JWTUtil;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,20 +23,20 @@ import java.util.Map;
  * @ClassName LoginController
  */
 @CrossOrigin
+@AllArgsConstructor
 @RestController
 public class LoginController {
-    @Autowired
+
     private UserService userService;
-    @Autowired
     UserServiceImpl userServiceImpl;
-    @Autowired
     LoginInfoService loginInfoService;
+    UserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> responseMap = new HashMap<>(3);
-        if (userService.login(user.getUsername(), user.getPassword())) {
-            User userInfo = (User) userServiceImpl.loadUserByUsername(user.getUsername());
+        if (userService.login(user.getUsername(), user.getPassword()) == 1) {
+            User userInfo = (User) userDetailsService.loadUserByUsername(user.getUsername());
             // 将登录信息记录下来
             loginInfoService.addLoginInfo(userInfo.getId());
             responseMap.put("token", JWTUtil.createToken(user.getUsername()));
@@ -49,7 +50,13 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<Integer> register(@RequestBody User user) {
-        return new ResponseEntity<>(userService.register(user), HttpStatus.OK);
+        Integer result = userService.register(user);
+        if (result == -2) {
+            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+        } else if (result == -1) {
+            return new ResponseEntity<>(SystemConstantDefine.USERNAME_EXIST_ALREADY, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
     }
 
     @GetMapping("/checkToken")

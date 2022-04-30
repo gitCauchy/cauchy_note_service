@@ -3,7 +3,7 @@ package com.cauchynote.friend.service.impl;
 import com.cauchynote.friend.mapper.FriendMapper;
 import com.cauchynote.friend.service.FriendService;
 import com.cauchynote.system.entity.User;
-import org.apache.ibatis.annotations.Select;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,22 @@ import java.util.*;
  * @createTime 2022年04月10日 10:50:00
  */
 
+@AllArgsConstructor
 @Service
 public class FriendServiceImpl implements FriendService {
-    @Autowired
+
+    public static final String ID_SEPARATOR = ",";
+
     FriendMapper friendMapper;
 
     @Override
     public List<User> getFriendsList(Integer userId, Integer pageSize, Integer pageNum) {
         String friendIdStr = friendMapper.getFriendIds(userId);
         // 11,22,33,44,55
-        if (friendIdStr == null || ",".equals(friendIdStr) || "".equals(friendIdStr)) {
+        if (isNullRecord(friendIdStr)) {
             return new ArrayList<>();
         }
-        String[] userIdArray = friendIdStr.split(",");
+        String[] userIdArray = friendIdStr.split(ID_SEPARATOR);
         List<Integer> friendIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
             if ("".equals(arrayItem)) {
@@ -56,7 +59,7 @@ public class FriendServiceImpl implements FriendService {
             friendIds = friendId.toString();
             return friendMapper.updateFriend(userId, friendIds);
         }
-        String[] friendIdArray = friendIds.split(",");
+        String[] friendIdArray = friendIds.split(ID_SEPARATOR);
         Set<String> idStrSet = new HashSet<>(Arrays.asList(friendIdArray));
         idStrSet.add(friendId.toString());
         StringBuilder sb = new StringBuilder();
@@ -70,7 +73,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public Integer deleteFriend(Integer userId, Integer friendId) {
         String friendIds = friendMapper.getFriendIds(userId);
-        String[] friendIdArray = friendIds.split(",");
+        String[] friendIdArray = friendIds.split(ID_SEPARATOR);
         List<String> friendIdList = new ArrayList<>();
         Collections.addAll(friendIdList, friendIdArray);
         friendIdList.remove(friendId.toString());
@@ -91,7 +94,7 @@ public class FriendServiceImpl implements FriendService {
     public Integer addFriendRequest(Integer userId, Integer friendId) {
         // 1. 先检查该用户是否为好友
         String friendIds = friendMapper.getFriendIds(userId);
-        if(friendIds.contains(friendId.toString())){
+        if (friendIds != null && friendIds.contains(friendId.toString())) {
             return -1;
         }
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
@@ -99,7 +102,7 @@ public class FriendServiceImpl implements FriendService {
             friendRequestIds = friendId.toString();
             friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
         }
-        String[] friendRequestIdArray = friendRequestIds.split(",");
+        String[] friendRequestIdArray = friendRequestIds.split(ID_SEPARATOR);
         Set<String> requestIdStrSet = new HashSet<>(Arrays.asList(friendRequestIdArray));
         requestIdStrSet.add(friendId.toString());
         StringBuilder sb = new StringBuilder();
@@ -114,10 +117,10 @@ public class FriendServiceImpl implements FriendService {
     public List<User> getFriendRequestList(Integer userId) {
         String friendRequestIdStr = friendMapper.getFriendRequestIds(userId);
         // 11,22,33,44,55
-        if (friendRequestIdStr == null || ",".equals(friendRequestIdStr) || "".equals(friendRequestIdStr)) {
+        if (isNullRecord(friendRequestIdStr)) {
             return new ArrayList<>();
         }
-        String[] userIdArray = friendRequestIdStr.split(",");
+        String[] userIdArray = friendRequestIdStr.split(ID_SEPARATOR);
         List<Integer> friendRequestIds = new ArrayList<>();
         for (String arrayItem : userIdArray) {
             if ("".equals(arrayItem)) {
@@ -131,15 +134,19 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public Integer deleteFriendRequest(Integer userId, Integer friendId) {
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
-        String[] friendRequestIdArray = friendRequestIds.split(",");
+        String[] friendRequestIdArray = friendRequestIds.split(ID_SEPARATOR);
         List<String> friendRequestIdList = new ArrayList<>();
         Collections.addAll(friendRequestIdList, friendRequestIdArray);
         friendRequestIdList.remove(friendId.toString());
         StringBuilder sb = new StringBuilder();
         for (String listItem : friendRequestIdList) {
             sb.append(listItem);
-            sb.append(",");
+            sb.append(ID_SEPARATOR);
         }
         return friendMapper.updateFriendRequest(userId, sb.toString());
+    }
+
+    private boolean isNullRecord(String idStr) {
+        return idStr == null || ID_SEPARATOR.equals(idStr) || "".equals(idStr);
     }
 }

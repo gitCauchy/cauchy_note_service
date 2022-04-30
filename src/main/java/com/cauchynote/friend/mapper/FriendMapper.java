@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * 好友持久层
+ *
+ * @author Cauchy
  */
 @Repository
 public interface FriendMapper {
@@ -38,7 +40,7 @@ public interface FriendMapper {
         "#{item} " +
         "</foreach> limit #{startNum}, #{pageSize} " +
         "</script>")
-    @Results(id = "getFriendList", value = {
+    @Results(id = "friendResultMap", value = {
         @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -69,17 +71,7 @@ public interface FriendMapper {
      */
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " +
         "is_enable from note_user where user_name = #{friendName}")
-    @Results(id = "searchFriendByUsername", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
-    })
+    @ResultMap(value = "friendResultMap")
     User searchFriend(String friendName);
 
     /**
@@ -87,6 +79,7 @@ public interface FriendMapper {
      *
      * @param userId    用户Id
      * @param friendIds 好友ID
+     * @return 1 - 成功 | 0 - 失败
      */
     @Insert("insert into note_friend(user_id, friend_ids) value(#{userId}, #{friendIds})")
     Integer addNewRecord(Integer userId, String friendIds);
@@ -132,17 +125,7 @@ public interface FriendMapper {
         "#{item} " +
         "</foreach> " +
         "</script>")
-    @Results(id = "getFriendRequestList", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
-    })
+    @ResultMap(value = "friendResultMap")
     List<User> getFriendRequestList(@Param("list") List<Integer> friendRequestIds);
 
     /**

@@ -3,7 +3,7 @@ package com.cauchynote.system.service.impl;
 import com.cauchynote.system.entity.Role;
 import com.cauchynote.system.mapper.RoleMapper;
 import com.cauchynote.system.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.List;
  * @ClassName RoleServiceImpl
  */
 @Service
+@AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    @Autowired
     RoleMapper roleMapper;
 
     @Override

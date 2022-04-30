@@ -1,7 +1,7 @@
 package com.cauchynote.system.controller;
 
 import com.cauchynote.system.service.LoginInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +19,9 @@ import java.util.Map;
  * @ClassName LoginInfoController
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/loginInfo")
 public class LoginInfoController {
-    @Autowired
     LoginInfoService loginInfoService;
 
     @GetMapping("/loginCountInfo")

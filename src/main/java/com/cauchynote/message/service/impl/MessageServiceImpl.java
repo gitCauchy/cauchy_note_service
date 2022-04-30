@@ -3,7 +3,7 @@ package com.cauchynote.message.service.impl;
 import com.cauchynote.message.entity.Message;
 import com.cauchynote.message.mapper.MessageMapper;
 import com.cauchynote.message.service.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +14,8 @@ import java.util.List;
  * @createTime 2022年04月25日 10:41:00
  */
 @Service
+@AllArgsConstructor
 public class MessageServiceImpl implements MessageService {
-    @Autowired
     private MessageMapper messageMapper;
 
     @Override

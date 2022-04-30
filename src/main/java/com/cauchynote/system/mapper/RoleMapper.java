@@ -24,7 +24,7 @@ public interface RoleMapper {
      */
     @Select("select note_role.id, note_role.role_name, note_role.role_desc from note_role left join note_user_role" +
         " on note_role.id = note_user_role.role_id where user_id = #{userId}")
-    @Results(id = "getRoleByUserId", value = {
+    @Results(id = "roleResultMap", value = {
         @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "role_name", property = "roleName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "role_desc", property = "roleDescription", javaType = String.class, jdbcType = JdbcType.VARCHAR),
@@ -77,11 +77,7 @@ public interface RoleMapper {
      */
     @Select("select id, role_name, role_desc from note_role " +
         "where role_name like '%${keyword}%' limit #{startNum}, #{pageSize}")
-    @Results(id = "getAllRoles", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "role_name", property = "roleName", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "role_desc", property = "roleDescription", javaType = String.class, jdbcType = JdbcType.VARCHAR)
-    })
+    @ResultMap(value = "roleResultMap")
     List<Role> getAllRoles(Integer pageSize, Integer startNum, String keyword);
 
     /**

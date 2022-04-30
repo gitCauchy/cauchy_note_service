@@ -27,7 +27,7 @@ public interface UserService {
      * @param id 用户ID
      * @return 1 - 删除成功 0 - 删除失败
      */
-    boolean deleteUser(Integer id);
+    Integer deleteUser(Integer id);
 
     /**
      * 新增用户
@@ -35,7 +35,7 @@ public interface UserService {
      * @param user 用户对象
      * @return 0 - 添加成功 1 - 添加失败
      */
-    boolean addUser(User user);
+    Integer addUser(User user);
 
     /**
      * 修改用户信息
@@ -43,7 +43,7 @@ public interface UserService {
      * @param user 用户对象
      * @return 0 - 修改成功 1 - 修改失败
      */
-    boolean updateUser(User user);
+    Integer updateUser(User user);
 
     /**
      * 获取所有用户
@@ -60,15 +60,15 @@ public interface UserService {
      *
      * @param username       用户名
      * @param originPassword 明文密码
-     * @return 校验结果
+     * @return 1 - 成功 | -1 失败
      */
-    boolean login(String username, String originPassword);
+    Integer login(String username, String originPassword);
 
     /**
      * 用户注册
      *
      * @param user 用户对象
-     * @return 1 - 成功 0 - 失败
+     * @return -2 - 注册失败 | -1 - 用户已经存在  | 1 - 成功
      */
     Integer register(User user);
 
@@ -93,6 +93,7 @@ public interface UserService {
      *
      * @param password 密码
      * @param username 用户名
+     * @return 是否成功修改
      */
-    void modifyPassword(String password, String username);
+    Integer modifyPassword(String password, String username);
 }

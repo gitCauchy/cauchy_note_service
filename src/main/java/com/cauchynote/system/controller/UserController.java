@@ -6,8 +6,8 @@ import com.cauchynote.utils.EmailUtil;
 import com.cauchynote.utils.RandomUtil;
 import com.cauchynote.utils.RedisUtil;
 import com.cauchynote.utils.SystemConstantDefine;
+import lombok.AllArgsConstructor;
 import org.apache.commons.mail.EmailException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,42 +26,38 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @Autowired
-    RedisUtil redisUtil;
+    private RedisUtil redisUtil;
 
     @PostMapping("/addUser")
     public ResponseEntity<Integer> addUser(@RequestBody User user) {
-        boolean result = userService.addUser(user);
-        if (result) {
+        Integer result = userService.addUser(user);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
         }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
     @GetMapping("/deleteUser")
     public ResponseEntity<Integer> deleteUser(@RequestParam Integer id) {
-        boolean result = userService.deleteUser(id);
-        if (result) {
+        Integer result = userService.deleteUser(id);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
         }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
     @PostMapping("/updateUser")
     public ResponseEntity<Integer> updateUser(@RequestBody User user) {
-        boolean result = userService.updateUser(user);
-        if (result) {
+        Integer result = userService.updateUser(user);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
         }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 
     @GetMapping("/queryUser")
@@ -69,9 +65,8 @@ public class UserController {
         User user = userService.getUserById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @GetMapping("/queryAllUsers")
@@ -83,9 +78,8 @@ public class UserController {
         retMap.put("total", total);
         if (users != null) {
             return new ResponseEntity<>(retMap, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -144,8 +138,11 @@ public class UserController {
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodePassword = encoder.encode(newPassword);
-        userService.modifyPassword(encodePassword, username);
-        responseMap.put("SystemStatusCode", SystemConstantDefine.SUCCESS);
+        if (userService.modifyPassword(encodePassword, username) == 1) {
+            responseMap.put("SystemStatusCode", SystemConstantDefine.SUCCESS);
+            return new ResponseEntity<>(responseMap, HttpStatus.OK);
+        }
+        responseMap.put("SystemStatusCode", SystemConstantDefine.FAIL);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 }

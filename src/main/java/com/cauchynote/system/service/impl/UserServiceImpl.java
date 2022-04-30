@@ -10,12 +10,11 @@ import com.cauchynote.system.mapper.RoleMapper;
 import com.cauchynote.system.mapper.UserMapper;
 import com.cauchynote.system.service.UserService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +30,12 @@ import java.util.Set;
  * @ClassName UserServiceImpl
  */
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
-    @Autowired
+
     private UserMapper userMapper;
-    @Autowired
     private RoleMapper roleMapper;
-    @Autowired
     private PermissionMapper permissionMapper;
-    @Autowired
     private MenuMapper menuMapper;
 
     @Override
@@ -47,28 +44,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean deleteUser(Integer id) {
-        return userMapper.deleteUser(id) == 1;
+    public Integer deleteUser(Integer id) {
+        return userMapper.deleteUser(id);
     }
 
     @Override
-    public boolean addUser(User user) {
+    public Integer addUser(User user) {
         // 对传入的密码进行加密处理
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String password = encoder.encode(user.getPassword());
         user.setPassword(password);
-        return userMapper.addUser(user) == 1;
+        return userMapper.addUser(user);
     }
 
     @Override
-    public boolean updateUser(User user) {
+    public Integer updateUser(User user) {
         String rawPassword = user.getPassword();
         if (rawPassword != null) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String password = encoder.encode(rawPassword);
             user.setPassword(password);
         }
-        return userMapper.updateUser(user) == 1;
+        return userMapper.updateUser(user);
     }
 
     @Override
@@ -77,15 +74,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean login(String username, String originPassword) {
+    public Integer login(String username, String originPassword) {
         User user = (User) this.loadUserByUsername(username);
         // 如果用户不存在或者当前用户为不可用状态
         if (user == null || user.getIsEnable() == 1) {
-            return false;
+            return -1;
         }
         // 对传入的明文密码做 hash
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.matches(originPassword, user.getPassword());
+        if (encoder.matches(originPassword, user.getPassword())) {
+            return 1;
+        }
+        return -1;
     }
 
     @Override
@@ -93,20 +93,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User getUser = userMapper.findUserByUsername(user.getUsername());
         // 1. 检查当前用户名是否存在
         if (getUser != null) {
-            return SystemConstantDefine.USERNAME_EXIST_ALREADY;
+            return -1;
         }
         user.setIsEnable(0);
         user.setIsNonExpired(0);
         user.setIsPasswordNonExpired(0);
         user.setIsNonLocked(0);
-        if (this.addUser(user)) {
+        if (this.addUser(user) == 1) {
             // 为用户分配最基础的角色
             User saveUser = userMapper.findUserByUsername(user.getUsername());
             Role role = roleMapper.findRoleByName(SystemConstantDefine.USER_NAME);
             roleMapper.addRoleOfUser(saveUser.getId(), role.getId());
-            return SystemConstantDefine.SUCCESS;
+            return 1;
         }
-        return SystemConstantDefine.FAIL;
+        return -2;
     }
 
     @Override
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void modifyPassword(String password, String username) {
-        userMapper.modifyPassword(password, username);
+    public Integer modifyPassword(String password, String username) {
+        return userMapper.modifyPassword(password, username);
     }
 }

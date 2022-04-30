@@ -3,7 +3,7 @@ package com.cauchynote.system.controller;
 import com.cauchynote.system.entity.Role;
 import com.cauchynote.system.service.RoleService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +21,9 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/role")
 public class RoleController {
-    @Autowired
     RoleService roleService;
 
     @GetMapping("/findRoleByUserId")
@@ -72,7 +72,7 @@ public class RoleController {
         @RequestParam(value = "pageNum") Integer pageNum,
         @RequestParam(value = "keyword") String keyword
     ) {
-        Map<String, Object> retMap = new HashMap<>();
+        Map<String, Object> retMap = new HashMap<>(2);
         List<Role> roles = roleService.getAllRoles(pageSize, pageNum, keyword);
         Integer total = roleService.getRoleTotal(keyword);
         retMap.put("roles", roles);
@@ -85,10 +85,11 @@ public class RoleController {
     }
 
     @PostMapping("/addRoleOfUser")
-    public ResponseEntity<Integer> addRoleOfUser(@RequestBody Map<String, Object> requstBody) {
-        Integer userId = (Integer) requstBody.get("userId");
+    @SuppressWarnings("unchecked")
+    public ResponseEntity<Integer> addRoleOfUser(@RequestBody Map<String, Object> requestBody) {
+        Integer userId = (Integer) requestBody.get("userId");
         List<Role> userRoles = roleService.findRolesByUserId(userId);
-        List<Integer> intRoleIds = (List<Integer>) requstBody.get("roleIds");
+        List<Integer> intRoleIds = (List<Integer>) requestBody.get("roleIds");
         List<Integer> roleIds = new ArrayList<>(intRoleIds);
         for (Role userRole : userRoles) {
             roleIds.remove(userRole.getId());

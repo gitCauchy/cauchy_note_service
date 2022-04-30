@@ -1,7 +1,9 @@
 package com.cauchynote.article.service;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import com.cauchynote.article.entity.Article;
 
@@ -17,25 +19,25 @@ public interface ArticleService {
      * 添加文章
      *
      * @param article 文章对象
-     * @return 是否成功
+     * @return 1 - 添加成功 | 添加失败
      */
-    boolean addArticle(Article article);
+    Integer addArticle(Article article);
 
     /**
      * 删除文章
      *
      * @param id 文章 ID
-     * @return 是否成功
+     * @return 1 - 删除成功 | 0 - 删除失败
      */
-    boolean deleteArticle(Integer id);
+    Integer deleteArticle(Integer id);
 
     /**
      * 修改日志
      *
      * @param article 文章对象
-     * @return 是否成功
+     * @return 1 - 修改成功 0 - 修改失败
      */
-    boolean modifyArticle(Article article);
+    Integer modifyArticle(Article article);
 
     /**
      * 获取日志内容
@@ -48,6 +50,7 @@ public interface ArticleService {
     /**
      * 获取日志列表
      *
+     * @param authorId 作者 ID
      * @param pageSize 页大小
      * @param pageNum  页号
      * @param keyword  关键词

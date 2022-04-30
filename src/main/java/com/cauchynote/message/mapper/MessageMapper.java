@@ -37,7 +37,7 @@ public interface MessageMapper {
      */
     @Select("select id, sender_id, receiver_id, message_info, message_type, send_date, status from note_message" +
         " where receiver_id = #{receiverId} and status = 0")
-    @Results(id = "getMessageList", value = {
+    @Results(id = "messageResultMap", value = {
         @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "sender_id", property = "senderId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "receiver_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),

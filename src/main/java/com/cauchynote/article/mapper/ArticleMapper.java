@@ -53,13 +53,14 @@ public interface ArticleMapper {
      * @return 文章对象
      */
     @Select("select id, title, content, author_id, create_time, status from note_article where id = #{id}")
-    @Results(id = "getArticleDetailInformation",
+    @Results(id = "articleResultMap",
         value = {
             @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
             @Result(column = "title", property = "title", javaType = String.class, jdbcType = JdbcType.VARCHAR),
             @Result(column = "content", property = "content", javaType = String.class, jdbcType = JdbcType.LONGNVARCHAR),
             @Result(column = "author_id", property = "authorId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
             @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "modify_time", property = "modifyTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.INTEGER)})
     Article getArticle(Integer id);
 
@@ -74,14 +75,7 @@ public interface ArticleMapper {
      */
     @Select("select id, title, author_id, content,create_time,modify_time,status from note_article where author_id = " +
         "#{authorId} and status = 0 and title like '%${keyword}%' limit #{startNum}, #{pageSize}")
-    @Results(id = "getAll", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "title", property = "title", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "author_id", property = "authorId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "content", property = "content", javaType = String.class, jdbcType = JdbcType.LONGVARCHAR),
-        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
-        @Result(column = "modify_time", property = "modifyTime", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
-        @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT)})
+    @ResultMap(value = "articleResultMap")
     List<Article> getArticleList(Integer authorId, Integer pageSize, Integer startNum, String keyword);
 
     /**

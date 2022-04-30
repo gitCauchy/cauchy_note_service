@@ -18,10 +18,9 @@ public interface LoginInfoMapper {
      * 新增登录信息
      *
      * @param userId 用户ID
-     * @return 1 - 成功插入 0 - 失败
      */
     @Insert("insert into note_login_info(user_id, login_time) values(#{userId},now())")
-    int addLoginInfo(Integer userId);
+    void addLoginInfo(Integer userId);
 
     /**
      * 登录次数

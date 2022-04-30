@@ -26,18 +26,18 @@ public class ArticleServiceImpl implements ArticleService {
     private UserMapper userMapper;
 
     @Override
-    public boolean addArticle(Article article) {
-        return articleMapper.addArticle(article) == 1;
+    public Integer addArticle(Article article) {
+        return articleMapper.addArticle(article);
     }
 
     @Override
-    public boolean deleteArticle(Integer id) {
-        return articleMapper.deleteArticle(id) == 1;
+    public Integer deleteArticle(Integer id) {
+        return articleMapper.deleteArticle(id);
     }
 
     @Override
-    public boolean modifyArticle(Article article) {
-        return articleMapper.modifyArticle(article) == 1;
+    public Integer modifyArticle(Article article) {
+        return articleMapper.modifyArticle(article);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Map<String, Object> getTopThreeUserLastSixMonthArticleCount() {
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>(2);
         // 获取前三名用户 id
         List<Integer> top3AuthorId = articleMapper.getTop3AuthorId();
         // 根据 authorId 获取用户名

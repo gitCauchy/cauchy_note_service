@@ -3,7 +3,7 @@ package com.cauchynote.system.controller;
 import com.cauchynote.system.entity.Permission;
 import com.cauchynote.system.service.PermissionService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +20,10 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/permission")
 public class PermissionController {
 
-    @Autowired
     PermissionService permissionService;
 
     @GetMapping("/getPermissionByRoleId")
@@ -52,10 +52,7 @@ public class PermissionController {
         Integer roleId = Integer.valueOf(String.valueOf(requestMap.get("roleId")));
         List<Integer> intPermissionIds = (List<Integer>) (requestMap.get("permissionIds"));
         List<Permission> rolePermissions = permissionService.getPermissionByRoleId(roleId);
-        List<Integer> permissionIds = new ArrayList<>();
-        for (Integer permissionId : intPermissionIds) {
-            permissionIds.add(Integer.valueOf(permissionId));
-        }
+        List<Integer> permissionIds = new ArrayList<>(intPermissionIds);
         for(Permission rolePermission:rolePermissions){
             permissionIds.remove(rolePermission.getId());
         }

@@ -1,10 +1,7 @@
 package com.cauchynote.system.mapper;
 
 import com.cauchynote.system.entity.Menu;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +24,7 @@ public interface MenuMapper {
     @Select("select note_menu.id, note_menu.path, note_menu.name, note_menu.label, note_menu.icon" +
         " from note_menu left join note_role_menu on note_menu.id = " +
         "note_role_menu.menu_id where role_id = #{roleId}")
-    @Results(id = "get=MenuByRoleId", value = {
+    @Results(id = "menuResultMap", value = {
         @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "path", property = "path", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "name", property = "name", javaType = String.class, jdbcType = JdbcType.CHAR),
@@ -42,13 +39,7 @@ public interface MenuMapper {
      * @return List<Permission>
      */
     @Select("select id, path, name, label, icon from note_menu")
-    @Results(id = "getAllMenus", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "path", property = "path", javaType = String.class, jdbcType = JdbcType.CHAR),
-        @Result(column = "name", property = "name", javaType = String.class, jdbcType = JdbcType.CHAR),
-        @Result(column = "label", property = "label", javaType = String.class, jdbcType = JdbcType.CHAR),
-        @Result(column = "label", property = "label", javaType = String.class, jdbcType = JdbcType.CHAR)
-    })
+    @ResultMap(value = "menuResultMap")
     List<Menu> getAllMenus();
 
     /**

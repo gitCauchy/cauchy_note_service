@@ -3,7 +3,7 @@ package com.cauchynote.article.service.impl;
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.mapper.RecycleMapper;
 import com.cauchynote.article.service.RecycleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
  * @Author lingling
  * @Date 2022/4/23
  */
+@AllArgsConstructor
 @Service
 public class RecycleServiceImpl implements RecycleService {
-    @Autowired
     private RecycleMapper recycleMapper;
 
     @Override
@@ -30,22 +30,22 @@ public class RecycleServiceImpl implements RecycleService {
     }
 
     @Override
-    public boolean deleteArticleByIdPhysical(Integer id) {
-        return recycleMapper.deleteArticleByIdPhysical(id) == 1;
+    public Integer deleteArticleByIdPhysical(Integer id) {
+        return recycleMapper.deleteArticleByIdPhysical(id);
     }
 
     @Override
-    public boolean restoreArticleById(Integer id) {
-        return recycleMapper.restoreArticleById(id) == 1;
+    public Integer restoreArticleById(Integer id) {
+        return recycleMapper.restoreArticleById(id);
     }
 
     @Override
-    public boolean deleteAllArticlePhysical(Integer authorId) {
-        return recycleMapper.deleteAllArticlePhysical(authorId) > 0;
+    public Integer deleteAllArticlePhysical(Integer authorId) {
+        return recycleMapper.deleteAllArticlePhysical(authorId);
     }
 
     @Override
-    public boolean restoreAllArticle(Integer authorId) {
-        return recycleMapper.restoreAllArticle(authorId) > 0;
+    public Integer restoreAllArticle(Integer authorId) {
+        return recycleMapper.restoreAllArticle(authorId);
     }
 }

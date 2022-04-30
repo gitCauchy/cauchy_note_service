@@ -30,7 +30,7 @@ public interface MessageService {
 
     /**
      * 删除消息
-     *
+     * @param id 消息 id
      * @return 状态
      */
     Integer deleteMessage(Integer id);

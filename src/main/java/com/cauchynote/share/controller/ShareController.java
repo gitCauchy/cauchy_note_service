@@ -3,7 +3,7 @@ package com.cauchynote.share.controller;
 import com.cauchynote.share.entity.SharedArticle;
 import com.cauchynote.share.service.ShareService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +21,9 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/share")
 public class ShareController {
-    @Autowired
     private ShareService shareService;
 
     @PostMapping("/addArticleShare")

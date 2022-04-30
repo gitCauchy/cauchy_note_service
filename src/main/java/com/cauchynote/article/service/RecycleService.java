@@ -37,31 +37,31 @@ public interface RecycleService {
      * 根据文章id彻底从数据库中删除文章
      *
      * @param id 文章ID
-     * @return true|false
+     * @return 1- 成功| 0 - 失败
      */
-    boolean deleteArticleByIdPhysical(Integer id);
+    Integer deleteArticleByIdPhysical(Integer id);
 
     /**
      * 根据文章id恢复文章
      *
      * @param id 文章ID
-     * @return true|false
+     * @return 1 - 成功 | 0 - 失败
      */
-    boolean restoreArticleById(Integer id);
+    Integer restoreArticleById(Integer id);
 
     /**
      * 清空回收站离所有的文章
      *
      * @param authorId 作者ID
-     * @return true|false
+     * @return > 0  成功 | 0 - 失败
      */
-    boolean deleteAllArticlePhysical(Integer authorId);
+    Integer deleteAllArticlePhysical(Integer authorId);
 
     /**
      * 恢复回收站离所有的文章
      *
      * @param authorId 作者ID
-     * @return true|false
+     * @return >0 成功 | 0 - 失败
      */
-    boolean restoreAllArticle(Integer authorId);
+    Integer restoreAllArticle(Integer authorId);
 }

@@ -3,6 +3,7 @@ package com.cauchynote.friend.controller;
 import com.cauchynote.friend.service.FriendService;
 import com.cauchynote.system.entity.User;
 import com.cauchynote.utils.SystemConstantDefine;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/friend")
 public class FriendController {
-    @Autowired
     FriendService friendService;
 
     /**
@@ -96,8 +97,8 @@ public class FriendController {
         Integer status = friendService.addFriendRequest(userId, friendId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
-        }else if(status == -1){
-            return new ResponseEntity<>(SystemConstantDefine.USER_IS_FRIEND_ALREADY,HttpStatus.OK);
+        } else if (status == -1) {
+            return new ResponseEntity<>(SystemConstantDefine.USER_IS_FRIEND_ALREADY, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }

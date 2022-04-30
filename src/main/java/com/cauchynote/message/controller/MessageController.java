@@ -3,6 +3,7 @@ package com.cauchynote.message.controller;
 import com.cauchynote.message.entity.Message;
 import com.cauchynote.message.service.MessageService;
 import com.cauchynote.utils.SystemConstantDefine;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ import java.util.List;
  * @createTime 2022年04月25日 11:16:00
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/message")
 @CrossOrigin
 public class MessageController {
 
-    @Autowired
     private MessageService messageService;
 
     @PostMapping("/addNewMessage")

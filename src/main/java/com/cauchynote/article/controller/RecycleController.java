@@ -3,7 +3,7 @@ package com.cauchynote.article.controller;
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.service.RecycleService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +20,9 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/recycle")
 public class RecycleController {
-    @Autowired
     private RecycleService recycleService;
 
     /**
@@ -46,9 +46,8 @@ public class RecycleController {
         retMap.put("recycleTotal", deleteArticleTotal);
         if (deleteArticleList != null) {
             return new ResponseEntity<>(retMap, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     /**
@@ -59,11 +58,11 @@ public class RecycleController {
      */
     @GetMapping("/deleteAllArticlePhysical")
     public ResponseEntity<Integer> deleteAllArticlePhysical(@RequestParam Integer authorId) {
-        boolean result = recycleService.deleteAllArticlePhysical(authorId);
-        if (result) {
-            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        Integer result = recycleService.deleteAllArticlePhysical(authorId);
+        if (result == 0) {
+            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
         }
-        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+        return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
     }
 
     /**
@@ -74,8 +73,8 @@ public class RecycleController {
      */
     @GetMapping("/deleteArticlePhysical")
     public ResponseEntity<Integer> deleteArticlePhysical(@RequestParam Integer id) {
-        boolean result = recycleService.deleteArticleByIdPhysical(id);
-        if (result) {
+        Integer result = recycleService.deleteArticleByIdPhysical(id);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
@@ -89,12 +88,12 @@ public class RecycleController {
      */
     @GetMapping("/restoreAllArticle")
     public ResponseEntity<Integer> restoreAllArticle(@RequestParam Integer authorId) {
-        boolean result = recycleService.restoreAllArticle(authorId);
+        Integer result = recycleService.restoreAllArticle(authorId);
         System.out.println(result);
-        if (result) {
-            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        if (result == 0) {
+            return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
         }
-        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+        return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
     }
 
     /**
@@ -105,8 +104,8 @@ public class RecycleController {
      */
     @GetMapping("/restoreArticle")
     public ResponseEntity<Integer> restoreArticle(@RequestParam Integer id) {
-        boolean result = recycleService.restoreArticleById(id);
-        if (result) {
+        Integer result = recycleService.restoreArticleById(id);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);

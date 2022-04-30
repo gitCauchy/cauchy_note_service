@@ -1,8 +1,6 @@
 package com.cauchynote.share.entity;
 
-import com.cauchynote.article.entity.Article;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 

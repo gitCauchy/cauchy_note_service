@@ -3,7 +3,7 @@ package com.cauchynote.system.service.impl;
 import com.cauchynote.system.mapper.LoginInfoMapper;
 import com.cauchynote.system.service.LoginInfoService;
 import com.cauchynote.utils.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +17,9 @@ import java.util.Map;
  * @ClassName LoginInfoServiceImpl
  */
 @Service
+@AllArgsConstructor
 public class LoginInfoServiceImpl implements LoginInfoService {
 
-    @Autowired
     LoginInfoMapper loginInfoMapper;
 
     @Override

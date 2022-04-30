@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.cauchynote.system.service.LoginInfoService;
 import com.cauchynote.utils.SystemConstantDefine;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +22,23 @@ import com.cauchynote.article.service.ArticleService;
  */
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping("/article")
 public class ArticleController {
-    @Autowired
-    ArticleService articleService;
-    @Autowired
-    LoginInfoService loginInfoService;
 
+    ArticleService articleService;
+    LoginInfoService loginInfoService;
     /**
      * 新增文章
      *
      * @param article 文章对象
-     * @return ResponseEntity
+     * @return 状态码
      */
     @PostMapping("/addArticle")
     public ResponseEntity<Integer> addArticle(@RequestBody Article article) {
         article.setStatus(0);
-        boolean result = articleService.addArticle(article);
-        if (result) {
+        Integer result = articleService.addArticle(article);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
@@ -53,8 +52,8 @@ public class ArticleController {
      */
     @GetMapping("/deleteArticle")
     public ResponseEntity<Integer> deleteArticle(@RequestParam Integer id) {
-        boolean result = articleService.deleteArticle(id);
-        if (result) {
+        Integer result = articleService.deleteArticle(id);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
@@ -68,8 +67,8 @@ public class ArticleController {
      */
     @PostMapping("/modifyArticle")
     public ResponseEntity<Integer> modifyArticle(@RequestBody Article article) {
-        boolean result = articleService.modifyArticle(article);
-        if (result) {
+        Integer result = articleService.modifyArticle(article);
+        if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);

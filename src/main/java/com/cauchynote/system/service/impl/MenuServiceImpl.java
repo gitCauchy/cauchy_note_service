@@ -3,7 +3,7 @@ package com.cauchynote.system.service.impl;
 import com.cauchynote.system.entity.Menu;
 import com.cauchynote.system.mapper.MenuMapper;
 import com.cauchynote.system.service.MenuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +16,9 @@ import java.util.List;
  */
 
 @Service
+@AllArgsConstructor
 public class MenuServiceImpl implements MenuService {
 
-    @Autowired
     MenuMapper menuMapper;
 
     @Override
