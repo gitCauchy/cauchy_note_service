@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://192.168.31.254:3306/cauchy_note?serverTimezone=GMT
+    url: jdbc:mysql://124.222.34.143:3306/cauchy_note_test?serverTimezone=GMT
     username: root
-    password: password
+    password: JLLwcl123
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 

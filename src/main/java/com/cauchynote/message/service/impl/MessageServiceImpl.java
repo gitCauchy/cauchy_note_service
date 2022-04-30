@@ -29,11 +29,6 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Integer deleteMessage(Integer id) {
-        return null;
-    }
-
-    @Override
     public Integer readMessage(Integer id) {
         return messageMapper.changeStatus(id, 1);
     }
