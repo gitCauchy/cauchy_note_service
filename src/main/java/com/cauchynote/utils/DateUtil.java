@@ -55,7 +55,7 @@ public class DateUtil {
      */
     public static Date startBeforeNumMonth(Date date, int num) {
         CALENDAR.setTime(date);
-        CALENDAR.set(Calendar.MONTH, -num + 1);
+        CALENDAR.add(Calendar.MONTH, -num);
         CALENDAR.set(Calendar.DAY_OF_MONTH, 1);
         return CALENDAR.getTime();
     }
@@ -70,5 +70,10 @@ public class DateUtil {
         CALENDAR.setTime(new Date());
         CALENDAR.add(Calendar.DATE, num);
         return CALENDAR.getTime();
+    }
+
+    public static void main(String[] args) {
+        Date d = startBeforeNumMonth(new Date(),1);
+        System.out.println(d);
     }
 }

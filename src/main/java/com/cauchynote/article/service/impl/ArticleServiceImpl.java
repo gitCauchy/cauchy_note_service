@@ -93,21 +93,20 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int[] getUserLastSixMonthArticleCount(Integer authorId) {
-        // 获取前六个月月初的日期
-        Date today = new Date();
+        // 获取本月 1 日的日期
+        Date firstDayOfThisMonth = DateUtil.startBeforeNumMonth(new Date(), 0);
         Date[] dates = new Date[STATISTIC_PERIOD];
         int[] nCounts = new int[STATISTIC_PERIOD];
         int[] counts = new int[STATISTIC_PERIOD];
 
         for (int i = 0; i < STATISTIC_PERIOD; i++) {
-            dates[i] = DateUtil.startBeforeNumMonth(today, i + 1);
-            nCounts[i] = articleMapper.getUserArticleCount(authorId, dates[i], today);
+            dates[i] = DateUtil.startBeforeNumMonth(firstDayOfThisMonth, i + 1);
+            nCounts[i] = articleMapper.getUserArticleCount(authorId, dates[i], firstDayOfThisMonth);
         }
         for (int j = STATISTIC_PERIOD - 1; j > 0; j--) {
             counts[j] = nCounts[j] - nCounts[j - 1];
         }
-        int countOfThisMonth = articleMapper.getUserArticleCount(authorId, DateUtil.startBeforeNumMonth(today, 0), today);
-        counts[0] = nCounts[0] - countOfThisMonth;
+        counts[0] = nCounts[0];
         return counts;
     }
 
@@ -118,35 +117,32 @@ public class ArticleServiceImpl implements ArticleService {
         Map<String, Object> resultMap = new HashMap<>(2);
         // 获取前三名用户 id
         List<Integer> top3AuthorId = articleMapper.getTop3AuthorId();
-        // 根据 authorId 获取用户名
-        String top1Username = userMapper.getUsernameById(top3AuthorId.get(0));
-        String top2Username = userMapper.getUsernameById(top3AuthorId.get(1));
-        String top3Username = userMapper.getUsernameById(top3AuthorId.get(2));
-        int[][] topCount = new int[3][6];
-        topCount[0] = getUserLastSixMonthArticleCount(top3AuthorId.get(0));
-        topCount[1] = getUserLastSixMonthArticleCount(top3AuthorId.get(1));
-        topCount[2] = getUserLastSixMonthArticleCount(top3AuthorId.get(2));
-        for (int i = 0; i < STATISTIC_PERIOD; i++) {
-            topCount[0][i] = articleMapper.getUserArticleCount(top3AuthorId.get(0),
-                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
-            topCount[1][i] = articleMapper.getUserArticleCount(top3AuthorId.get(1),
-                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
-            topCount[2][i] = articleMapper.getUserArticleCount(top3AuthorId.get(2),
-                DateUtil.startBeforeNumMonth(today, i), DateUtil.startBeforeNumMonth(today, i - 1));
-        }
         List<Map<String, Integer>> dataList = new ArrayList<>();
-        for (int i = 0; i < STATISTIC_PERIOD; i++) {
-            Map<String, Integer> tmp = new TreeMap<>();
-            tmp.put(top1Username, topCount[0][i]);
-            tmp.put(top2Username, topCount[1][i]);
-            tmp.put(top3Username, topCount[2][i]);
-            dataList.add(tmp);
+        if (top3AuthorId.size() < 3) {
+            resultMap.put("data", null);
+        } else {
+            // 根据 authorId 获取用户名
+            String top1Username = userMapper.getUsernameById(top3AuthorId.get(0));
+            String top2Username = userMapper.getUsernameById(top3AuthorId.get(1));
+            String top3Username = userMapper.getUsernameById(top3AuthorId.get(2));
+            int[][] topCount = new int[3][6];
+            topCount[0] = getUserLastSixMonthArticleCount(top3AuthorId.get(0));
+            topCount[1] = getUserLastSixMonthArticleCount(top3AuthorId.get(1));
+            topCount[2] = getUserLastSixMonthArticleCount(top3AuthorId.get(2));
+
+            for (int i = 0; i < STATISTIC_PERIOD; i++) {
+                Map<String, Integer> tmp = new TreeMap<>();
+                tmp.put(top1Username, topCount[0][i]);
+                tmp.put(top2Username, topCount[1][i]);
+                tmp.put(top3Username, topCount[2][i]);
+                dataList.add(tmp);
+            }
+            Collections.reverse(dataList);
+            resultMap.put("data", dataList);
         }
-        Collections.reverse(dataList);
-        resultMap.put("data", dataList);
         List<String> dates = new ArrayList<>();
         for (int j = 0; j < STATISTIC_PERIOD; j++) {
-            Date tmpDate = DateUtil.startBeforeNumMonth(today, j);
+            Date tmpDate = DateUtil.startBeforeNumMonth(today, j + 1);
             dates.add(sdf.format(tmpDate));
         }
         Collections.reverse(dates);
@@ -160,7 +156,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Map<String, Object>> getTopUserWeekMonthTotalData() {
+    public List<Map<String, Object>> getTopUserWeekMonthYearTotalData() {
         List<Map<String, Object>> result = new ArrayList<>();
         Date today = new Date();
         // 获取前三名用户 id

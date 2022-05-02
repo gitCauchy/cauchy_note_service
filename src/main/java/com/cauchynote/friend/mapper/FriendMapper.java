@@ -89,9 +89,10 @@ public interface FriendMapper {
      *
      * @param userId           用户Id
      * @param friendRequestIds 好友ID
+     * @return 1 - 新增成功 0 - 新增失败
      */
     @Insert("insert into note_friend(user_id, friend_request_ids) value(#{userId}, #{friendRequestIds})")
-    void addNewFriendRequestRecord(Integer userId, String friendRequestIds);
+    Integer addNewFriendRequestRecord(Integer userId, String friendRequestIds);
 
     /**
      * 获取好友请求ID列表

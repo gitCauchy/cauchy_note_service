@@ -100,7 +100,10 @@ public class FriendServiceImpl implements FriendService {
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
         if (friendRequestIds == null) {
             friendRequestIds = friendId.toString();
-            friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
+            Integer result = friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
+            if (result == 0) {
+                return -1;
+            }
         }
         String[] friendRequestIdArray = friendRequestIds.split(ID_SEPARATOR);
         Set<String> requestIdStrSet = new HashSet<>(Arrays.asList(friendRequestIdArray));

@@ -132,7 +132,7 @@ public class ArticleController {
      */
     @GetMapping("/getTableData")
     public ResponseEntity<List<Map<String, Object>>> getTableData() {
-        List<Map<String, Object>> topUserWeekMonthTotalData = articleService.getTopUserWeekMonthTotalData();
+        List<Map<String, Object>> topUserWeekMonthTotalData = articleService.getTopUserWeekMonthYearTotalData();
         return new ResponseEntity<>(topUserWeekMonthTotalData, HttpStatus.OK);
     }
 
