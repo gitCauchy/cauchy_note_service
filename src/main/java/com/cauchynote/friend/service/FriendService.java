@@ -62,13 +62,14 @@ public interface FriendService {
      * 获取好友请求列表
      *
      * @param userId 用户ID
-     * @return List<User>
+     * @return 1 - 成功 |  0 - 失败 |  -1 - 用户已经是好友
      */
     List<User> getFriendRequestList(Integer userId);
 
     /**
      * 获取好友请求状态
-     * @param userId 用户 ID
+     *
+     * @param userId   用户 ID
      * @param friendId 好友 ID
      * @return 变更数量
      */

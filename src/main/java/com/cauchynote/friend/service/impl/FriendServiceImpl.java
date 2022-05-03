@@ -47,16 +47,16 @@ public class FriendServiceImpl implements FriendService {
     public Integer addFriend(Integer userId, Integer friendId) {
         /*
         先查询好友表内是否有当前用户的记录,这里有两种情况：
-        1. 表中有该用户的记录，但是 friend_ids 为空，这种情况出现再该用户主动添加其他用户为好友
+        1. 表中有该用户的记录，但是 friend_ids 为空，这种情况出现在该用户主动添加其他用户为好友
         2. 表中没有该用户的记录
          */
         Integer recordCount = friendMapper.getRecordCountOfUser(userId);
         String friendIds = friendMapper.getFriendIds(userId);
-        if (recordCount == 0 && friendIds == null) {
+        if (friendIds == null || "".equals(friendIds)) {
             friendIds = friendId.toString();
-            return friendMapper.addNewRecord(userId, friendIds);
-        } else if (recordCount == 1 && friendIds == null) {
-            friendIds = friendId.toString();
+            if (recordCount == 0) {
+                return friendMapper.addNewRecord(userId, friendIds);
+            }
             return friendMapper.updateFriend(userId, friendIds);
         }
         String[] friendIdArray = friendIds.split(ID_SEPARATOR);
@@ -65,7 +65,7 @@ public class FriendServiceImpl implements FriendService {
         StringBuilder sb = new StringBuilder();
         for (String idItem : idStrSet) {
             sb.append(idItem);
-            sb.append(",");
+            sb.append(ID_SEPARATOR);
         }
         return friendMapper.updateFriend(userId, sb.toString());
     }
@@ -80,7 +80,7 @@ public class FriendServiceImpl implements FriendService {
         StringBuilder sb = new StringBuilder();
         for (String listItem : friendIdList) {
             sb.append(listItem);
-            sb.append(",");
+            sb.append(ID_SEPARATOR);
         }
         return friendMapper.updateFriend(userId, sb.toString());
     }
@@ -97,13 +97,14 @@ public class FriendServiceImpl implements FriendService {
         if (friendIds != null && friendIds.contains(friendId.toString())) {
             return -1;
         }
+        Integer recordCountOfUser = friendMapper.getRecordCountOfUser(userId);
         String friendRequestIds = friendMapper.getFriendRequestIds(userId);
-        if (friendRequestIds == null) {
+        if (friendRequestIds == null || "".equals(friendRequestIds)) {
             friendRequestIds = friendId.toString();
-            Integer result = friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
-            if (result == 0) {
-                return -1;
+            if (recordCountOfUser == 0) {
+                return friendMapper.addNewFriendRequestRecord(userId, friendRequestIds);
             }
+            return friendMapper.updateFriendRequest(userId, friendRequestIds);
         }
         String[] friendRequestIdArray = friendRequestIds.split(ID_SEPARATOR);
         Set<String> requestIdStrSet = new HashSet<>(Arrays.asList(friendRequestIdArray));
@@ -111,7 +112,7 @@ public class FriendServiceImpl implements FriendService {
         StringBuilder sb = new StringBuilder();
         for (String idItem : requestIdStrSet) {
             sb.append(idItem);
-            sb.append(",");
+            sb.append(ID_SEPARATOR);
         }
         return friendMapper.updateFriendRequest(userId, sb.toString());
     }
