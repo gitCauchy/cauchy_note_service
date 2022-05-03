@@ -27,7 +27,7 @@ public interface ShareService {
      * @param isRevisable   是否可修改
      * @return 插入数据条数
      */
-    int addArticleShare(Long shareUserId, Long receiveUserId, Long articleId, Date shareDate, int validDay,
+    int addArticleShare(Integer shareUserId, Integer receiveUserId, Integer articleId, Date shareDate, int validDay,
                         int isRevisable);
 
     /**
@@ -39,7 +39,7 @@ public interface ShareService {
      * @param keyword  搜索关键词
      * @return List<Article>
      */
-    List<SharedArticle> getSharedArticleList(Long userId, Integer pageSize, Integer pageNum, String keyword);
+    List<SharedArticle> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
      * 删除分享信息
@@ -47,5 +47,5 @@ public interface ShareService {
      * @param id 分享信息 ID
      * @return 1 - 删除成功 0 - 删除失败
      */
-    int deleteArticleShare(Long id);
+    int deleteArticleShare(Integer id);
 }

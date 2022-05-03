@@ -30,7 +30,7 @@ public interface ShareMapper {
     @Insert("insert into note_article_share (share_user_id, receive_user_id, article_id, share_date, valid_day, " +
         "is_revisable) values(#{shareUserId}, #{receiveUserId}, #{articleId}, #{shareDate}, #{validDay}, " +
         "#{isRevisable})")
-    int addArticleShare(Long shareUserId, Long receiveUserId, Long articleId, Date shareDate, int validDay,
+    int addArticleShare(Integer shareUserId, Integer receiveUserId, Integer articleId, Date shareDate, int validDay,
                         int isRevisable);
 
     /**
@@ -49,11 +49,11 @@ public interface ShareMapper {
         "note_article ON note_article_share.article_id = note_article.id LEFT JOIN note_user ON " +
         "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId} and note_article" +
         ".status = 0 and note_article.title like '%${keyword}%' limit #{startNum}, #{pageSize}")
-    @Results(id = "getSharedArticleList", value = {
-        @Result(column = "id", property = "shareId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "share_user_id", property = "shareUserId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "receive_user_id", property = "receiverId", javaType = Long.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "article_id", property = "id", javaType = Long.class, jdbcType = JdbcType.INTEGER),
+    @Results(id = "articleShareResultMap", value = {
+        @Result(column = "id", property = "shareId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "share_user_id", property = "shareUserId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "receive_user_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "article_id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "share_date", property = "shareDate", javaType = Date.class, jdbcType = JdbcType.DATE),
         @Result(column = "valid_day", property = "validDay", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "is_revisable", property = "isRevisable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
@@ -64,7 +64,7 @@ public interface ShareMapper {
         @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
         @Result(column = "user_name", property = "shareUsername", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
-    List<SharedArticle> getSharedArticleList(Long receiverId, Integer pageSize, Integer startNum, String keyword);
+    List<SharedArticle> getSharedArticleList(Integer receiverId, Integer pageSize, Integer startNum, String keyword);
 
     /**
      * 删除分享
@@ -73,5 +73,5 @@ public interface ShareMapper {
      * @return 删除记录的条目数
      */
     @Delete("delete from note_article_share where id = #{id}")
-    int deleteArticleShare(Long id);
+    int deleteArticleShare(Integer id);
 }

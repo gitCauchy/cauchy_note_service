@@ -22,13 +22,13 @@ public class ShareServiceImpl implements ShareService {
     private ShareMapper shareMapper;
 
     @Override
-    public int addArticleShare(Long shareUserId, Long receiveUserId, Long articleId, Date shareDate, int validDay,
+    public int addArticleShare(Integer shareUserId, Integer receiveUserId, Integer articleId, Date shareDate, int validDay,
                                int isRevisable) {
         return shareMapper.addArticleShare(shareUserId, receiveUserId, articleId, shareDate, validDay, isRevisable);
     }
 
     @Override
-    public List<SharedArticle> getSharedArticleList(Long userId, Integer pageSize, Integer pageNum, String keyword) {
+    public List<SharedArticle> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum, String keyword) {
         List<SharedArticle> sharedArticleList = shareMapper.getSharedArticleList(userId, pageSize, (pageNum - 1) * pageSize,
             keyword);
         // 去掉已经过期的分享
@@ -44,7 +44,7 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public int deleteArticleShare(Long id) {
+    public int deleteArticleShare(Integer id) {
         return shareMapper.deleteArticleShare(id);
     }
 }
