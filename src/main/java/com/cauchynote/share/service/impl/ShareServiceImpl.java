@@ -44,7 +44,20 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public int deleteArticleShare(Integer id) {
+    public Integer deleteArticleShare(Integer id) {
         return shareMapper.deleteArticleShare(id);
+    }
+
+    @Override
+    public Integer getArticleShareCount(Integer shareUserId, Integer receiveUserId, Integer articleId) {
+        List<SharedArticle> sharedArticleList = shareMapper.getArticleShareCount(shareUserId, receiveUserId, articleId);
+        Integer count = 0;
+        // 遍历列表，是否存在未过期的分享
+        for (SharedArticle sharedArticle : sharedArticleList) {
+            if (DateUtil.getNumDayDate(sharedArticle.getValidDay()).after(sharedArticle.getShareDate())) {
+                count++;
+            }
+        }
+        return count;
     }
 }

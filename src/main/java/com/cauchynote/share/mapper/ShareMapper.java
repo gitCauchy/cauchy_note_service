@@ -73,5 +73,27 @@ public interface ShareMapper {
      * @return 删除记录的条目数
      */
     @Delete("delete from note_article_share where id = #{id}")
-    int deleteArticleShare(Integer id);
+    Integer deleteArticleShare(Integer id);
+
+    /**
+     * 获取笔记被分享的次数
+     *
+     * @param shareUserId   分享人 ID
+     * @param receiveUserId 接收人 ID
+     * @param articleId     文章 ID
+     * @return 同一笔记分享列表
+     */
+    @Select("select share_user_id, receive_user_id, article_id, share_date, valid_day, is_revisable from " +
+        "note_article_share where share_user_id = #{shareUserId} and receive_user_id = #{receiveUserId} and " +
+        "article_id = #{articleId}")
+    @Results(id = "shareResultMap", value = {
+        @Result(column = "id", property = "shareId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "share_user_id", property = "shareUserId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "receive_user_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "article_id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "share_date", property = "shareDate", javaType = Date.class, jdbcType = JdbcType.DATE),
+        @Result(column = "valid_day", property = "validDay", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_revisable", property = "isRevisable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
+    })
+    List<SharedArticle> getArticleShareCount(Integer shareUserId, Integer receiveUserId, Integer articleId);
 }

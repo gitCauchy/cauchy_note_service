@@ -102,4 +102,7 @@ public class SystemConstantDefine {
      * 已经为好友，不可添加
      */
     public static final Integer USER_IS_FRIEND_ALREADY = -400002;
+
+    // ----------------------- 内容分享---------------------
+    public static final Integer ARTICLE_HAS_SHARED_ALREADY = -500000;
 }

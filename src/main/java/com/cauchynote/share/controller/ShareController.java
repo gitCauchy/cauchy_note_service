@@ -31,6 +31,11 @@ public class ShareController {
         Integer shareUserId = requestMap.get("shareUserId");
         Integer receiveUserId = requestMap.get("receiveUserId");
         Integer articleId = requestMap.get("articleId");
+        Integer shareCount = shareService.getArticleShareCount(shareUserId, receiveUserId, articleId);
+        // 文章被该用户分享给同一个人，且在有效期内
+        if (shareCount != 0) {
+            return new ResponseEntity<>(SystemConstantDefine.ARTICLE_HAS_SHARED_ALREADY, HttpStatus.OK);
+        }
         Date shareDate = new Date();
         Integer validDay = requestMap.get("validDay");
         Integer isRevisable = requestMap.get("isRevisable");
