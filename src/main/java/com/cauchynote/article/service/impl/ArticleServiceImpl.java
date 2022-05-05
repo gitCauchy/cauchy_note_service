@@ -1,16 +1,28 @@
 package com.cauchynote.article.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.cauchynote.system.mapper.UserMapper;
 import com.cauchynote.utils.DateUtil;
 import lombok.AllArgsConstructor;
+import org.apache.poi.hmef.Attachment;
+import org.apache.poi.poifs.filesystem.DirectoryEntry;
+import org.apache.poi.poifs.filesystem.DocumentEntry;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.stereotype.Service;
 
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.mapper.ArticleMapper;
 import com.cauchynote.article.service.ArticleService;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文章服务实现
@@ -186,5 +198,34 @@ public class ArticleServiceImpl implements ArticleService {
             result.add(tmp);
         }
         return result;
+    }
+
+    @Override
+    public void exportContentToWord(String path, String fileName, String content) {
+        try {
+            String savePath = path + fileName + ".doc";
+            // 处理标签
+            content = content.replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&quot;", "\"")
+                .replace("&amp;", "&");
+            // 处理完成的放在 <html><body> 标签中
+            String handledContent = "<html><body>" + content + "</body></html>";
+            // 设置编码
+            byte[] b = handledContent.getBytes(StandardCharsets.UTF_8);
+            //将字节数组包装到流中
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(b);
+            // 生成 word 格式
+            POIFSFileSystem poifsFileSystem = new POIFSFileSystem();
+            DirectoryEntry directory = poifsFileSystem.getRoot();
+            directory.createDocument("WordDocument", byteArrayInputStream);
+            OutputStream outputStream = new FileOutputStream(savePath);
+            // 写入内容
+            poifsFileSystem.writeFilesystem(outputStream);
+            byteArrayInputStream.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

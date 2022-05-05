@@ -113,4 +113,12 @@ public interface ArticleService {
      * @return top 用户 周月年 数据
      */
     List<Map<String, Object>> getTopUserWeekMonthYearTotalData();
+
+    /**
+     * 笔记导出 word
+     * @param path 路径
+     * @param fileName 文件名
+     * @param content
+     */
+    void exportContentToWord(String path, String fileName, String content);
 }
