@@ -1,8 +1,6 @@
 package com.cauchynote.article.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.mapper.ArticleMapper;
 import com.cauchynote.article.service.ArticleService;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文章服务实现
@@ -195,31 +195,44 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void exportContentToWord(String path, String fileName, String content) {
+    public void exportContentToWord(Integer id, HttpServletResponse response) {
+        Article article = articleMapper.getArticle(id);
+        String content = article.getContent().replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&quot;", "\"")
+            .replace("&amp;", "&");
+        // 处理完成的放在 <html><body> 标签中
+        String handledContent = "<html><body>" + content + "</body></html>";
+        // 设置编码
+        byte[] b = handledContent.getBytes(StandardCharsets.UTF_8);
+        //将字节数组包装到流中
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(b);
+
+        byte[] buffer = new byte[1024];
+        BufferedInputStream bufferedInputStream = null;
+        OutputStream outputStream = null;
         try {
-            String savePath = path + fileName + ".doc";
-            // 处理标签
-            content = content.replace("&lt;", "<")
-                .replace("&gt;", ">")
-                .replace("&quot;", "\"")
-                .replace("&amp;", "&");
-            // 处理完成的放在 <html><body> 标签中
-            String handledContent = "<html><body>" + content + "</body></html>";
-            // 设置编码
-            byte[] b = handledContent.getBytes(StandardCharsets.UTF_8);
-            //将字节数组包装到流中
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(b);
-            // 生成 word 格式
-            POIFSFileSystem poifsFileSystem = new POIFSFileSystem();
-            DirectoryEntry directory = poifsFileSystem.getRoot();
-            directory.createDocument("WordDocument", byteArrayInputStream);
-            OutputStream outputStream = new FileOutputStream(savePath);
-            // 写入内容
-            poifsFileSystem.writeFilesystem(outputStream);
-            byteArrayInputStream.close();
-            outputStream.close();
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            outputStream = response.getOutputStream();
+            bufferedInputStream = new BufferedInputStream(byteArrayInputStream);
+            while (bufferedInputStream.read(buffer) != -1) {
+                outputStream.write(buffer);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedInputStream != null) {
+                    bufferedInputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

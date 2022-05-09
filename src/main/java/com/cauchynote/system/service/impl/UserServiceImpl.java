@@ -4,7 +4,6 @@ import com.cauchynote.system.entity.Menu;
 import com.cauchynote.system.entity.Permission;
 import com.cauchynote.system.entity.Role;
 import com.cauchynote.system.entity.User;
-import com.cauchynote.system.mapper.MenuMapper;
 import com.cauchynote.system.mapper.PermissionMapper;
 import com.cauchynote.system.mapper.RoleMapper;
 import com.cauchynote.system.mapper.UserMapper;

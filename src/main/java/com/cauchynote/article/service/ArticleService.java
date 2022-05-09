@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.cauchynote.article.entity.Article;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 文章服务层
  *
@@ -116,9 +118,9 @@ public interface ArticleService {
 
     /**
      * 笔记导出 word
-     * @param path 路径
-     * @param fileName 文件名
-     * @param content
+     *
+     * @param id       文章 ID
+     * @param response HttpServletResponse
      */
-    void exportContentToWord(String path, String fileName, String content);
+    void exportContentToWord(Integer id, HttpServletResponse response);
 }

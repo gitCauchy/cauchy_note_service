@@ -1,5 +1,10 @@
 package com.cauchynote.article.controller;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.service.ArticleService;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文章控制层
@@ -161,5 +168,10 @@ public class ArticleController {
         result.put("userArticleData", userData);
         result.put("userLoginData", userLoginData);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/exportArticle")
+    public void download(@RequestParam(value = "id") Integer id, HttpServletResponse response) {
+        articleService.exportContentToWord(id, response);
     }
 }
