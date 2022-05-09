@@ -8,6 +8,7 @@ import com.cauchynote.system.mapper.MenuMapper;
 import com.cauchynote.system.mapper.PermissionMapper;
 import com.cauchynote.system.mapper.RoleMapper;
 import com.cauchynote.system.mapper.UserMapper;
+import com.cauchynote.system.service.MenuService;
 import com.cauchynote.system.service.UserService;
 import com.cauchynote.utils.SystemConstantDefine;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private UserMapper userMapper;
     private RoleMapper roleMapper;
     private PermissionMapper permissionMapper;
-    private MenuMapper menuMapper;
+    private MenuService menuService;
 
     @Override
     public User getUserById(Integer id) {
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for (Role role : roles) {
             List<Permission> permissionList = permissionMapper.getPermissionByRoleId(role.getId());
             permissions.addAll(permissionList);
-            List<Menu> menuList = menuMapper.getMenuByRoleId(role.getId());
+            List<Menu> menuList = menuService.getMenuByRoleId(role.getId());
             menus.addAll(menuList);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();

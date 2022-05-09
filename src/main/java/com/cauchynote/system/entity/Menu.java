@@ -35,5 +35,13 @@ public class Menu {
     /**
      * 子菜单
      */
-    List<Menu> childrenList;
+    List<Menu> children;
+    /**
+     * 子菜单 id 列表
+     */
+    String childrenId;
+    /**
+     * url
+     */
+    String url;
 }

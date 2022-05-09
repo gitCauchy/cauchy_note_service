@@ -23,7 +23,15 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getMenuByRoleId(Integer roleId) {
-        return menuMapper.getMenuByRoleId(roleId);
+        // 获取菜单
+        List<Menu> menus = menuMapper.getMenuByRoleId(roleId);
+        // 遍历获取菜单的子菜单
+        for (Menu menu : menus) {
+            if (menu.getChildrenId() != null && !"".equals(menu.getChildrenId())) {
+                menu.setChildren(menuMapper.getChildMenus(menu.getChildrenId()));
+            }
+        }
+        return menus;
     }
 
     @Override

@@ -21,7 +21,7 @@ public interface MenuMapper {
      * @param roleId 角色 id
      * @return 菜单列表
      */
-    @Select("select note_menu.id, note_menu.path, note_menu.name, note_menu.label, note_menu.icon" +
+    @Select("select note_menu.id, note_menu.path, note_menu.name, note_menu.label, note_menu.icon, children, url" +
         " from note_menu left join note_role_menu on note_menu.id = " +
         "note_role_menu.menu_id where role_id = #{roleId}")
     @Results(id = "menuResultMap", value = {
@@ -30,6 +30,8 @@ public interface MenuMapper {
         @Result(column = "name", property = "name", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "label", property = "label", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "icon", property = "icon", javaType = String.class, jdbcType = JdbcType.CHAR),
+        @Result(column = "children", property = "childrenId", javaType = String.class, jdbcType = JdbcType.CHAR),
+        @Result(column = "url",property = "url",javaType = String.class,jdbcType = JdbcType.CHAR)
     })
     List<Menu> getMenuByRoleId(Integer roleId);
 
@@ -50,4 +52,14 @@ public interface MenuMapper {
      */
     @Insert("insert into note_role_menu(role_id,menu_id) value(#{roleId},#{menuId})")
     void addMenuOfRole(Integer roleId, Integer menuId);
+
+    /**
+     * 获取子菜单
+     *
+     * @param children 子菜单 id 串
+     * @return 子菜单 List
+     */
+    @Select("select id, path, name, label, icon, url from note_menu where id in (${ids})")
+    @ResultMap(value = "menuResultMap")
+    List<Menu> getChildMenus(String children);
 }
