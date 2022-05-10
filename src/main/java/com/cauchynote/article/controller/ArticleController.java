@@ -104,7 +104,10 @@ public class ArticleController {
      * @return 文章列表
      */
     @GetMapping("/getArticleList")
-    public ResponseEntity<Map<String, Object>> getArticleList(@RequestParam(value = "authorId") Integer authorId, @RequestParam(value = "pageSize") Integer pageSize, @RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "keyword") String keyword) {
+    public ResponseEntity<Map<String, Object>> getArticleList(@RequestParam(value = "authorId") Integer authorId,
+                                                              @RequestParam(value = "pageSize") Integer pageSize,
+                                                              @RequestParam(value = "pageNum") Integer pageNum,
+                                                              @RequestParam(value = "keyword") String keyword) {
         Map<String, Object> retMap = new HashMap<>(2);
         List<Article> articles = articleService.getArticleList(authorId, pageSize, pageNum, keyword);
         Integer total = articleService.getArticleTotal(authorId, keyword);

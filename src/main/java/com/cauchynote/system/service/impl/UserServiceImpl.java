@@ -1,5 +1,7 @@
 package com.cauchynote.system.service.impl;
 
+import com.cauchynote.profile.entity.Setting;
+import com.cauchynote.profile.mapper.SettingMapper;
 import com.cauchynote.system.entity.Menu;
 import com.cauchynote.system.entity.Permission;
 import com.cauchynote.system.entity.Role;
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private RoleMapper roleMapper;
     private PermissionMapper permissionMapper;
     private MenuService menuService;
+    private SettingMapper settingMapper;
 
     @Override
     public User getUserById(Integer id) {
@@ -99,11 +102,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setIsNonExpired(0);
         user.setIsPasswordNonExpired(0);
         user.setIsNonLocked(0);
+
         if (this.addUser(user) == 1) {
             // 为用户分配最基础的角色
             User saveUser = userMapper.findUserByUsername(user.getUsername());
             Role role = roleMapper.findRoleByName(SystemConstantDefine.USER_NAME);
             roleMapper.addRoleOfUser(saveUser.getId(), role.getId());
+//            /**
+//             * 添加用户设置
+//             */
+//            Setting setting = new Setting();
+//            setting.setUserId(user.getId());
+//            settingMapper.addSetting(setting);
             return 1;
         }
         return -2;
