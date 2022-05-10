@@ -1,4 +1,5 @@
 package com.cauchynote.article.controller;
+
 import com.cauchynote.article.entity.Article;
 import com.cauchynote.article.service.RecycleService;
 import com.cauchynote.utils.SystemConstantDefine;
@@ -6,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

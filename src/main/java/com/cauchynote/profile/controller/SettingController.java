@@ -1,4 +1,5 @@
 package com.cauchynote.profile.controller;
+
 import com.cauchynote.profile.entity.Setting;
 import com.cauchynote.profile.service.SettingService;
 import com.cauchynote.utils.SystemConstantDefine;
@@ -8,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 用户设置控制层
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 
 @RestController
@@ -20,9 +21,16 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class SettingController {
     private SettingService settingService;
+
+    /**
+     * 新增用户设置
+     *
+     * @param setting Setting 对象
+     * @return 状态码
+     */
     @PostMapping("/addSetting")
-    public ResponseEntity<Integer> addNewSetting(@RequestBody Setting setting){
-        Integer result =settingService.addNewSetting(setting) ;
+    public ResponseEntity<Integer> addNewSetting(@RequestBody Setting setting) {
+        Integer result = settingService.addNewSetting(setting);
         if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
@@ -30,12 +38,11 @@ public class SettingController {
     }
 
     /**
-     * 修改个人信息（不包括邮箱）
-     * @param setting
-     * @return
+     * 修改个人设置（不包括邮箱）
+     *
+     * @param setting Setting 对象
+     * @return 状态码
      */
-
-
     @PostMapping("/modifySetting")
     public ResponseEntity<Integer> modifySetting(@RequestBody Setting setting) {
         Integer result = settingService.modifySetting(setting);
@@ -46,11 +53,11 @@ public class SettingController {
     }
 
     /**
-     * 获取个人信息包括邮箱
-     * @param userId
-     * @return
+     * 获取个人设置
+     *
+     * @param userId 用户 ID
+     * @return Setting 对象
      */
-
     @GetMapping("/getSetting")
     public ResponseEntity<Setting> getSetting(@RequestParam Integer userId) {
         Setting setting = settingService.getSettingById(userId);

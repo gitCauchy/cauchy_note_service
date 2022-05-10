@@ -3,14 +3,23 @@ package com.cauchynote.profile.entity;
 import lombok.Data;
 
 /**
+ * 个人设置实体
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 @Data
 public class Setting {
+    /**
+     * 用户 ID
+     */
     private Integer userId;
+    /**
+     * 主题
+     */
     private Integer theme;
+    /**
+     * 皮肤
+     */
     private Integer skin;
 }

@@ -108,9 +108,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             User saveUser = userMapper.findUserByUsername(user.getUsername());
             Role role = roleMapper.findRoleByName(SystemConstantDefine.USER_NAME);
             roleMapper.addRoleOfUser(saveUser.getId(), role.getId());
-//            /**
-//             * 添加用户设置
-//             */
+            // 添加用户设置
 //            Setting setting = new Setting();
 //            setting.setUserId(user.getId());
 //            settingMapper.addSetting(setting);

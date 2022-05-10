@@ -7,15 +7,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
+ * 个人设置服务层实现类
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 @Service
 @AllArgsConstructor
 public class SettingServiceImpl implements SettingService {
     private SettingMapper settingMapper;
+
     @Override
     public Integer addNewSetting(Setting setting) {
         return settingMapper.addSetting(setting);

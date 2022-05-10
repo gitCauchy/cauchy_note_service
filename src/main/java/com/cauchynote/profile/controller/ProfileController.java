@@ -1,7 +1,5 @@
 package com.cauchynote.profile.controller;
 
-import com.cauchynote.article.entity.Article;
-import com.cauchynote.message.entity.Message;
 import com.cauchynote.profile.entity.Profile;
 import com.cauchynote.profile.service.ProfileService;
 import com.cauchynote.utils.SystemConstantDefine;
@@ -11,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 个人信息控制层
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 @RestController
 @AllArgsConstructor
@@ -25,11 +23,12 @@ public class ProfileController {
 
     /**
      * 添加个人信息不包括邮箱
-     * @param profile
-     * @return
+     *
+     * @param profile 个人信息对象
+     * @return 系统状态码
      */
     @PostMapping("/addProfile")
-    public ResponseEntity<Integer> addNewProfile(@RequestBody Profile profile){
+    public ResponseEntity<Integer> addNewProfile(@RequestBody Profile profile) {
         Integer result = profileService.addNewProfile(profile);
         if (result == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
@@ -39,11 +38,10 @@ public class ProfileController {
 
     /**
      * 修改个人信息（不包括邮箱）
-     * @param profile
-     * @return
+     *
+     * @param profile 个人信息对象
+     * @return 状态码
      */
-
-
     @PostMapping("/modifyProfile")
     public ResponseEntity<Integer> modifyArticle(@RequestBody Profile profile) {
         Integer result = profileService.modifyProfile(profile);
@@ -55,18 +53,13 @@ public class ProfileController {
 
     /**
      * 获取个人信息包括邮箱
-     * @param userId
-     * @return
+     *
+     * @param userId 用户 ID
+     * @return 用户信息对象
      */
-
     @GetMapping("/getProfile")
     public ResponseEntity<Profile> getProfile(@RequestParam Integer userId) {
         Profile profile = profileService.getProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
-
-
-
-
-
 }

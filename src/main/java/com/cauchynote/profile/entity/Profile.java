@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * 个人信息实体
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 @Data
 public class Profile {
@@ -16,11 +16,11 @@ public class Profile {
     /**
      * 用户id
      */
-    private  Integer userId;
+    private Integer userId;
     /**
      * 用户昵称
      */
-    private  String nickName;
+    private String nickName;
     /**
      * 生日
      */
@@ -28,23 +28,17 @@ public class Profile {
     /**
      * 性别
      */
-    private  Integer gender;
+    private Integer gender;
     /**
      * 电话号码
      */
-    private  String telephone;
+    private String telephone;
     /**
      * 图片
      */
     private byte[] photo;
     /**
-     *地址
+     * 地址
      */
-    private  String address;
-
-
-
-
-
-
+    private String address;
 }

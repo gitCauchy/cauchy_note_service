@@ -9,18 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 个人信息服务层实现类
+ *
  * @Author lingling
- * @Description
  * @Date 2022/5/4
- * @Version
  */
 @Service
 @AllArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private ProfileMapper profileMapper;
-
-
-
 
     @Override
     public Integer addNewProfile(Profile profile) {
