@@ -26,6 +26,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Integer modifyProfile(Profile profile) {
+        // 先检查数据库中是否存在当前用户的个人设置信息
+        if (profileMapper.countOfUserProfile(profile.getUserId()) == 0) {
+            return profileMapper.addProfile(profile);
+        }
         return profileMapper.modifyProfile(profile);
     }
 

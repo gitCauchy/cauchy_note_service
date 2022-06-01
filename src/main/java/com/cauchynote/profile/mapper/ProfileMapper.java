@@ -16,6 +16,12 @@ import java.util.Date;
 @Repository
 public interface ProfileMapper {
     /**
+     * 查询用户信息是否存在
+     */
+    @Select("select count(*) from note_profile where user_id = #{userId}")
+    Integer countOfUserProfile(Integer userId);
+
+    /**
      * 添加个人信息
      *
      * @param profile profile 对象
