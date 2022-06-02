@@ -1,7 +1,6 @@
 package com.cauchynote.system.service.impl;
 
 import com.cauchynote.profile.entity.Profile;
-import com.cauchynote.profile.entity.Setting;
 import com.cauchynote.profile.mapper.ProfileMapper;
 import com.cauchynote.profile.mapper.SettingMapper;
 import com.cauchynote.system.entity.Menu;
