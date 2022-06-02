@@ -1,6 +1,8 @@
 package com.cauchynote.system.service.impl;
 
+import com.cauchynote.profile.entity.Profile;
 import com.cauchynote.profile.entity.Setting;
+import com.cauchynote.profile.mapper.ProfileMapper;
 import com.cauchynote.profile.mapper.SettingMapper;
 import com.cauchynote.system.entity.Menu;
 import com.cauchynote.system.entity.Permission;
@@ -19,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PermissionMapper permissionMapper;
     private MenuService menuService;
     private SettingMapper settingMapper;
+    private ProfileMapper profileMapper;
 
     @Override
     public User getUserById(Integer id) {
@@ -92,6 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public Integer register(User user) {
         User getUser = userMapper.findUserByUsername(user.getUsername());
         // 1. 检查当前用户名是否存在
@@ -108,10 +113,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             User saveUser = userMapper.findUserByUsername(user.getUsername());
             Role role = roleMapper.findRoleByName(SystemConstantDefine.USER_NAME);
             roleMapper.addRoleOfUser(saveUser.getId(), role.getId());
+            // 添加用户信息配置
+            Profile profile = new Profile();
+            profile.setUserId(user.getId());
+            profile.setNickName(user.getUsername());
+            profile.setGender(SystemConstantDefine.MAN);
+            profileMapper.addProfile(profile);
             // 添加用户设置
-//            Setting setting = new Setting();
-//            setting.setUserId(user.getId());
-//            settingMapper.addSetting(setting);
             return 1;
         }
         return -2;

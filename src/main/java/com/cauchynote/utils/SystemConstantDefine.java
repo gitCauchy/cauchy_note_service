@@ -105,4 +105,11 @@ public class SystemConstantDefine {
 
     // ----------------------- 内容分享---------------------
     public static final Integer ARTICLE_HAS_SHARED_ALREADY = -500000;
+
+    // ----------------------- 性别 -----------------------
+    // 男
+    public static final Integer MAN = 0;
+    // 女
+    public static final Integer WOMAN = 1;
+
 }
