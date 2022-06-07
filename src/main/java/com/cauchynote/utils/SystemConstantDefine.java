@@ -107,9 +107,27 @@ public class SystemConstantDefine {
     public static final Integer ARTICLE_HAS_SHARED_ALREADY = -500000;
 
     // ----------------------- 性别 -----------------------
-    // 男
+    /**
+     * 男
+     */
     public static final Integer MAN = 0;
-    // 女
+    /**
+     * 女
+     */
     public static final Integer WOMAN = 1;
+
+    // ---------------------- 消息类型 -----------------
+    /**
+     * 好友验证
+     */
+    public static final Integer FRIEND_REQUEST_CHEKC = 0;
+    /**
+     * 笔记分享
+     */
+    public static final Integer ARTICLE_SHARE = 1;
+    /**
+     * 添加好友 反馈
+     */
+    public static final Integer FRIEND_REQUEST_CALLBACK = 3;
 
 }

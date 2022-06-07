@@ -4,12 +4,14 @@ import com.cauchynote.friend.service.FriendService;
 import com.cauchynote.system.entity.User;
 import com.cauchynote.utils.SystemConstantDefine;
 import lombok.AllArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Cauchy
@@ -31,10 +33,10 @@ public class FriendController {
      * @return 好友列表
      */
     @GetMapping("/getFriendList")
-    public ResponseEntity<List<User>> getFriendList(@RequestParam Integer userId,
-                                                    @RequestParam Integer pageSize,
-                                                    @RequestParam Integer pageNum) {
-        List<User> friendList = friendService.getFriendsList(userId, pageSize, pageNum);
+    public ResponseEntity<List<Map<String, Object>>> getFriendList(@RequestParam Integer userId,
+                                                                   @RequestParam Integer pageSize,
+                                                                   @RequestParam Integer pageNum) {
+        List<Map<String, Object>> friendList = friendService.getFriendsList(userId, pageSize, pageNum);
         return new ResponseEntity<>(friendList, HttpStatus.OK);
     }
 
@@ -112,6 +114,36 @@ public class FriendController {
     @GetMapping("/deleteFriendRequest")
     public ResponseEntity<Integer> deleteFriendRequest(@RequestParam Integer userId, @RequestParam Integer friendId) {
         Integer status = friendService.deleteFriendRequest(userId, friendId);
+        if (status == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+    }
+
+    @GetMapping("/setRemarkName")
+    public ResponseEntity<Integer> setRemarkName(@RequestParam Integer userId, @RequestParam Integer friendId,
+                                                 @RequestParam String remarkName) {
+        Integer status = friendService.setFriendRemarkName(userId, friendId, remarkName);
+        if (status == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+    }
+
+    @GetMapping("/agreeFriendRequest")
+    public ResponseEntity<Integer> agreeFriendRequest(@RequestParam Integer messageId, @RequestParam Integer senderId,
+                                                      @RequestParam Integer receiverId) {
+        Integer status = friendService.agreeFriendRequest(messageId, senderId, receiverId);
+        if (status == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
+    }
+
+    @GetMapping("/rejectFriendRequest")
+    public ResponseEntity<Integer> rejectFriendRequest(@RequestParam Integer messageId, @RequestParam Integer senderId,
+                                                      @RequestParam Integer receiverId) {
+        Integer status = friendService.rejectFriendRequest(messageId, senderId, receiverId);
         if (status == 1) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }

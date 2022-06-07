@@ -2,10 +2,14 @@ package com.cauchynote.friend.service.impl;
 
 import com.cauchynote.friend.mapper.FriendMapper;
 import com.cauchynote.friend.service.FriendService;
+import com.cauchynote.message.entity.Message;
 import com.cauchynote.system.entity.User;
+import com.cauchynote.system.service.UserService;
+import com.cauchynote.utils.SystemConstantDefine;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.cauchynote.message.service.MessageService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -24,9 +28,11 @@ public class FriendServiceImpl implements FriendService {
     public static final String ID_SEPARATOR = ",";
 
     FriendMapper friendMapper;
+    MessageService messageService;
+    UserService userService;
 
     @Override
-    public List<User> getFriendsList(Integer userId, Integer pageSize, Integer pageNum) {
+    public List<Map<String, Object>> getFriendsList(Integer userId, Integer pageSize, Integer pageNum) {
         String friendIdStr = friendMapper.getFriendIds(userId);
         // 11,22,33,44,55
         if (isNullRecord(friendIdStr)) {
@@ -40,7 +46,19 @@ public class FriendServiceImpl implements FriendService {
             }
             friendIds.add(Integer.valueOf(arrayItem));
         }
-        return friendMapper.getFriendList(friendIds, (pageNum - 1) * pageSize, pageSize);
+        List<Map<String, Object>> rawFriendList = friendMapper.getFriendList(userId, friendIds, (pageNum - 1) * pageSize,
+            pageSize);
+        // 遍历，修改 key
+        List<Map<String, Object>> retFriendList = new ArrayList<>();
+        for (Map<String, Object> rawMap : rawFriendList) {
+            Map<String, Object> tmpMap = new HashMap<>();
+            tmpMap.put("friendId", rawMap.get("id"));
+            tmpMap.put("username", rawMap.get("user_name"));
+            tmpMap.put("email", rawMap.get("email"));
+            tmpMap.put("remarkName", rawMap.get("remark_name"));
+            retFriendList.add(tmpMap);
+        }
+        return retFriendList;
     }
 
     @Override
@@ -148,6 +166,49 @@ public class FriendServiceImpl implements FriendService {
             sb.append(ID_SEPARATOR);
         }
         return friendMapper.updateFriendRequest(userId, sb.toString());
+    }
+
+    @Override
+    public Integer setFriendRemarkName(Integer userId, Integer friendId, String remarkName) {
+        // 先检查当前用户对于该好友是否设置了备注
+        if (friendMapper.isSetRemarkName(userId, friendId) == 1) {
+            return friendMapper.modifyRemarkName(userId, friendId, remarkName);
+        }
+        return friendMapper.setRemarkName(userId, friendId, remarkName);
+    }
+
+    @Override
+    @Transactional
+    public Integer agreeFriendRequest(Integer messageId, Integer senderId, Integer receiverId) {
+        // 1. 相互添加好友
+        this.addFriend(senderId, receiverId);
+        this.addFriend(receiverId, senderId);
+        // 2. 将消息标记为已读状态
+        messageService.readMessage(messageId);
+        // 3. 删除好友请求信息
+        this.deleteFriendRequest(senderId, receiverId);
+        // 4. 双方设置默认备注名称
+        String receiverUsername = userService.getUserById(receiverId).getUsername();
+        String senderUsername = userService.getUserById(senderId).getUsername();
+        friendMapper.setRemarkName(senderId, receiverId, receiverUsername);
+        return friendMapper.setRemarkName(receiverId, senderId, senderUsername);
+    }
+
+    @Override
+    @Transactional
+    public Integer rejectFriendRequest(Integer messageId, Integer senderId, Integer receiverId) {
+        // 1. 清理好友请求信息
+        this.deleteFriendRequest(senderId, receiverId);
+        // 2. 添加拒绝好友请求的消息
+        String senderName = userService.getUserById(senderId).getUsername();
+        Message message = new Message();
+        message.setSenderId(receiverId);
+        message.setReceiverId(senderId);
+        message.setMessageType(SystemConstantDefine.FRIEND_REQUEST_CALLBACK);
+        message.setMessageInfo("添加" + senderName + "的好友请求被拒绝");
+        messageService.addNewMessage(message);
+        // 3. 将消息标记为已读
+        return messageService.readMessage(messageId);
     }
 
     private boolean isNullRecord(String idStr) {

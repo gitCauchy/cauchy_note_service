@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 好友持久层
@@ -28,30 +29,56 @@ public interface FriendMapper {
     /**
      * 获取好友列表
      *
-     * @param friendIds 好友ID列表
+     * @param userId    用户 ID
+     * @param friendIds 好友 ID 列表
      * @param startNum  页起始位置
      * @param pageSize  页大小
      * @return 好友列表
      */
     @Select("<script>" +
-        "select id, user_name, email,password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " +
-        "is_enable from note_user where id in " +
+        "select note_user.id, note_user.user_name, note_user.email, note_friend_remark.remark_name from note_user " +
+        "left join note_friend_remark on note_user.id = note_friend_remark.friend_id where note_friend_remark.user_id" +
+        " =#{userId} and note_user.id in " +
         "<foreach item='item' index='index' collection='list' open='(' separator=',' close=')'> " +
         "#{item} " +
         "</foreach> limit #{startNum}, #{pageSize} " +
         "</script>")
-    @Results(id = "friendResultMap", value = {
-        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
-    })
-    List<User> getFriendList(@Param("list") List<Integer> friendIds, Integer startNum, Integer pageSize);
+    List<Map<String, Object>> getFriendList(Integer userId, @Param("list") List<Integer> friendIds, Integer startNum,
+                                            Integer pageSize);
+
+    /**
+     * 设置好友备注
+     *
+     * @param userId     用户 ID
+     * @param friendId   好友 ID
+     * @param remarkName 备注名称
+     * @return 成功 - 1，失败 - 0
+     */
+    @Insert("insert into note_friend_remark(user_id, friend_id, remark_name) value(#{userId}, #{friendId}, " +
+        "#{remarkName})")
+    Integer setRemarkName(Integer userId, Integer friendId, String remarkName);
+
+    /**
+     * 修改好于备注
+     *
+     * @param userId     用户 ID
+     * @param friendId   好友 ID
+     * @param remarkName 备注名称
+     * @return 成功 - 1，失败 - 0
+     */
+    @Update("update note_friend_remark set remark_name = #{remarkName} where user_id = #{userId} and friend_id = " +
+        "#{friendId} ")
+    Integer modifyRemarkName(Integer userId, Integer friendId, String remarkName);
+
+    /**
+     * 是否设置过备注名
+     *
+     * @param userId   用户 ID
+     * @param friendId 好友 ID
+     * @return 1 - 是 | 0 - 否
+     */
+    @Select("select count(*) from note_friend_remark where user_id = #{userId} and friend_id = #{friendId}")
+    Integer isSetRemarkName(Integer userId, Integer friendId);
 
     /**
      * 更新好友信息
@@ -71,7 +98,17 @@ public interface FriendMapper {
      */
     @Select("select id, user_name, email, password, create_time, is_non_expired, is_non_locked, is_password_non_expired, " +
         "is_enable from note_user where user_name = #{friendName}")
-    @ResultMap(value = "friendResultMap")
+    @Results(id = "friendResultMap", value = {
+        @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "user_name", property = "username", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "password", property = "password", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
+        @Result(column = "is_non_expired", property = "isNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_non_locked", property = "isNonLocked", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_password_non_expired", property = "isPasswordNonExpired", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
+        @Result(column = "is_enable", property = "isEnable", javaType = Integer.class, jdbcType = JdbcType.TINYINT)
+    })
     User searchFriend(String friendName);
 
     /**
