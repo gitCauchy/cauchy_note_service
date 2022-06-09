@@ -90,6 +90,9 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public Integer deleteFriend(Integer userId, Integer friendId) {
+        // 1. 删除好友的备注
+        friendMapper.deleteRemarkName(userId, friendId);
+        // 2. 删除好友表相关信息
         String friendIds = friendMapper.getFriendIds(userId);
         String[] friendIdArray = friendIds.split(ID_SEPARATOR);
         List<String> friendIdList = new ArrayList<>();
@@ -170,11 +173,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public Integer setFriendRemarkName(Integer userId, Integer friendId, String remarkName) {
-        // 先检查当前用户对于该好友是否设置了备注
-        if (friendMapper.isSetRemarkName(userId, friendId) == 1) {
-            return friendMapper.modifyRemarkName(userId, friendId, remarkName);
-        }
-        return friendMapper.setRemarkName(userId, friendId, remarkName);
+        return friendMapper.modifyRemarkName(userId, friendId, remarkName);
     }
 
     @Override

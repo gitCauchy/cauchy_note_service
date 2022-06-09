@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分享服务层接口
@@ -39,7 +40,7 @@ public interface ShareService {
      * @param keyword  搜索关键词
      * @return List<Article>
      */
-    List<SharedArticle> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum, String keyword);
+    List<Map<String, Object>> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum, String keyword);
 
     /**
      * 删除分享信息

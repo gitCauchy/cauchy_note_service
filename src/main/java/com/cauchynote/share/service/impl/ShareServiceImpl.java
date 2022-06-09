@@ -28,16 +28,33 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public List<SharedArticle> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum, String keyword) {
-        List<SharedArticle> sharedArticleList = shareMapper.getSharedArticleList(userId, pageSize, (pageNum - 1) * pageSize,
+    public List<Map<String,Object>> getSharedArticleList(Integer userId, Integer pageSize, Integer pageNum,
+                                                     String keyword) {
+        List<Map<String, Object>> sharedArticleList = shareMapper.getSharedArticleList(userId, pageSize,
+            (pageNum - 1) * pageSize,
             keyword);
         // 去掉已经过期的分享
-        List<SharedArticle> resultList = new ArrayList<>();
-        for (SharedArticle sharedArticle : sharedArticleList) {
-            Date shareDate = sharedArticle.getShareDate();
-            int validDay = sharedArticle.getValidDay();
+        List<Map<String,Object>> resultList = new ArrayList<>();
+        for (Map<String, Object> sharedArticle : sharedArticleList) {
+            Map<String,Object> result = new HashMap<>();
+            result.put("shareId",sharedArticle.get("id"));
+            result.put("shareUserId",sharedArticle.get("share_user_id"));
+            result.put("receiverId",sharedArticle.get("receiver_user_id"));
+            result.put("id",sharedArticle.get("articleId"));
+            result.put("shareDate",sharedArticle.get("share_date"));
+            result.put("validDay",sharedArticle.get("valid_day"));
+            result.put("isRevisable",sharedArticle.get("is_revisable"));
+            result.put("title",sharedArticle.get("title"));
+            result.put("content",sharedArticle.get("content"));
+            result.put("createTime",sharedArticle.get("create_time"));
+            result.put("modifyTime",sharedArticle.get("modifyTime"));
+            result.put("status",sharedArticle.get("status"));
+            result.put("shareUsername",sharedArticle.get("user_name"));
+            result.put("remarkName",sharedArticle.get("remark_name"));
+            Date shareDate = (Date) sharedArticle.get("share_date");
+            int validDay = (int) sharedArticle.get("valid_day");
             if (!DateUtil.getNumDayDate(-1 * validDay).after(shareDate)) {
-                resultList.add(sharedArticle);
+                resultList.add(result);
             }
         }
         return resultList;

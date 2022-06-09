@@ -1,5 +1,6 @@
 package com.cauchynote.share.entity;
 
+import com.cauchynote.article.entity.Article;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  * @createTime 2022年04月13日 14:44:00
  */
 @Data
-public class SharedArticle {
+public class SharedArticle extends Article {
     /**
      * 分享 ID
      */
@@ -41,32 +42,4 @@ public class SharedArticle {
      * 是否可被编辑  0 - 是  1 - 否
      */
     private Integer isRevisable;
-    /**
-     * 文章ID
-     */
-    private Integer id;
-    /**
-     * 文章标题
-     */
-    private String title;
-    /**
-     * 文章内容
-     */
-    private String content;
-    /**
-     * 文章作者ID
-     */
-    private Integer authorId;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 修改时间
-     */
-    private Date modifyTime;
-    /**
-     * 状态
-     */
-    private Integer status;
 }

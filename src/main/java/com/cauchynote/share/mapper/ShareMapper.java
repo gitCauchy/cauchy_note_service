@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分享持久层
@@ -45,26 +46,13 @@ public interface ShareMapper {
     @Select("SELECT note_article_share.id, note_user.user_name, note_article_share.share_user_id, " +
         "note_article_share.receive_user_id, note_article_share.article_id, note_article_share.share_date, " +
         "note_article_share.valid_day, note_article_share.is_revisable, note_article.title, note_article.content," +
-        "note_article.create_time, note_article.modify_time, note_article.status FROM note_article_share LEFT JOIN " +
-        "note_article ON note_article_share.article_id = note_article.id LEFT JOIN note_user ON " +
-        "note_article_share.share_user_id = note_user.id WHERE receive_user_id = #{receiverId} and note_article" +
+        "note_article.create_time, note_article.modify_time, note_article.status, note_friend_remark.remark_name from" +
+        " note_article_share left join note_article on note_article_share.article_id = note_article.id " +
+        "left join note_user on note_article_share.share_user_id = note_user.id left join note_friend_remark on " +
+        "note_article_share.share_user_id = note_friend_remark.friend_id and note_article_share.receive_user_id " +
+        "= note_friend_remark.user_id WHERE receive_user_id = #{receiverId} and note_article" +
         ".status = 0 and note_article.title like '%${keyword}%' limit #{startNum}, #{pageSize}")
-    @Results(id = "articleShareResultMap", value = {
-        @Result(column = "id", property = "shareId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "share_user_id", property = "shareUserId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "receive_user_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "article_id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
-        @Result(column = "share_date", property = "shareDate", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "valid_day", property = "validDay", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "is_revisable", property = "isRevisable", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "title", property = "title", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-        @Result(column = "content", property = "content", javaType = String.class, jdbcType = JdbcType.LONGVARCHAR),
-        @Result(column = "create_time", property = "createTime", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "modify_time", property = "modifyTime", javaType = Date.class, jdbcType = JdbcType.DATE),
-        @Result(column = "status", property = "status", javaType = Integer.class, jdbcType = JdbcType.TINYINT),
-        @Result(column = "user_name", property = "shareUsername", javaType = String.class, jdbcType = JdbcType.VARCHAR)
-    })
-    List<SharedArticle> getSharedArticleList(Integer receiverId, Integer pageSize, Integer startNum, String keyword);
+    List<Map<String, Object>> getSharedArticleList(Integer receiverId, Integer pageSize, Integer startNum, String keyword);
 
     /**
      * 删除分享

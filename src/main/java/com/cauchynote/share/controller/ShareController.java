@@ -57,7 +57,7 @@ public class ShareController {
     }
 
     @GetMapping("/getSharedArticleList")
-    public ResponseEntity<List<SharedArticle>> getSharedArticles(
+    public ResponseEntity<List<Map<String,Object>>> getSharedArticles(
         @RequestParam(value = "receiverId") Integer userId,
         @RequestParam(value = "pageSize") Integer pageSize,
         @RequestParam(value = "pageNum") Integer pageNum,

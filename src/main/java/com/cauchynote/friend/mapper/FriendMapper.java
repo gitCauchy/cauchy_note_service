@@ -81,6 +81,16 @@ public interface FriendMapper {
     Integer isSetRemarkName(Integer userId, Integer friendId);
 
     /**
+     * 删除好友备注信息
+     *
+     * @param userId   用户 ID
+     * @param friendId 好友 ID
+     * @return 1 - 删除成功 | 0 - 删除失败
+     */
+    @Delete("delete from note_friend_remark where user_id = #{userId} and friendId = #{friendId}")
+    Integer deleteRemarkName(Integer userId, Integer friendId);
+
+    /**
      * 更新好友信息
      *
      * @param userId    用户ID
