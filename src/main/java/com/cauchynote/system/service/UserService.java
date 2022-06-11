@@ -41,7 +41,7 @@ public interface UserService {
      * 修改用户信息
      *
      * @param user 用户对象
-     * @return 0 - 修改成功 1 - 修改失败
+     * @return 1 - 修改成功 0 - 修改失败
      */
     Integer updateUser(User user);
 

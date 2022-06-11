@@ -145,4 +145,22 @@ public class UserController {
         responseMap.put("SystemStatusCode", SystemConstantDefine.FAIL);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
+
+    @PostMapping("/modifyUserEmail")
+    public ResponseEntity<Integer> modifyUserEmail(@RequestBody Map<String, Object> requestMap) {
+        String username = (String) requestMap.get("username");
+        String newEmail = (String) requestMap.get("newEmail");
+        int checkCode = Integer.parseInt((String) requestMap.get("checkCode"));
+        int checkCodeFromRedis = (int) redisUtil.get(username);
+        if (checkCode != checkCodeFromRedis) {
+            return new ResponseEntity<>(SystemConstantDefine.CHECKCODE_INVALID, HttpStatus.OK);
+        }
+        User user = userService.findUserByUsername(username);
+        user.setEmail(newEmail);
+        Integer result = userService.updateUser(user);
+        if (result == 1) {
+            return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+    }
 }

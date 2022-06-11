@@ -120,7 +120,7 @@ public class SystemConstantDefine {
     /**
      * 好友验证
      */
-    public static final Integer FRIEND_REQUEST_CHEKC = 0;
+    public static final Integer FRIEND_REQUEST_CHECK = 0;
     /**
      * 笔记分享
      */

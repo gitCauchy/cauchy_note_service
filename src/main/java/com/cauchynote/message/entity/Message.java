@@ -20,6 +20,14 @@ public class Message {
      */
     private Integer senderId;
     /**
+     * 发送者用户名
+     */
+    private String senderUsername;
+    /**
+     * 发送者备注名
+     */
+    private String senderRemarkName;
+    /**
      * 接收者 ID
      */
     private Integer receiverId;

@@ -31,11 +31,15 @@ public interface MessageMapper {
      * @param receiverId 接收者 ID
      * @return List<Message>
      */
-    @Select("select id, sender_id, receiver_id, message_info, message_type, send_date, status from note_message" +
-        " where receiver_id = #{receiverId} and status = 0")
+    @Select("select note_message.id, note_message.sender_id, note_friend_remark.remark_name, " +
+        "note_message.receiver_id, note_message.message_info, note_message.message_type, note_message.send_date, " +
+        "note_message.status from note_message left join note_friend_remark on sender_id = friend_id and receiver_id " +
+        "= user_id where receiver_id = #{receiverId} and status = 0")
     @Results(id = "messageResultMap", value = {
         @Result(column = "id", property = "id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "sender_id", property = "senderId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+        @Result(column = "remark_name", property = "senderRemarkName", javaType = String.class, jdbcType =
+            JdbcType.CHAR),
         @Result(column = "receiver_id", property = "receiverId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "message_info", property = "messageInfo", javaType = String.class, jdbcType = JdbcType.VARCHAR),
         @Result(column = "message_type", property = "messageType", javaType = Integer.class, jdbcType = JdbcType.TINYINT),

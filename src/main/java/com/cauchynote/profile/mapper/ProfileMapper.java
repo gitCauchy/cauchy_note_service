@@ -49,7 +49,9 @@ public interface ProfileMapper {
      * @param userId 用户 ID
      * @return Profile 对象
      */
-    @Select("select user_id,nick_name,birthday,gender,photo,telephone,address from note_profile where user_id= #{userId}")
+    @Select("select note_profile.user_id, note_profile.nick_name, note_profile.birthday, note_profile.gender, " +
+        "note_profile.photo, note_profile.telephone, note_profile.address, note_user.email from note_profile left " +
+        "join note_user on note_profile.user_id = note_user.id where user_id= #{userId}")
     @Results(id = "profileMap", value = {
         @Result(column = "user_id", property = "userId", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "nick_name", property = "nickName", javaType = String.class, jdbcType = JdbcType.CHAR),
@@ -57,6 +59,7 @@ public interface ProfileMapper {
         @Result(column = "gender", property = "gender", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
         @Result(column = "photo", property = "photo", javaType = Byte[].class, jdbcType = JdbcType.BLOB),
         @Result(column = "telephone", property = "telephone", javaType = String.class, jdbcType = JdbcType.CHAR),
+        @Result(column = "email", property = "email", javaType = String.class, jdbcType = JdbcType.CHAR),
         @Result(column = "address", property = "address", javaType = String.class, jdbcType = JdbcType.CHAR)})
     Profile getProfileById(Integer userId);
 

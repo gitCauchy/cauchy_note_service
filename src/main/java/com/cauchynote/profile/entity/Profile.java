@@ -41,4 +41,8 @@ public class Profile {
      * 地址
      */
     private String address;
+    /**
+     * 邮箱
+     */
+    private String email;
 }
