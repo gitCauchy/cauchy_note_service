@@ -61,6 +61,10 @@ public class SystemConstantDefine {
      * 用户不存在
      */
     public static final Integer USER_NOT_EXIST = -300005;
+    /**
+     * 密码不合法
+     */
+    public static final Integer PASSWORD_ILLEGAL = -300006;
 
     /**
      * 角色ID - 超级管理员
@@ -129,5 +133,8 @@ public class SystemConstantDefine {
      * 添加好友 反馈
      */
     public static final Integer FRIEND_REQUEST_CALLBACK = 3;
+
+    // ---------------------- 不合法密码 -------------------
+    public static final String[] ILLEGAL_PASSWORD = {"123456", "password", "12345678", "qwerty", "abc123"};
 
 }

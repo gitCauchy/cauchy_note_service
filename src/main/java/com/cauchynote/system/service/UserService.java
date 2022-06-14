@@ -68,7 +68,7 @@ public interface UserService {
      * 用户注册
      *
      * @param user 用户对象
-     * @return -2 - 注册失败 | -1 - 用户已经存在  | 1 - 成功
+     * @return -4 密码不合法 | -3 - 邮箱已经被注册 | -2 - 注册失败 | -1 - 用户已经存在  | 1 - 成功
      */
     Integer register(User user);
 

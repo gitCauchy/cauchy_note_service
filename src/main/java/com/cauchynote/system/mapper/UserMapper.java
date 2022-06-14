@@ -118,4 +118,13 @@ public interface UserMapper {
      */
     @Update("update note_user set password = #{password} where user_name = #{username}")
     Integer modifyPassword(String password, String username);
+
+    /**
+     * 检查邮箱是否已经注册过
+     *
+     * @param email 邮箱
+     * @return 0 - 未被注册 | >0 - 已经被注册
+     */
+    @Select("select count(*) from note_user where email = #{email}")
+    Integer checkEmailCount(String email);
 }

@@ -59,8 +59,15 @@ public class LoginController {
         Integer result = userService.register(user);
         if (result == -2) {
             return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
-        } else if (result == -1) {
+        }
+        if (result == -1) {
             return new ResponseEntity<>(SystemConstantDefine.USERNAME_EXIST_ALREADY, HttpStatus.OK);
+        }
+        if (result == -3) {
+            return new ResponseEntity<>(SystemConstantDefine.EMAIL_REGISTERED_ALREADY, HttpStatus.OK);
+        }
+        if (result == -4) {
+            return new ResponseEntity<>(SystemConstantDefine.PASSWORD_ILLEGAL, HttpStatus.OK);
         }
         return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
     }

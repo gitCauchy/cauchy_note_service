@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,14 +110,14 @@ public class UserController {
     }
 
     @GetMapping("/sendCheckCode")
-    public ResponseEntity<Map<String, Integer>> sendCheckCode(@RequestParam String username) {
+    public ResponseEntity<Map<String, Integer>> sendCheckCode(@RequestParam String username, @RequestParam String subject) {
         // 通过用户名查找用户的邮箱
         User user = userService.findUserByUsername(username);
         int checkCode = RandomUtil.getRandomInt();
         redisUtil.set(username, checkCode);
         Map<String, Integer> responseMap = new HashMap<>(1);
         try {
-            EmailUtil.sendMsg(user.getEmail(), "RESET PASSWORD SERVICE", "密码重置", "您的验证码是:" + checkCode);
+            EmailUtil.sendMsg(user.getEmail(), "Cauchy Note", subject, "您的验证码是:" + checkCode);
         } catch (EmailException e) {
             e.printStackTrace();
             responseMap.put("SystemStatusCode", SystemConstantDefine.FAIL);
@@ -129,9 +130,16 @@ public class UserController {
     public ResponseEntity<Map<String, Integer>> resetPassword(@RequestBody Map<String, Object> requestMap) {
         String username = (String) requestMap.get("username");
         String newPassword = (String) requestMap.get("newPassword");
+        Map<String, Integer> responseMap = new HashMap<>(1);
+        List<String> illegalPassword = Arrays.asList(SystemConstantDefine.ILLEGAL_PASSWORD);
+        // 1. 检查密码是否过于简单
+        if (illegalPassword.contains(newPassword)) {
+            responseMap.put("SystemStatusCode", SystemConstantDefine.PASSWORD_ILLEGAL);
+            return new ResponseEntity<>(responseMap, HttpStatus.OK);
+        }
         int checkCode = Integer.parseInt((String) requestMap.get("checkCode"));
         int checkCodeFromRedis = (int) redisUtil.get(username);
-        Map<String, Integer> responseMap = new HashMap<>(1);
+        // 2. 检查用户传递的验证码是否和从 Redis 中获取的一致
         if (checkCode != checkCodeFromRedis) {
             responseMap.put("SystemStatusCode", SystemConstantDefine.CHECKCODE_INVALID);
             return new ResponseEntity<>(responseMap, HttpStatus.OK);

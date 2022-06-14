@@ -22,10 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户服务层实现类
@@ -101,6 +98,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // 1. 检查当前用户名是否存在
         if (getUser != null) {
             return -1;
+        }
+        // 2. 检查邮箱是否已经被注册
+        Integer emailCount = userMapper.checkEmailCount(user.getEmail());
+        if (emailCount > 0) {
+            return -3;
+        }
+        // 3. 检查密码是否过于简单
+        List<String> illegalPassword = Arrays.asList(SystemConstantDefine.ILLEGAL_PASSWORD);
+        if (illegalPassword.contains(user.getPassword())) {
+            return -4;
         }
         user.setIsEnable(0);
         user.setIsNonExpired(0);
