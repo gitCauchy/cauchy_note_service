@@ -43,7 +43,7 @@ public class ShareServiceImpl implements ShareService {
                 result.put("shareId",sharedArticle.get("id"));
                 result.put("shareUserId",sharedArticle.get("share_user_id"));
                 result.put("receiverId",sharedArticle.get("receiver_user_id"));
-                result.put("id",sharedArticle.get("articleId"));
+                result.put("id",sharedArticle.get("article_id"));
                 result.put("shareDate",sharedArticle.get("share_date"));
                 result.put("validDay",sharedArticle.get("valid_day"));
                 result.put("isRevisable",sharedArticle.get("is_revisable"));

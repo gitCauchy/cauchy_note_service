@@ -68,4 +68,14 @@ public class RedisUtil {
             return false;
         }
     }
+
+    public boolean deleteKey(String key) {
+        // 如果存在 删除
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+            redisTemplate.delete(key);
+            return true;
+        }
+        // 入过不存在直接返回即可
+        return true;
+    }
 }

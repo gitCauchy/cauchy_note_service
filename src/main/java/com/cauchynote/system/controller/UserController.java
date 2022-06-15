@@ -89,9 +89,12 @@ public class UserController {
      */
     @PostMapping("/modifyPassword")
     public ResponseEntity<Map<String, Integer>> modifyPassword(@RequestBody Map<String, String> passwordInfo) {
-        // 先获取用户输入的旧密码
-        String oldPassword = passwordInfo.get("oldPassword");
+        // 获取新密码
         String newPassword = passwordInfo.get("newPassword");
+        // 检查密码是否符合安全性要求
+
+        // 获取用户输入的旧密码
+        String oldPassword = passwordInfo.get("oldPassword");
         String username = passwordInfo.get("username");
         // 数据库
         User user = userService.findUserByUsername(username);
@@ -159,6 +162,9 @@ public class UserController {
         String username = (String) requestMap.get("username");
         String newEmail = (String) requestMap.get("newEmail");
         int checkCode = Integer.parseInt((String) requestMap.get("checkCode"));
+        if(redisUtil.get(username) == null){
+            return new ResponseEntity<>(SystemConstantDefine.CHECKCODE_INVALID, HttpStatus.OK);
+        }
         int checkCodeFromRedis = (int) redisUtil.get(username);
         if (checkCode != checkCodeFromRedis) {
             return new ResponseEntity<>(SystemConstantDefine.CHECKCODE_INVALID, HttpStatus.OK);
@@ -166,9 +172,10 @@ public class UserController {
         User user = userService.findUserByUsername(username);
         user.setEmail(newEmail);
         Integer result = userService.updateUser(user);
-        if (result == 1) {
+        boolean deleteResult = redisUtil.deleteKey(username);
+        if (result == 1 && deleteResult) {
             return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
         }
-        return new ResponseEntity<>(SystemConstantDefine.SUCCESS, HttpStatus.OK);
+        return new ResponseEntity<>(SystemConstantDefine.FAIL, HttpStatus.OK);
     }
 }
